@@ -1,0 +1,46 @@
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+  Exclude:
+    - db/**/*
+    - bin/**/*
+
+Lint/SpaceBeforeFirstArg:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/LineLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/MethodLength:
+  Enabled: false
+
+Style/ClassLength:
+  Enabled: false
+
+Style/SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
+Style/CyclomaticComplexity:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
