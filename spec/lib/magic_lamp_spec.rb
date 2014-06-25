@@ -32,4 +32,12 @@ describe MagicLamp do
       end
     end
   end
+
+  describe "#tmp_path" do
+    let(:tmp_path) { Rails.root.join("tmp/magic_lamp") }
+
+    it "returns the path to tmp" do
+      expect(subject.tmp_path).to eq(tmp_path)
+    end
+  end
 end
