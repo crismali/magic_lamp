@@ -7,8 +7,15 @@ describe MagicLamp do
   end
 
   context "attr_writer" do
-    it "has path=" do
-      expect(subject).to respond_to(:path=)
+    context "path" do
+      it { should respond_to :path= }
+    end
+  end
+
+  context "attr_accessor" do
+    context "render_arguments" do
+      it { should respond_to :render_arguments }
+      it { should respond_to :render_arguments= }
     end
   end
 
@@ -81,5 +88,26 @@ describe MagicLamp do
         subject.remove_tmp_directory
       end.to_not raise_error
     end
+  end
+
+  describe "#create_fixture" do
+    let(:fixture_path) { Rails.root.join("tmp/magic_lamp/fixture_name.html") }
+
+    before do
+      subject.create_fixture("fixture_name", OrdersController) do
+        render :foo
+      end
+    end
+
+    it "gives the fixture file specified name" do
+      expect(File.exist?(fixture_path)).to eq(true)
+    end
+
+    xit "contains the template" do
+      expect(File.read(fixture_path)).to eq("foo\n")
+    end
+
+    it "does not render the layout by default"
+    it "is created at the tmp path"
   end
 end

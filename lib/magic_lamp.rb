@@ -6,6 +6,7 @@ module MagicLamp
   TMP_PATH = ["tmp", MAGIC_LAMP]
 
   class << self
+    attr_accessor :render_arguments
     attr_writer :path
 
     def path
@@ -23,6 +24,14 @@ module MagicLamp
 
     def remove_tmp_directory
       FileUtils.rm_rf(tmp_path)
+    end
+
+    def create_fixture(fixture_name, controller_class, &block)
+      create_tmp_directory
+
+      File.open(tmp_path.join("#{fixture_name}.html"), "w") do |file|
+        file.write("hey")
+      end
     end
   end
 end
