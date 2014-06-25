@@ -1,7 +1,7 @@
 require "rails_helper"
 require "fileutils"
 
-describe MagicLamp do
+describe MagicLamp::FixtureCreator do
   before do
     FileUtils.rm_rf(Rails.root.join("tmp/magic_lamp"))
   end
