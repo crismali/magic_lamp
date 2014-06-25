@@ -1,6 +1,11 @@
 require "rails_helper"
+require "fileutils"
 
 describe MagicLamp do
+  before do
+    FileUtils.rm_rf(Rails.root.join("tmp/magic_lamp"))
+  end
+
   context "attr_writer" do
     it "has path=" do
       expect(subject).to respond_to(:path=)
@@ -38,6 +43,43 @@ describe MagicLamp do
 
     it "returns the path to tmp" do
       expect(subject.tmp_path).to eq(tmp_path)
+    end
+  end
+
+  describe "#create_tmp_directory" do
+    let(:tmp_directory) { subject.tmp_path }
+
+    before do
+      subject.create_tmp_directory
+    end
+
+    it "creates the magic lamp tmp directory" do
+      expect(File.exist?(tmp_directory)).to eq(true)
+    end
+
+    it "doesn't throw an error when the directory already exists" do
+      expect do
+        subject.create_tmp_directory
+      end.to_not raise_error
+    end
+  end
+
+  describe "#remove_tmp_directory" do
+    let(:tmp_directory) { subject.tmp_path }
+
+    before do
+      subject.create_tmp_directory
+      subject.remove_tmp_directory
+    end
+
+    it "removes the magic lamp tmp directory" do
+      expect(File.exist?(tmp_directory)).to eq(false)
+    end
+
+    it "doesn't throw an error when the directory doesn't exist before deletion" do
+      expect do
+        subject.remove_tmp_directory
+      end.to_not raise_error
     end
   end
 end
