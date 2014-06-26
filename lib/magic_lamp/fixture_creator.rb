@@ -34,7 +34,22 @@ module MagicLamp
       end
     end
 
+    def new_controller(controller_class)
+      controller = controller_class.new
+      controller.request = ActionDispatch::TestRequest.new
+      redefine_render(controller)
+      controller
+    end
+
     private
+
+    def redefine_render(controller)
+      fixture_creator = self
+      render = Proc.new do |*args|
+        fixture_creator.render_arguments = args
+      end
+      controller.singleton_class.send(:define_method, :render, &render)
+    end
 
     def fixture_path(fixture_name)
       tmp_path.join("#{fixture_name}.html")

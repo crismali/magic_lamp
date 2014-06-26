@@ -110,4 +110,28 @@ describe MagicLamp::FixtureCreator do
     it "does not render the layout by default"
     it "is created at the tmp path"
   end
+
+  describe "#new_controller" do
+
+    it "returns an instance of the passed controller class" do
+      expect(subject.new_controller(OrdersController)).to be_a(OrdersController)
+    end
+
+    context "contoller" do
+      let(:controller) { subject.new_controller(OrdersController) }
+
+      it "can have render_to_string called on it without blowing up" do
+        expect do
+          controller.render_to_string :foo
+        end.to_not raise_error
+      end
+
+      context "stubbed controller#render" do
+        it "passes its arguments to the fixture creator at render arguments" do
+          controller.render :foo, :bar
+          expect(subject.render_arguments).to eq([:foo, :bar])
+        end
+      end
+    end
+  end
 end
