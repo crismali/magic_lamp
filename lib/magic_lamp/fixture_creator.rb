@@ -46,10 +46,12 @@ module MagicLamp
     end
 
     def munge_arguments(arguments)
-      if arguments.first.is_a?(Hash)
-        arguments.first[:layout] ||= false
-      elsif arguments.last.is_a?(Hash)
-        arguments.last[:layout] ||= false
+      first_arg, second_arg = arguments
+
+      if first_arg.is_a?(Hash)
+        first_arg[:layout] ||= false
+      elsif second_arg.is_a?(Hash)
+        second_arg[:layout] ||= false
       else
         arguments << { layout: false }
       end
