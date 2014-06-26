@@ -96,4 +96,12 @@ describe MagicLamp do
       end
     end
   end
+
+  describe "#load_lamp_files" do
+
+    it "loads all _lamp files in the specified path" do
+      subject.load_lamp_files
+      expect(subject.instance_eval("@path")).to eq("from lamp file")
+    end
+  end
 end

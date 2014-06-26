@@ -1,6 +1,8 @@
 module MagicLamp
-  MAGIC_LAMP = "magic_lamp"
+  LAMP = "_lamp"
+  MAGIC_LAMP = "magic#{LAMP}"
   SPEC = "spec"
+  STARS = "**"
   TEST = "test"
   TMP = "tmp"
   TMP_PATH = [TMP, MAGIC_LAMP]
@@ -26,13 +28,21 @@ module MagicLamp
     end
 
     def load_config
-      Dir[Rails.root.join(directory_path, "**", "#{MAGIC_LAMP}.rb")].each { |f| require f }
+      require_all(Dir[Rails.root.join(directory_path, STARS, "#{MAGIC_LAMP}.rb")])
+    end
+
+    def load_lamp_files
+      require_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
     end
 
     private
 
     def directory_path
       Dir.exist?(Rails.root.join(SPEC)) ? SPEC : TEST
+    end
+
+    def require_all(files)
+      files.each { |file| require file }
     end
   end
 end
