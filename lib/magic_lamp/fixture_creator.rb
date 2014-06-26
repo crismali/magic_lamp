@@ -30,7 +30,10 @@ module MagicLamp
       create_tmp_directory
 
       File.open(fixture_path(fixture_name), "w") do |file|
-        file.write("hey")
+        controller = new_controller(controller_class, &block)
+        munged_arguments = munge_arguments(render_arguments)
+        template = controller.render_to_string(*munged_arguments)
+        file.write(template)
       end
     end
 
