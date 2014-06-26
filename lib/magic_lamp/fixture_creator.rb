@@ -45,10 +45,9 @@ module MagicLamp
 
     def redefine_render(controller)
       fixture_creator = self
-      render = Proc.new do |*args|
+      controller.singleton_class.send(:define_method, :render) do |*args|
         fixture_creator.render_arguments = args
       end
-      controller.singleton_class.send(:define_method, :render, &render)
     end
 
     def fixture_path(fixture_name)
