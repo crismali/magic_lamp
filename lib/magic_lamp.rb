@@ -26,7 +26,7 @@ module MagicLamp
     end
 
     def load_config
-      Dir[Rails.root.join(directory_path, "**", "magic_lamp.rb")].each { |f| require f }
+      Dir[Rails.root.join(directory_path, "**", "#{MAGIC_LAMP}.rb")].each { |f| require f }
     end
 
     private
