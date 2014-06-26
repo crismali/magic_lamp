@@ -2,6 +2,38 @@ require "rails_helper"
 
 describe MagicLamp do
 
+  context "attr_writer" do
+    context "path" do
+      it { should respond_to :path= }
+    end
+  end
+
+  describe "#path" do
+    after do
+      subject.path = nil
+    end
+
+    context "spec directory" do
+      let(:spec_path) { Rails.root.join("spec/magic_lamp") }
+
+      it "returns a default path starting from spec" do
+        expect(subject.path).to eq(spec_path)
+      end
+    end
+
+    context "specified" do
+      let(:specified_path) { Rails.root.join("foo") }
+
+      before do
+        subject.path = "foo"
+      end
+
+      it "returns the specified path relative to Rails root" do
+        expect(subject.path).to eq(specified_path)
+      end
+    end
+  end
+
   describe "#create_fixture" do
 
     it "passes through its arguments and block to an instance of FixtureCreator" do
