@@ -1,0 +1,1 @@
+MagicLamp.path = "footestmaster"

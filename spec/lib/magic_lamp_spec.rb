@@ -9,15 +9,20 @@ describe MagicLamp do
   end
 
   describe "#path" do
-    after do
-      subject.path = nil
-    end
-
     context "spec directory" do
       let(:spec_path) { Rails.root.join("spec/magic_lamp") }
 
       it "returns a default path starting from spec" do
         expect(subject.path).to eq(spec_path)
+      end
+    end
+
+    context "no spec directory" do
+      let(:test_path) { Rails.root.join("test/magic_lamp") }
+
+      it "returns a default path starting from test" do
+        allow(Dir).to receive(:exist?).and_return(false)
+        expect(subject.path).to eq(test_path)
       end
     end
 
@@ -30,6 +35,20 @@ describe MagicLamp do
 
       it "returns the specified path relative to Rails root" do
         expect(subject.path).to eq(specified_path)
+      end
+    end
+  end
+
+  describe "#default_path" do
+
+    it "returns the path to spec/magic_lamp" do
+      expect(subject.default_path).to eq(["spec", "magic_lamp"])
+    end
+
+    context "no spec directory" do
+      it "returns the path to test/magic_lamp" do
+        allow(Dir).to receive(:exist?).and_return(false)
+        expect(subject.default_path).to eq(["test", "magic_lamp"])
       end
     end
   end
@@ -60,6 +79,21 @@ describe MagicLamp do
       expect(fixture_creator).to receive(:remove_tmp_directory)
 
       MagicLamp.clear_fixtures
+    end
+  end
+
+  describe "#load_config" do
+    it "requires the magic lamp config file" do
+      subject.load_config
+      expect(subject.instance_eval("@path")).to eq("foomaster")
+    end
+
+    context "test directory" do
+      it "requires the config file from the test directory when there's no spec directory" do
+        allow(Dir).to receive(:exist?).and_return(false)
+        subject.load_config
+        expect(subject.instance_eval("@path")).to eq("footestmaster")
+      end
     end
   end
 end

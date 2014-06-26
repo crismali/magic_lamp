@@ -74,4 +74,8 @@ RSpec.configure do |config|
     # a real object. This is generally recommended.
     mocks.verify_partial_doubles = true
   end
+
+  config.before(:each) do
+    MagicLamp.path = nil
+  end
 end
