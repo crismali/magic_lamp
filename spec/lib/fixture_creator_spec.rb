@@ -114,16 +114,20 @@ describe MagicLamp::FixtureCreator do
   describe "#new_controller" do
 
     it "returns an instance of the passed controller class" do
-      expect(subject.new_controller(OrdersController)).to be_a(OrdersController)
+      expect(subject.new_controller(OrdersController) {} ).to be_a(OrdersController)
     end
 
     context "contoller" do
-      let(:controller) { subject.new_controller(OrdersController) }
+      let(:controller) { subject.new_controller(OrdersController) { params[:foo] = "bar" } }
 
       it "can have render_to_string called on it without blowing up" do
         expect do
           controller.render_to_string :foo
         end.to_not raise_error
+      end
+
+      it "has had its state set by the given block" do
+        expect(controller.params[:foo]).to eq("bar")
       end
 
       context "stubbed controller#render" do

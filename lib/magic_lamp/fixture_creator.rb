@@ -34,10 +34,11 @@ module MagicLamp
       end
     end
 
-    def new_controller(controller_class)
+    def new_controller(controller_class, &block)
       controller = controller_class.new
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
+      controller.instance_eval(&block)
       controller
     end
 
