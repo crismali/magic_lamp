@@ -18,4 +18,16 @@ describe MagicLamp do
       subject.create_fixture("foo", OrdersController, &passed_block)
     end
   end
+
+  describe "#clear_fixtures" do
+
+    it "clears the fixtures (by calling through to a fixture creator instance" do
+      fixture_creator = MagicLamp::FixtureCreator.new
+      allow(MagicLamp::FixtureCreator).to receive(:new).and_return(fixture_creator)
+
+      expect(fixture_creator).to receive(:remove_tmp_directory)
+
+      MagicLamp.clear_fixtures
+    end
+  end
 end
