@@ -29,9 +29,15 @@ module MagicLamp
     def create_fixture(fixture_name, controller_class, &block)
       create_tmp_directory
 
-      File.open(tmp_path.join("#{fixture_name}.html"), "w") do |file|
+      File.open(fixture_path(fixture_name), "w") do |file|
         file.write("hey")
       end
+    end
+
+    private
+
+    def fixture_path(fixture_name)
+      tmp_path.join("#{fixture_name}.html")
     end
   end
 end
