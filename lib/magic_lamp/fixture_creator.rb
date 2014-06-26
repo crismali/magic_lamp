@@ -41,6 +41,17 @@ module MagicLamp
       controller
     end
 
+    def munge_arguments(arguments)
+      if arguments.first.is_a?(Hash)
+        arguments.first[:layout] ||= false
+      elsif arguments.last.is_a?(Hash)
+        arguments.last[:layout] ||= false
+      else
+        arguments << { layout: false }
+      end
+      arguments
+    end
+
     private
 
     def redefine_render(controller)

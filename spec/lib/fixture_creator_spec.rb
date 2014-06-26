@@ -134,4 +134,70 @@ describe MagicLamp::FixtureCreator do
       end
     end
   end
+
+  describe "#munge_arguments" do
+    context "no options" do
+      let(:munged_arguments) { subject.munge_arguments([:foo]) }
+      let(:options) { munged_arguments.last }
+
+      it "provides a hash as the final argument if there isn't one already" do
+        expect(options).to be_a(Hash)
+      end
+
+      it "sets layout to false" do
+        expect(options[:layout]).to eq(false)
+      end
+
+      it "preserves the first argument" do
+        expect(munged_arguments.size).to eq(2)
+        expect(munged_arguments.first).to eq(:foo)
+      end
+    end
+
+    context "with options" do
+      let(:munged_arguments) { subject.munge_arguments([:foo, some_option: true]) }
+      let(:options) { munged_arguments.last }
+
+      it "preserves the other options" do
+        expect(options[:some_option]).to eq(true)
+      end
+
+      it "sets layout to false" do
+        expect(options[:layout]).to eq(false)
+      end
+
+      it "preserves the first argument" do
+        expect(munged_arguments.first).to eq(:foo)
+      end
+
+      context "layout specified" do
+        let(:munged_arguments) { subject.munge_arguments([:foo, layout: "bar"]) }
+
+        it "preserves the layout value" do
+          expect(options[:layout]).to eq("bar")
+        end
+      end
+    end
+
+    context "only options" do
+      let(:munged_arguments) { subject.munge_arguments([partial: "foo"]) }
+      let(:options) { munged_arguments.first }
+
+      it "preserves the other options" do
+        expect(options[:partial]).to eq("foo")
+      end
+
+      it "sets layout to false" do
+        expect(options[:layout]).to eq(false)
+      end
+
+      context "layout specified" do
+        let(:munged_arguments) { subject.munge_arguments([partial: "foo", layout: "bar"]) }
+
+        it "preserves the layout value" do
+          expect(options[:layout]).to eq("bar")
+        end
+      end
+    end
+  end
 end
