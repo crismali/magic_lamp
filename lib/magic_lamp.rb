@@ -48,3 +48,4 @@ module MagicLamp
 end
 
 require "magic_lamp/fixture_creator"
+require "tasks/magic_lamp_tasks"
