@@ -1,5 +1,4 @@
 require "rails_helper"
-require "fileutils"
 
 describe MagicLamp::FixtureCreator do
   before do
