@@ -10,50 +10,16 @@ describe MagicLamp::FixtureCreator do
       it { should respond_to :render_arguments }
       it { should respond_to :render_arguments= }
     end
-  end
 
-  describe "#tmp_path" do
-    let(:tmp_path) { Rails.root.join("tmp/magic_lamp") }
-
-    it "returns the path to tmp" do
-      expect(subject.tmp_path).to eq(tmp_path)
+    context "namespace" do
+      it { should respond_to :namespace }
+      it { should respond_to :namespace= }
     end
   end
 
-  describe "#create_tmp_directory" do
-    let(:tmp_directory) { subject.tmp_path }
-
-    before do
-      subject.create_tmp_directory
-    end
-
-    it "creates the magic lamp tmp directory" do
-      expect(File.exist?(tmp_directory)).to eq(true)
-    end
-
-    it "doesn't throw an error when the directory already exists" do
-      expect do
-        subject.create_tmp_directory
-      end.to_not raise_error
-    end
-  end
-
-  describe "#remove_tmp_directory" do
-    let(:tmp_directory) { subject.tmp_path }
-
-    before do
-      subject.create_tmp_directory
-      subject.remove_tmp_directory
-    end
-
-    it "removes the magic lamp tmp directory" do
-      expect(File.exist?(tmp_directory)).to eq(false)
-    end
-
-    it "doesn't throw an error when the directory doesn't exist before deletion" do
-      expect do
-        subject.remove_tmp_directory
-      end.to_not raise_error
+  describe "#initialize" do
+    it "sets MagicLamp as namespace" do
+      expect(subject.namespace).to eq(MagicLamp)
     end
   end
 
@@ -61,6 +27,7 @@ describe MagicLamp::FixtureCreator do
     let(:fixture_path) { Rails.root.join("tmp/magic_lamp/fixture_name.html") }
 
     before do
+      MagicLamp.create_tmp_directory
       subject.create_fixture("fixture_name", OrdersController) do
         render :foo
       end

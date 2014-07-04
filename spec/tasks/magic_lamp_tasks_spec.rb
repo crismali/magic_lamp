@@ -2,8 +2,8 @@ require "rails_helper"
 
 describe "MagicLamp Rake tasks" do
   describe "clean" do
-    it "calls clear_fixtures" do
-      expect(MagicLamp).to receive(:clear_fixtures)
+    it "calls remove_tmp_directory" do
+      expect(MagicLamp).to receive(:remove_tmp_directory)
       Rake::Task["magic_lamp:clean"].actions.first.call
     end
 

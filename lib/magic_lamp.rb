@@ -8,8 +8,6 @@ module MagicLamp
   TMP_PATH = [TMP, MAGIC_LAMP]
 
   class << self
-    attr_writer :path
-
     def path
       Rails.root.join(directory_path, MAGIC_LAMP)
     end
@@ -18,12 +16,21 @@ module MagicLamp
       FixtureCreator.new.create_fixture(fixture_name, controller_class, &block)
     end
 
-    def clear_fixtures
-      FixtureCreator.new.remove_tmp_directory
+    def load_lamp_files
+      create_tmp_directory
+      require_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
     end
 
-    def load_lamp_files
-      require_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
+    def tmp_path
+      Rails.root.join(*TMP_PATH)
+    end
+
+    def create_tmp_directory
+      FileUtils.mkdir_p(tmp_path)
+    end
+
+    def remove_tmp_directory
+      FileUtils.rm_rf(tmp_path)
     end
 
     private

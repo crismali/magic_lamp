@@ -3,7 +3,7 @@ require "rake"
 namespace :magic_lamp do
   desc "Remove MagicLamp fixtures"
   task clean: :environment do
-    MagicLamp.clear_fixtures
+    MagicLamp.remove_tmp_directory
   end
 
   desc "Creates fixtures from MagicLamp files"
