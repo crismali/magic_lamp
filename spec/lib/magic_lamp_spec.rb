@@ -4,7 +4,7 @@ describe MagicLamp do
 
   describe "#path" do
     context "spec directory" do
-      let(:spec_path) { Rails.root.join("spec/magic_lamp") }
+      let(:spec_path) { Rails.root.join("spec") }
 
       it "returns a default path starting from spec" do
         expect(subject.path).to eq(spec_path)
@@ -12,7 +12,7 @@ describe MagicLamp do
     end
 
     context "no spec directory" do
-      let(:test_path) { Rails.root.join("test/magic_lamp") }
+      let(:test_path) { Rails.root.join("test") }
 
       it "returns a default path starting from test" do
         allow(Dir).to receive(:exist?).and_return(false)

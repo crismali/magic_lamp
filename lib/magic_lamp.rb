@@ -9,7 +9,7 @@ module MagicLamp
 
   class << self
     def path
-      Rails.root.join(directory_path, MAGIC_LAMP)
+      Rails.root.join(directory_path)
     end
 
     def create_fixture(fixture_name, controller_class, &block)
