@@ -11,12 +11,7 @@ module MagicLamp
     attr_writer :path
 
     def path
-      path = @path || default_path
-      Rails.root.join(*path)
-    end
-
-    def default_path
-      [directory_path, MAGIC_LAMP]
+      Rails.root.join(directory_path, MAGIC_LAMP)
     end
 
     def create_fixture(fixture_name, controller_class, &block)
@@ -25,10 +20,6 @@ module MagicLamp
 
     def clear_fixtures
       FixtureCreator.new.remove_tmp_directory
-    end
-
-    def load_config
-      require_all(Dir[Rails.root.join(directory_path, STARS, "#{MAGIC_LAMP}.rb")])
     end
 
     def load_lamp_files
