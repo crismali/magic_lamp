@@ -1,5 +1,3 @@
-require "fileutils"
-
 module MagicLamp
   class FixtureCreator
     attr_accessor :render_arguments, :namespace
