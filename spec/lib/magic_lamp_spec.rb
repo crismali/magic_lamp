@@ -86,7 +86,7 @@ describe MagicLamp do
   describe "#load_lamp_files" do
 
     it "calls create_tmp_directory" do
-      expect(subject).to receive(:create_tmp_directory)
+      expect(subject).to receive(:create_tmp_directory).and_call_original
       subject.load_lamp_files
     end
 
