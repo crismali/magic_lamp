@@ -34,7 +34,7 @@ MagicLamp.create_fixture("fixture_name", SomeController) do
   # or
   # render partial: :foo, collection: [Foo.new, Foo.new, Foo.new]
   # or
-  # pretty much anything you can normall do with render
+  # pretty much anything you can normally do with render
 end
 ```
 Then if you ran:
