@@ -1,6 +1,6 @@
 # MagicLamp/Teaspoon Example
 
-## Setup
+## Making Teaspoon work with MagicLamp in your app
 change `config.fixture_paths` from:
 ```ruby
 config.fixture_paths = ["spec/javascripts/fixtures"]
