@@ -51,7 +51,8 @@ The basic tasks are:
 
 Since you'll probably always want to run the create fixtures task before you run your JavaScript specs, MagicLamp comes with some convenience tasks that create your fixtures and then immediately run your JavaScript specs:
 * `rake magic_lamp:evergreen` - [Evergreen](https://github.com/abepetrillo/evergreen) integration (you'll need `gem "evergreen", require: "evergreen/rails"` for this to work)
-* `rake magic_lamp:jasmine` - [JasmineRails](https://github.com/searls/jasmine-rails) integration
+* `rake magic_lamp:jasmine` - [Jasmine Gem](https://github.com/pivotal/jasmine-gem) integration
+* `rake magic_lamp:jasmine_rails` - [JasmineRails](https://github.com/searls/jasmine-rails) integration
 * `rake magic_lamp:konacha` - [Konacha](https://github.com/jfirebaugh/konacha) integration
 * `rake magic_lamp:teaspoon` - [Teaspoon](https://github.com/modeset/teaspoon) integration
 

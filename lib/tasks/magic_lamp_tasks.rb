@@ -19,8 +19,13 @@ namespace :magic_lamp do
   end
 
   desc "Create fixtures and run Jasmine Rails specs"
-  task jasmine: :create_fixtures do
+  task jasmine_rails: :create_fixtures do
     Rake::Task["spec:javascript"].invoke
+  end
+
+  desc "Create fixtures and run Jasmine specs"
+  task jasmine: :create_fixtures do
+    Rake::Task["jasmine:ci"].invoke
   end
 
   desc "Create fixtures and run Evergreen specs"
