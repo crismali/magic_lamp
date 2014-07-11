@@ -7,13 +7,17 @@ module MagicLamp
     end
 
     def create_fixture(fixture_name, controller_class, &block)
-      controller = new_controller(controller_class, &block)
-      munged_arguments = munge_arguments(render_arguments)
-      template = controller.render_to_string(*munged_arguments)
+      template = generate_template(controller_class, &block)
 
       File.open(fixture_path(fixture_name), "w") do |file|
         file.write(template)
       end
+    end
+
+    def generate_template(controller_class, &block)
+      controller = new_controller(controller_class, &block)
+      munged_arguments = munge_arguments(render_arguments)
+      controller.render_to_string(*munged_arguments)
     end
 
     def new_controller(controller_class, &block)

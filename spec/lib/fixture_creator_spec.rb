@@ -46,6 +46,22 @@ describe MagicLamp::FixtureCreator do
     end
   end
 
+  describe "#generate_template" do
+    let(:rendered) do
+      subject.generate_template(OrdersController) do
+        render :foo
+      end
+    end
+
+    it "returns the template as a string" do
+      expect(rendered).to eq("foo\n")
+    end
+
+    it "does not render the layout by default" do
+      expect(rendered).to_not match(/The layout/)
+    end
+  end
+
   describe "#new_controller" do
 
     it "returns an instance of the passed controller class" do
