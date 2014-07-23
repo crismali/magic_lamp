@@ -15,7 +15,7 @@ module MagicLamp
     end
 
     def register_fixture(controller_class, fixture_name, &block)
-      raise "MagicLamp#register_fixture requires a block" unless block_given?
+      raise "MagicLamp#register_fixture requires a block" if block.nil?
       self.registered_fixtures[fixture_name] = [controller_class, block]
     end
 
