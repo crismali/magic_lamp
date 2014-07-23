@@ -14,6 +14,31 @@ describe MagicLamp do
     end
   end
 
+  describe "#register_fixture" do
+    let(:fixture_name) { "foo" }
+    let(:controller_class) { "doesn't matter here" }
+    let(:block) { Proc.new { "so?" } }
+
+    before do
+      subject.registered_fixtures = {}
+    end
+
+    after do
+      subject.registered_fixtures = {}
+    end
+
+    it "caches the controller class and block" do
+      subject.register_fixture(controller_class, fixture_name, &block)
+      expect(subject.registered_fixtures[fixture_name]).to eq([controller_class, block])
+    end
+
+    it "raises an error without a block" do
+      expect do
+        subject.register_fixture(controller_class, fixture_name)
+      end.to raise_error
+    end
+  end
+
   describe "#path" do
     context "spec directory" do
       let(:spec_path) { Rails.root.join("spec") }
