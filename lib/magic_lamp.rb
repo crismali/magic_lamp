@@ -8,6 +8,8 @@ module MagicLamp
   TMP_PATH = [TMP, MAGIC_LAMP]
 
   class << self
+    attr_accessor :registered_fixtures
+
     def path
       Rails.root.join(directory_path)
     end
@@ -43,6 +45,8 @@ module MagicLamp
       files.each { |file| require file }
     end
   end
+
+  self.registered_fixtures = {}
 end
 
 require "fileutils"

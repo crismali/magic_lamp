@@ -2,6 +2,18 @@ require "rails_helper"
 
 describe MagicLamp do
 
+  context "attr_accessor" do
+    it { should respond_to :registered_fixtures }
+    it { should respond_to :registered_fixtures= }
+  end
+
+  describe "registered_fixtures" do
+
+    it "defaults to a hash" do
+      expect(subject.registered_fixtures).to eq({})
+    end
+  end
+
   describe "#path" do
     context "spec directory" do
       let(:spec_path) { Rails.root.join("spec") }
