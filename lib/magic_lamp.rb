@@ -24,6 +24,15 @@ module MagicLamp
       load_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
     end
 
+    def generate_fixture(fixture_name)
+      load_lamp_files
+      unless registered_fixtures.key?(fixture_name)
+        raise "'#{fixture_name}' is not a registered fixture"
+      end
+      controller_class, block = registered_fixtures[fixture_name]
+      FixtureCreator.new.generate_template(controller_class, &block)
+    end
+
     def create_fixture(fixture_name, controller_class, &block)
       FixtureCreator.new.create_fixture(fixture_name, controller_class, &block)
     end

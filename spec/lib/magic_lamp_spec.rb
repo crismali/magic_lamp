@@ -52,6 +52,22 @@ describe MagicLamp do
     end
   end
 
+  describe "#generate_fixture" do
+    before do
+      allow(subject).to receive(:create_fixture).and_return(:create_fixture)
+    end
+
+    it "returns the template" do
+      expect(subject.generate_fixture("foo_test")).to eq("foo\n")
+    end
+
+    it "raises an error when told to generate a template that is not registered" do
+      expect do
+        subject.generate_fixture("brokenture")
+      end.to raise_error(/is not a registered fixture/)
+    end
+  end
+
   describe "#path" do
     context "spec directory" do
       let(:spec_path) { Rails.root.join("spec") }
