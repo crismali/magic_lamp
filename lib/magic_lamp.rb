@@ -19,13 +19,18 @@ module MagicLamp
       self.registered_fixtures[fixture_name] = [controller_class, block]
     end
 
+    def load_lamp_files
+      self.registered_fixtures = {}
+      load_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
+    end
+
     def create_fixture(fixture_name, controller_class, &block)
       FixtureCreator.new.create_fixture(fixture_name, controller_class, &block)
     end
 
     def create_fixture_files
       create_tmp_directory
-      require_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
+      load_lamp_files
     end
 
     def tmp_path
@@ -46,12 +51,10 @@ module MagicLamp
       Dir.exist?(Rails.root.join(SPEC)) ? SPEC : TEST
     end
 
-    def require_all(files)
-      files.each { |file| require file }
+    def load_all(files)
+      files.each { |file| load file }
     end
   end
-
-  self.registered_fixtures = {}
 end
 
 require "fileutils"

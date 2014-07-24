@@ -14,13 +14,6 @@ describe MagicLamp do
     it { should respond_to :registered_fixtures= }
   end
 
-  describe "registered_fixtures" do
-
-    it "defaults to a hash" do
-      expect(subject.registered_fixtures).to eq({})
-    end
-  end
-
   describe "#register_fixture" do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }
@@ -35,6 +28,27 @@ describe MagicLamp do
       expect do
         subject.register_fixture(controller_class, fixture_name)
       end.to raise_error
+    end
+  end
+
+  describe "#load_lamp_files" do
+    before do
+      allow(subject).to receive(:create_fixture).and_return(:create_fixture)
+    end
+
+    it "loads all lamp files" do
+      subject.load_lamp_files
+      expect(subject.registered_fixtures[:test]).to eq(:fake_registry)
+    end
+
+    it "blows out registered_fixtures on each call" do
+      old_registry = subject.registered_fixtures
+      subject.load_lamp_files
+      expect(subject.registered_fixtures).to_not equal(old_registry)
+
+      old_registry = subject.registered_fixtures
+      subject.load_lamp_files
+      expect(subject.registered_fixtures).to_not equal(old_registry)
     end
   end
 
@@ -120,6 +134,9 @@ describe MagicLamp do
   end
 
   describe "#create_fixture_files" do
+    before do
+      allow(subject).to receive(:register_fixture).and_return(:register_fixture)
+    end
 
     it "calls create_tmp_directory" do
       expect(subject).to receive(:create_tmp_directory).and_call_original
@@ -128,7 +145,7 @@ describe MagicLamp do
 
     it "loads all _lamp files in the specified path" do
       subject.create_fixture_files
-      expect(subject.instance_eval("@foo")).to eq("from lamp file")
+      expect(subject.registered_fixtures[:test]).to eq(:fake_registry)
     end
   end
 end
