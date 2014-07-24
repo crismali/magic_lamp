@@ -14,8 +14,8 @@ describe "MagicLamp Rake tasks" do
   end
 
   describe "create_fixtures" do
-    it "calls load_lamp_files" do
-      expect(MagicLamp).to receive(:load_lamp_files)
+    it "calls create_fixture_files" do
+      expect(MagicLamp).to receive(:create_fixture_files)
       Rake::Task["magic_lamp:create_fixtures"].actions.first.call
     end
 

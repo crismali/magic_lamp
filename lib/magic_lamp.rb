@@ -23,7 +23,7 @@ module MagicLamp
       FixtureCreator.new.create_fixture(fixture_name, controller_class, &block)
     end
 
-    def load_lamp_files
+    def create_fixture_files
       create_tmp_directory
       require_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
     end

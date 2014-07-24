@@ -1,6 +1,13 @@
 require "rails_helper"
 
 describe MagicLamp do
+  before do
+    subject.registered_fixtures = {}
+  end
+
+  after do
+    subject.registered_fixtures = {}
+  end
 
   context "attr_accessor" do
     it { should respond_to :registered_fixtures }
@@ -18,14 +25,6 @@ describe MagicLamp do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }
     let(:block) { Proc.new { "so?" } }
-
-    before do
-      subject.registered_fixtures = {}
-    end
-
-    after do
-      subject.registered_fixtures = {}
-    end
 
     it "caches the controller class and block" do
       subject.register_fixture(controller_class, fixture_name, &block)
@@ -120,15 +119,15 @@ describe MagicLamp do
     end
   end
 
-  describe "#load_lamp_files" do
+  describe "#create_fixture_files" do
 
     it "calls create_tmp_directory" do
       expect(subject).to receive(:create_tmp_directory).and_call_original
-      subject.load_lamp_files
+      subject.create_fixture_files
     end
 
     it "loads all _lamp files in the specified path" do
-      subject.load_lamp_files
+      subject.create_fixture_files
       expect(subject.instance_eval("@foo")).to eq("from lamp file")
     end
   end

@@ -8,7 +8,7 @@ namespace :magic_lamp do
 
   desc "Creates fixtures from MagicLamp files"
   task create_fixtures: :clean do
-    MagicLamp.load_lamp_files
+    MagicLamp.create_fixture_files
   end
 
   # Test runner integration tasks
