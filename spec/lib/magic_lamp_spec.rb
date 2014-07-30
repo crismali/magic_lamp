@@ -27,7 +27,59 @@ describe MagicLamp do
     it "raises an error without a block" do
       expect do
         subject.register_fixture(controller_class, fixture_name)
-      end.to raise_error
+      end.to raise_error(/requires a block/)
+    end
+
+    context "defaults" do
+      it "uses ApplicationController as the default controller" do
+        subject.register_fixture { render :index }
+        expect(subject.registered_fixtures["index"].first).to eq(ApplicationController)
+      end
+
+      context "fixture name" do
+        context "ApplicationController" do
+          it "uses the first argument to render when given 2" do
+            render_block = Proc.new { render :index, foo: :bar }
+            subject.register_fixture(ApplicationController, &render_block)
+
+            expect(subject.registered_fixtures["index"]).to eq([ApplicationController, render_block])
+          end
+
+          it "uses the only argument when it isn't a hash" do
+            render_block = Proc.new { render :index }
+            subject.register_fixture(ApplicationController, &render_block)
+            expect(subject.registered_fixtures["index"]).to eq([ApplicationController, render_block])
+          end
+
+          context "1 hash argument" do
+            it "raises an error if it can't figure out a default name" do
+              expect do
+                subject.register_fixture(ApplicationController) { render collection: [1, 2, 3] }
+              end.to raise_error(/Unable to infer fixture name/)
+            end
+
+            it "uses the name at the template key" do
+              render_block = Proc.new { render template: :index }
+              subject.register_fixture(ApplicationController, &render_block)
+              expect(subject.registered_fixtures["index"]).to eq([ApplicationController, render_block])
+            end
+
+            it "uses the name at the partial key" do
+              render_block = Proc.new { render partial: :index }
+              subject.register_fixture(ApplicationController, &render_block)
+              expect(subject.registered_fixtures["index"]).to eq([ApplicationController, render_block])
+            end
+          end
+        end
+
+        context "other controller" do
+          it "prepends the controller's name to the fixture_name" do
+            render_block = Proc.new { render partial: :index }
+            subject.register_fixture(OrdersController, &render_block)
+            expect(subject.registered_fixtures["orders/index"]).to eq([OrdersController, render_block])
+          end
+        end
+      end
     end
   end
 
