@@ -16,7 +16,7 @@ module MagicLamp
 
     def register_fixture(controller_class, fixture_name, &block)
       raise "MagicLamp#register_fixture requires a block" if block.nil?
-      self.registered_fixtures[fixture_name] = [controller_class, block]
+      registered_fixtures[fixture_name] = [controller_class, block]
     end
 
     def load_lamp_files
@@ -68,4 +68,5 @@ end
 
 require "fileutils"
 require "magic_lamp/fixture_creator"
+require "magic_lamp/render_catcher"
 require "tasks/magic_lamp_tasks"
