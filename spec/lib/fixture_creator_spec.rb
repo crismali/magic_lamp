@@ -1,10 +1,6 @@
 require "rails_helper"
 
 describe MagicLamp::FixtureCreator do
-  before do
-    FileUtils.rm_rf(Rails.root.join("tmp/magic_lamp"))
-  end
-
   context "attr_accessor" do
     context "render_arguments" do
       it { should respond_to :render_arguments }
@@ -20,29 +16,6 @@ describe MagicLamp::FixtureCreator do
   describe "#initialize" do
     it "sets MagicLamp as namespace" do
       expect(subject.namespace).to eq(MagicLamp)
-    end
-  end
-
-  describe "#create_fixture" do
-    let(:fixture_path) { Rails.root.join("tmp/magic_lamp/fixture_name.html") }
-
-    before do
-      MagicLamp.create_tmp_directory
-      subject.create_fixture("fixture_name", OrdersController) do
-        render :foo
-      end
-    end
-
-    it "gives the fixture file specified name in the tmp path" do
-      expect(File.exist?(fixture_path)).to eq(true)
-    end
-
-    it "contains the template" do
-      expect(File.read(fixture_path)).to eq("foo\n")
-    end
-
-    it "does not render the layout by default" do
-      expect(File.read(fixture_path)).to_not match(/The layout/)
     end
   end
 

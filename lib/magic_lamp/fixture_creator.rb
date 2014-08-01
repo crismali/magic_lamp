@@ -6,14 +6,6 @@ module MagicLamp
       self.namespace = MagicLamp
     end
 
-    def create_fixture(fixture_name, controller_class, &block)
-      template = generate_template(controller_class, &block)
-
-      File.open(fixture_path(fixture_name), "w") do |file|
-        file.write(template)
-      end
-    end
-
     def generate_template(controller_class, &block)
       controller = new_controller(controller_class, &block)
       munged_arguments = munge_arguments(render_arguments)
@@ -48,10 +40,6 @@ module MagicLamp
       controller.singleton_class.send(:define_method, :render) do |*args|
         fixture_creator.render_arguments = args
       end
-    end
-
-    def fixture_path(fixture_name)
-      namespace.tmp_path.join("#{fixture_name}.html")
     end
   end
 end

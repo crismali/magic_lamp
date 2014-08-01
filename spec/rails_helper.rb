@@ -42,12 +42,4 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
-
-  config.before(:suite) do
-    FileUtils.rm_rf(Rails.root.join("tmp/magic_lamp"))
-  end
-
-  config.after(:suite) do
-    FileUtils.rm_rf(Rails.root.join("tmp/magic_lamp"))
-  end
 end

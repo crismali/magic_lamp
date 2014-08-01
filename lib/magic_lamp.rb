@@ -1,11 +1,8 @@
 module MagicLamp
   LAMP = "_lamp"
-  MAGIC_LAMP = "magic#{LAMP}"
   SPEC = "spec"
   STARS = "**"
   TEST = "test"
-  TMP = "tmp"
-  TMP_PATH = [TMP, MAGIC_LAMP]
 
   class << self
     attr_accessor :registered_fixtures
@@ -28,33 +25,11 @@ module MagicLamp
     end
 
     def generate_fixture(fixture_name)
-      load_lamp_files
       unless registered_fixtures.key?(fixture_name)
         raise "'#{fixture_name}' is not a registered fixture"
       end
       controller_class, block = registered_fixtures[fixture_name]
       FixtureCreator.new.generate_template(controller_class, &block)
-    end
-
-    def create_fixture(fixture_name, controller_class, &block)
-      FixtureCreator.new.create_fixture(fixture_name, controller_class, &block)
-    end
-
-    def create_fixture_files
-      create_tmp_directory
-      load_lamp_files
-    end
-
-    def tmp_path
-      Rails.root.join(*TMP_PATH)
-    end
-
-    def create_tmp_directory
-      FileUtils.mkdir_p(tmp_path)
-    end
-
-    def remove_tmp_directory
-      FileUtils.rm_rf(tmp_path)
     end
 
     private
