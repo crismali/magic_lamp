@@ -11,7 +11,7 @@ module MagicLamp
       Rails.root.join(directory_path)
     end
 
-    def register_fixture(controller_class = ApplicationController, fixture_name = nil, &block)
+    def register_fixture(controller_class = ::ApplicationController, fixture_name = nil, &block)
       raise "MagicLamp#register_fixture requires a block" if block.nil?
       if fixture_name.nil?
         fixture_name = default_fixture_name(controller_class, fixture_name, block)
@@ -78,4 +78,4 @@ end
 require "fileutils"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
-require "tasks/magic_lamp_tasks"
+require "magic_lamp/engine"
