@@ -19,6 +19,10 @@ module MagicLamp
       registered_fixtures[fixture_name] = [controller_class, block]
     end
 
+    def registered?(fixture_name)
+      !!registered_fixtures[fixture_name]
+    end
+
     def load_lamp_files
       self.registered_fixtures = {}
       load_all(Dir[path.join(STARS, "*#{LAMP}.rb")])

@@ -102,6 +102,18 @@ describe MagicLamp do
     end
   end
 
+  describe "#registered?" do
+
+    it "returns true if the fixture is registered" do
+      subject.registered_fixtures["foo"] = :something
+      expect(subject.registered?("foo")).to eq(true)
+    end
+
+    it "returns false if the fixture is not registered" do
+      expect(subject.registered?("bar")).to eq(false)
+    end
+  end
+
   describe "#generate_fixture" do
     let(:block) { Proc.new { render :foo } }
 
