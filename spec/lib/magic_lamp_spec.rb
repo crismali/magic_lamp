@@ -88,7 +88,7 @@ describe MagicLamp do
   describe "#load_lamp_files" do
     it "loads all lamp files" do
       subject.load_lamp_files
-      expect(subject.registered_fixtures[:test]).to eq(:fake_registry)
+      expect(subject.registered_fixtures["orders/foo"]).to be_an(Array)
     end
 
     it "blows out registered_fixtures on each call" do
