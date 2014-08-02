@@ -31,9 +31,11 @@ describe MagicLamp do
     end
 
     context "defaults" do
+      let(:at_index) { subject.registered_fixtures["index"] }
+
       it "uses ApplicationController as the default controller" do
         subject.register_fixture { render :index }
-        expect(subject.registered_fixtures["index"].first).to eq(::ApplicationController)
+        expect(at_index.first).to eq(::ApplicationController)
       end
 
       context "fixture name" do
@@ -42,13 +44,13 @@ describe MagicLamp do
             render_block = Proc.new { render :index, foo: :bar }
             subject.register_fixture(::ApplicationController, &render_block)
 
-            expect(subject.registered_fixtures["index"]).to eq([::ApplicationController, render_block])
+            expect(at_index).to eq([::ApplicationController, render_block])
           end
 
           it "uses the only argument when it isn't a hash" do
             render_block = Proc.new { render :index }
             subject.register_fixture(::ApplicationController, &render_block)
-            expect(subject.registered_fixtures["index"]).to eq([::ApplicationController, render_block])
+            expect(at_index).to eq([::ApplicationController, render_block])
           end
 
           context "1 hash argument" do
@@ -61,13 +63,13 @@ describe MagicLamp do
             it "uses the name at the template key" do
               render_block = Proc.new { render template: :index }
               subject.register_fixture(::ApplicationController, &render_block)
-              expect(subject.registered_fixtures["index"]).to eq([::ApplicationController, render_block])
+              expect(at_index).to eq([::ApplicationController, render_block])
             end
 
             it "uses the name at the partial key" do
               render_block = Proc.new { render partial: :index }
               subject.register_fixture(::ApplicationController, &render_block)
-              expect(subject.registered_fixtures["index"]).to eq([::ApplicationController, render_block])
+              expect(at_index).to eq([::ApplicationController, render_block])
             end
           end
         end
