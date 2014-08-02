@@ -27,7 +27,7 @@ describe MagicLamp do
     it "raises an error without a block" do
       expect do
         subject.register_fixture(controller_class, fixture_name)
-      end.to raise_error(/requires a block/)
+      end.to raise_error(ArgumentError, /requires a block/)
     end
 
     context "defaults" do
@@ -57,7 +57,7 @@ describe MagicLamp do
             it "raises an error if it can't figure out a default name" do
               expect do
                 subject.register_fixture(::ApplicationController) { render collection: [1, 2, 3] }
-              end.to raise_error(/Unable to infer fixture name/)
+              end.to raise_error(MagicLamp::AmbiguousFixtureNameError, /Unable to infer fixture name/)
             end
 
             it "uses the name at the template key" do
@@ -128,7 +128,7 @@ describe MagicLamp do
     it "raises an error when told to generate a template that is not registered" do
       expect do
         subject.generate_fixture("brokenture")
-      end.to raise_error(/is not a registered fixture/)
+      end.to raise_error(MagicLamp::UnregisteredFixtureError, /is not a registered fixture/)
     end
   end
 

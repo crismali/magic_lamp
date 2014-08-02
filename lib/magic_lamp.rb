@@ -4,6 +4,12 @@ module MagicLamp
   STARS = "**"
   TEST = "test"
 
+  class AmbiguousFixtureNameError < StandardError
+  end
+
+  class UnregisteredFixtureError < StandardError
+  end
+
   class << self
     attr_accessor :registered_fixtures
 
@@ -12,15 +18,19 @@ module MagicLamp
     end
 
     def register_fixture(controller_class = ::ApplicationController, fixture_name = nil, &block)
-      raise "MagicLamp#register_fixture requires a block" if block.nil?
+      if block.nil?
+        raise ArgumentError, "MagicLamp#register_fixture requires a block"
+      end
+
       if fixture_name.nil?
         fixture_name = default_fixture_name(controller_class, fixture_name, block)
       end
+
       registered_fixtures[fixture_name] = [controller_class, block]
     end
 
     def registered?(fixture_name)
-      !!registered_fixtures[fixture_name]
+      registered_fixtures.key?(fixture_name)
     end
 
     def load_lamp_files
@@ -29,8 +39,8 @@ module MagicLamp
     end
 
     def generate_fixture(fixture_name)
-      unless registered_fixtures.key?(fixture_name)
-        raise "'#{fixture_name}' is not a registered fixture"
+      unless registered?(fixture_name)
+        raise UnregisteredFixtureError, "'#{fixture_name}' is not a registered fixture"
       end
       controller_class, block = registered_fixtures[fixture_name]
       FixtureCreator.new.generate_template(controller_class, &block)
@@ -41,7 +51,9 @@ module MagicLamp
     def default_fixture_name(controller_class, fixture_name, block)
       first_arg = first_render_arg(block)
       fixture_name = template_name(first_arg).to_s
-      raise "Unable to infer fixture name" if fixture_name.blank?
+      if fixture_name.blank?
+        raise AmbiguousFixtureNameError, "Unable to infer fixture name"
+      end
       fixture_name = prepend_controller_name(fixture_name, controller_class)
       fixture_name
     end
