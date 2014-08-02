@@ -1,3 +1,7 @@
+require "magic_lamp/fixture_creator"
+require "magic_lamp/render_catcher"
+require "magic_lamp/engine"
+
 module MagicLamp
   LAMP = "_lamp"
   SPEC = "spec"
@@ -90,8 +94,3 @@ module MagicLamp
     end
   end
 end
-
-require "fileutils"
-require "magic_lamp/fixture_creator"
-require "magic_lamp/render_catcher"
-require "magic_lamp/engine"
