@@ -34,4 +34,5 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.assets.precompile += %w(teaspoon.css teaspoon-teaspoon.js mocha/1.17.1.js teaspoon-mocha.js)
 end
