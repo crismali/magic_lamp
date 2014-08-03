@@ -5,6 +5,9 @@ rescue LoadError
 end
 
 require "rspec/core/rake_task"
+desc "run rspec specs"
+RSpec::Core::RakeTask.new(:spec) do |t|
+end
 
 namespace :spec do
   desc "runs integration tests only"
@@ -15,8 +18,8 @@ namespace :spec do
 
   desc "Run both test suites"
   task :all do
-    system "bundle exec rspec"
-    Rake::Task["spec:integration"].invoke
+    Rake::Task["spec"].invoke
+    system "bundle exec teaspoon"
   end
 end
 
