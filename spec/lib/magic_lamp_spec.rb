@@ -132,6 +132,19 @@ describe MagicLamp do
     end
   end
 
+  describe "#generate_all_fixtures" do
+    let!(:result) { subject.generate_all_fixtures }
+    let(:foo_fixture) { result["orders/foo"] }
+    let(:bar_fixture) { result["orders/bar"] }
+    let(:form_fixture) { result["orders/form"] }
+
+    it "returns a hash of all registered fixtures" do
+      expect(foo_fixture).to eq("foo\n")
+      expect(bar_fixture).to eq("bar\n")
+      expect(form_fixture).to match(/<div class="actions"/)
+    end
+  end
+
   describe "#path" do
     context "spec directory" do
       let(:spec_path) { Rails.root.join("spec") }

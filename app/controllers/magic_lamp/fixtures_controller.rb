@@ -6,12 +6,7 @@ module MagicLamp
     end
 
     def index
-      namespace.load_lamp_files
-
-      fixtures = namespace.registered_fixtures.each_with_object({}) do |(fixture_name, _), fixtures|
-        fixtures[fixture_name] = namespace.generate_fixture(fixture_name)
-      end
-      render json: fixtures
+      render json: namespace.generate_all_fixtures
     end
 
     private

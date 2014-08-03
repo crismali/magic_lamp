@@ -50,6 +50,13 @@ module MagicLamp
       FixtureCreator.new.generate_template(controller_class, &block)
     end
 
+    def generate_all_fixtures
+      load_lamp_files
+      registered_fixtures.each_with_object({}) do |(fixture_name, _), fixtures|
+        fixtures[fixture_name] = generate_fixture(fixture_name)
+      end
+    end
+
     private
 
     def default_fixture_name(controller_class, fixture_name, block)
