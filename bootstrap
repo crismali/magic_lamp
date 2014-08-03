@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require "fileutils"
+
+system "bundle install"
+
+Dir.chdir("spec/dummy") do
+  puts "Creating and migrating dummy app's database..."
+  system "bundle exec rake db:create db:migrate"
+end
+
+puts "Copying over `db` directory..."
+FileUtils.cp_r("spec/dummy/db/", "./")
+
+puts "#done."
