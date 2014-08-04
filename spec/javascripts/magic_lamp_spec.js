@@ -26,4 +26,12 @@ describe('Genie', function() {
       expect(subject.cache).to.be.a('object');
     });
   });
+
+  describe('#createFixtureContainer', function() {
+    it('creates a div with an id of "magic-lamp" and caches it', function() {
+      subject.createFixtureContainer();
+      expect(subject.fixtureContainer.tagName).to.equal('DIV');
+      expect(subject.fixtureContainer.id).to.equal('magic-lamp');
+    });
+  });
 });

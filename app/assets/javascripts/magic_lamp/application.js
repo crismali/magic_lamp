@@ -10,4 +10,6 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require magic_lamp/magic_lamp
+//= require_self
+//= require magic_lamp/genie
+var MagicLamp = {};
