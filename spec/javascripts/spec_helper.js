@@ -38,4 +38,38 @@
 // may get better load performance if you require the specific files that are being used in the spec that tests them.
 //= require magic_lamp/application
 //= require support/chai
+//= require support/sinon
+//= require support/underscore-1.6
 window.expect = chai.expect;
+
+var spies;
+var stubs;
+
+function spyOn(object, method) {
+  var spy = sinon.spy(object, method);
+  spies.push(spy);
+  return spy;
+}
+
+function stub(object, method, retVal) {
+  var stub = sinon.stub(object, method).returns(retVal);
+  stubs.push(stub);
+  return stub;
+}
+
+beforeEach(function() {
+  spies = [];
+  stubs = [];
+});
+
+afterEach(function() {
+  _(spies).each(function(spy) {
+    spy.restore();
+  });
+
+  _(stubs).each(function(stub) {
+    stub.restore();
+  });
+
+  subject = undefined;
+});
