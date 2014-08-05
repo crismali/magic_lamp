@@ -35,6 +35,8 @@ GEM
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
     builder (3.2.2)
+    childprocess (0.5.3)
+      ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.0)
     columnize (0.8.9)
     debugger (1.6.8)
@@ -50,6 +52,7 @@ GEM
     dotenv-rails (0.11.1)
       dotenv (= 0.11.1)
     erubis (2.7.0)
+    ffi (1.9.3)
     hike (1.2.3)
     i18n (0.6.11)
     json (1.8.1)
@@ -105,6 +108,12 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
+    rubyzip (1.1.6)
+    selenium-webdriver (2.42.0)
+      childprocess (>= 0.5.0)
+      multi_json (~> 1.0)
+      rubyzip (~> 1.0)
+      websocket (~> 1.0.4)
     slop (3.6.0)
     sprockets (2.12.1)
       hike (~> 1.2)
@@ -126,6 +135,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.1)
       thread_safe (~> 0.1)
+    websocket (1.0.7)
 
 PLATFORMS
   ruby
@@ -137,5 +147,6 @@ DEPENDENCIES
   pry-debugger
   pry-nav
   rspec-rails
+  selenium-webdriver
   sqlite3
   teaspoon
