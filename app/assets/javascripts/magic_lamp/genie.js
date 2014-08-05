@@ -10,5 +10,9 @@
     this.fixtureContainer = div;
   };
 
+  Genie.prototype.appendFixtureContainer = function() {
+    document.body.appendChild(this.fixtureContainer);
+  };
+
   MagicLamp.Genie = Genie;
 })(this);
