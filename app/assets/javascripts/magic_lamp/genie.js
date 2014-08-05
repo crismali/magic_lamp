@@ -14,6 +14,11 @@
 
     appendFixtureContainer: function() {
       document.body.appendChild(this.fixtureContainer);
+    },
+
+    removeFixtureContainer: function() {
+      this.fixtureContainer.remove();
+      this.fixtureContainer = undefined;
     }
   };
 

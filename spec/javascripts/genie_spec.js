@@ -34,9 +34,29 @@ describe('Genie', function() {
     });
 
     it('appends the fixtureContainer to the body', function() {
-      expect(document.getElementById('magic-lamp')).to.equal(null);
+      expect(testFixtureContainer()).to.equal(null);
       subject.appendFixtureContainer();
-      expect(document.getElementById('magic-lamp')).to.equal(subject.fixtureContainer);
+      expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
+    });
+  });
+
+  describe('removeFixtureContainer', function() {
+    beforeEach(function() {
+      subject.createFixtureContainer();
+      subject.appendFixtureContainer();
+    });
+
+    it('removes the fixture container from the dom', function() {
+      expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
+      subject.removeFixtureContainer();
+      expect(testFixtureContainer()).to.equal(null);
+      expect(subject.fixtureContainer).to.be.undefined;
+    });
+
+    it('removes the fixture container from the genie instance', function() {
+      expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
+      subject.removeFixtureContainer();
+      expect(subject.fixtureContainer).to.be.undefined;
     });
   });
 });

@@ -57,6 +57,14 @@ function stub(object, method, retVal) {
   return stub;
 }
 
+function findById(id) {
+  return document.getElementById(id);
+}
+
+function testFixtureContainer() {
+  return findById('magic-lamp');
+}
+
 beforeEach(function() {
   spies = [];
   stubs = [];
