@@ -14,6 +14,15 @@ describe RenderCatcher do
     end
   end
 
+  describe "#catch_render_arguments" do
+    let(:block) { Proc.new { render :foo, :bar, :baz } }
+    let(:result) { subject.catch_render_arguments(&block) }
+
+    it "returns the arguments to render given a block" do
+      expect(result).to eq([:foo, :bar, :baz])
+    end
+  end
+
   describe "#method_missing" do
     it "does nothing when an unknown method is called" do
       expect do
