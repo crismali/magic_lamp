@@ -1,13 +1,13 @@
 class RenderCatcher
-  attr_accessor :render_arguments
+  attr_accessor :render_argument
 
-  def render(*args)
-    self.render_arguments = args
+  def render(first_arg, *args)
+    self.render_argument = first_arg
   end
 
-  def catch_render_arguments(&block)
+  def first_render_argument(&block)
     instance_eval(&block)
-    render_arguments
+    render_argument
   end
 
   def method_missing(method, *args, &block)

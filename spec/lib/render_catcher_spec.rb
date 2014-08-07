@@ -3,23 +3,23 @@ require "rails_helper"
 describe RenderCatcher do
 
   context "attr_accessor" do
-    it { should respond_to :render_arguments }
-    it { should respond_to :render_arguments= }
+    it { should respond_to :render_argument }
+    it { should respond_to :render_argument= }
   end
 
   describe "#render" do
-    it "saves its arguments as render arguments" do
+    it "saves its first arguments as render argument" do
       subject.render :foo, :bar, :baz
-      expect(subject.render_arguments).to eq([:foo, :bar, :baz])
+      expect(subject.render_argument).to eq(:foo)
     end
   end
 
-  describe "#catch_render_arguments" do
+  describe "#first_render_argument" do
     let(:block) { Proc.new { render :foo, :bar, :baz } }
-    let(:result) { subject.catch_render_arguments(&block) }
+    let(:result) { subject.first_render_argument(&block) }
 
-    it "returns the arguments to render given a block" do
-      expect(result).to eq([:foo, :bar, :baz])
+    it "returns the first argument to render given a block" do
+      expect(result).to eq(:foo)
     end
   end
 

@@ -71,8 +71,7 @@ module MagicLamp
 
     def first_render_arg(block)
       render_catcher = RenderCatcher.new
-      render_catcher.instance_eval(&block)
-      render_catcher.render_arguments.first
+      render_catcher.first_render_argument(&block)
     end
 
     def template_name(render_arg)
