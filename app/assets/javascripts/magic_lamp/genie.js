@@ -17,10 +17,16 @@
     },
 
     removeFixtureContainer: function() {
-      this.fixtureContainer.remove();
+      remove(this.fixtureContainer);
       this.fixtureContainer = undefined;
     }
   };
+
+  // private
+
+  function remove(node) {
+    node.parentNode.removeChild(node);
+  }
 
   MagicLamp.Genie = Genie;
 })(this);
