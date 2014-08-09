@@ -2,6 +2,7 @@
 
   function Genie() {
     this.cache = {};
+    this.namespace = MagicLamp;
   }
 
   Genie.prototype = {

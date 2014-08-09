@@ -16,6 +16,12 @@ describe('Genie', function() {
     });
   });
 
+  describe('namespace', function() {
+    it('is MagicLamp', function() {
+      expect(subject.namespace).to.equal(MagicLamp);
+    });
+  });
+
   describe('#createFixtureContainer', function() {
     it('creates a div with an id of "magic-lamp" and caches it', function() {
       subject.createFixtureContainer();
@@ -40,7 +46,7 @@ describe('Genie', function() {
     });
   });
 
-  describe('removeFixtureContainer', function() {
+  describe('#removeFixtureContainer', function() {
     beforeEach(function() {
       subject.createFixtureContainer();
       subject.appendFixtureContainer();
