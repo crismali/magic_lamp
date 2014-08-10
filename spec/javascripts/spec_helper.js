@@ -39,6 +39,7 @@
 //= require magic_lamp/application
 //= require support/chai
 //= require support/sinon
+//= require support/sinon-chai
 //= require support/underscore-1.6
 window.expect = chai.expect;
 

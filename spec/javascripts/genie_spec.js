@@ -65,4 +65,42 @@ describe('Genie', function() {
       expect(subject.fixtureContainer).to.be.undefined;
     });
   });
+
+  describe('#request', function() {
+    var callback;
+    var callbackCalled;
+    var path;
+
+    beforeEach(function() {
+      callbackCalled = 0;
+      callback = function() { callbackCalled += 1 };
+      path = 'foo/bar';
+      spyOn(subject, "handleError");
+    });
+
+    it('makes an get request to the specified path', function() {
+      var xhr = sinon.useFakeXMLHttpRequest();
+      var requests = [];
+      xhr.onCreate = function(xhr) {
+        requests.push(xhr);
+      };
+      subject.request(path, callback);
+      var request = requests[0];
+      request.respond(200);
+      xhr.restore();
+
+      expect(request.method).to.equal('GET');
+      expect(request.url).to.have.string(path);
+    });
+
+    it('calls its callback', function() {
+      subject.request(path, callback);
+      expect(callbackCalled).to.equal(1);
+    });
+
+    it('calls handleError if the status is not 200', function() {
+      subject.request(path, callback);
+      expect(subject.handleError).to.have.been.calledOnce;
+    });
+  });
 });
