@@ -66,6 +66,12 @@ function testFixtureContainer() {
   return findById('magic-lamp');
 }
 
+function removeNode(node) {
+  if (!!node) {
+    node.parentNode.removeChild(node);
+  }
+}
+
 beforeEach(function() {
   spies = [];
   stubs = [];

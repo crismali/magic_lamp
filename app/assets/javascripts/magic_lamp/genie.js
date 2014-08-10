@@ -17,6 +17,10 @@
       document.body.appendChild(this.fixtureContainer);
     },
 
+    emptyFixtureContainer: function() {
+      this.fixtureContainer.innerHTML = '';
+    },
+
     removeFixtureContainer: function() {
       remove(this.fixtureContainer);
       this.fixtureContainer = undefined;
