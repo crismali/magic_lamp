@@ -26,7 +26,7 @@
       throw new Error('Couldn\'t find fixture');
     },
 
-    request: function(path, callback) {
+    xhrRequest: function(path, callback) {
       var xhr = newXhr();
       var self = this;
       xhr.onreadystatechange = function() {

@@ -88,7 +88,7 @@ describe('Genie', function() {
     });
   });
 
-  describe('#request', function() {
+  describe('#xhrRequest', function() {
     var callback;
     var callbackCalled;
     var path;
@@ -111,7 +111,7 @@ describe('Genie', function() {
       xhr.onCreate = function(xhr) {
         requests.push(xhr);
       };
-      subject.request(path, callback);
+      subject.xhrRequest(path, callback);
       var request = requests[0];
       request.respond(200);
       xhr.restore();
@@ -121,13 +121,13 @@ describe('Genie', function() {
     });
 
     it('calls its callback with the xhr object', function() {
-      subject.request(path, callback);
+      subject.xhrRequest(path, callback);
       expect(callbackCalled).to.equal(1);
       expect(arg.constructor).to.equal(XMLHttpRequest);
     });
 
     it('calls handleError if the status is not 200', function() {
-      subject.request(path, callback);
+      subject.xhrRequest(path, callback);
       expect(subject.handleError).to.have.been.calledOnce;
     });
   });
