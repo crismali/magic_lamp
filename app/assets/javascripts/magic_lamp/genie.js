@@ -10,11 +10,9 @@
 
     preload: function() {
       this.cacheOnly = true;
-      var self = this;
-      this.xhrRequest(this.namespace.path || '/magic_lamp', function(xhr) {
-        var json = JSON.parse(xhr.responseText);
-        self.cache = json;
-      });
+      var xhr = this.xhrRequest(this.namespace.path || '/magic_lamp');
+      var json = JSON.parse(xhr.responseText);
+      this.cache = json;
     },
 
     createFixtureContainer: function() {
@@ -36,7 +34,7 @@
       throw new Error('Couldn\'t find fixture');
     },
 
-    xhrRequest: function(path, callback) {
+    xhrRequest: function(path) {
       var xhr = newXhr();
 
       xhr.open('GET', path, false);
@@ -48,7 +46,7 @@
       if (xhr.status !== 200) {
         this.handleError(path);
       }
-      callback(xhr);
+      return xhr;
     }
   };
 

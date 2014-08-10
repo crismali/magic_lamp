@@ -39,13 +39,14 @@ describe('Genie', function() {
       expect(subject.cacheOnly).to.equal(true);
     });
 
-    it('makes a request to the specified if defined', function() {
+    it('makes a request to the specified path if defined', function() {
       var path = MagicLamp.path = '/normal_lamp';
-      stubNetwork();
+      stub(subject, 'xhrRequest', { responseText: '{}' });
       subject.preload();
+
       delete MagicLamp.path;
 
-      expect(requests[0].url).to.have.string(path);
+      expect(subject.xhrRequest).to.have.been.calledWith(path);
     });
   });
 
@@ -116,24 +117,15 @@ describe('Genie', function() {
   });
 
   describe('#xhrRequest', function() {
-    var callback;
-    var callbackCalled;
     var path;
-    var arg;
 
     beforeEach(function() {
-      callbackCalled = 0;
-      arg = false;
-      callback = function(xhr) {
-        arg = xhr;
-        callbackCalled += 1;
-      };
       path = '/foo/bar';
     });
 
     it('makes an get request to the specified path', function() {
       stubNetwork();
-      subject.xhrRequest(path, callback);
+      subject.xhrRequest(path);
       var request = requests[0];
       request.respond(200);
 
@@ -141,17 +133,16 @@ describe('Genie', function() {
       expect(request.url).to.have.string(path);
     });
 
-    it('calls its callback with the xhr object', function() {
+    it('returns the xhr object', function() {
       path = '/magic_lamp';
-      subject.xhrRequest(path, callback);
+      var result = subject.xhrRequest(path);
 
-      expect(callbackCalled).to.equal(1);
-      expect(arg.constructor).to.equal(XMLHttpRequest);
+      expect(result.constructor).to.equal(XMLHttpRequest);
     });
 
     it('calls handleError if the status is not 200', function() {
       stub(subject, 'handleError', true);
-      subject.xhrRequest(path, callback);
+      subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledOnce;
     });
   });
