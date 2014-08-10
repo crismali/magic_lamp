@@ -92,10 +92,15 @@ describe('Genie', function() {
     var callback;
     var callbackCalled;
     var path;
+    var arg;
 
     beforeEach(function() {
       callbackCalled = 0;
-      callback = function() { callbackCalled += 1 };
+      arg = false;
+      callback = function(xhr) {
+        arg = xhr;
+        callbackCalled += 1
+      };
       path = 'foo/bar';
       stub(subject, 'handleError', true);
     });
@@ -115,9 +120,10 @@ describe('Genie', function() {
       expect(request.url).to.have.string(path);
     });
 
-    it('calls its callback', function() {
+    it('calls its callback with the xhr object', function() {
       subject.request(path, callback);
       expect(callbackCalled).to.equal(1);
+      expect(arg.constructor).to.equal(XMLHttpRequest);
     });
 
     it('calls handleError if the status is not 200', function() {
