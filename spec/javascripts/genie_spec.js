@@ -28,6 +28,13 @@ describe('Genie', function() {
       expect(subject.fixtureContainer.tagName).to.equal('DIV');
       expect(subject.fixtureContainer.id).to.equal('magic-lamp');
     });
+
+    it('creates a div with an id of MagicLamp.id if present', function() {
+      var id = MagicLamp.id = 'footastic';
+      subject.createFixtureContainer();
+      delete MagicLamp.id;
+      expect(subject.fixtureContainer.id).to.equal(id);
+    });
   });
 
   describe('#appendFixtureContainer', function() {

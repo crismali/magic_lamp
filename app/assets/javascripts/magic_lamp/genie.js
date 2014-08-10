@@ -9,7 +9,7 @@
 
     createFixtureContainer: function() {
       var div = document.createElement('div');
-      div.setAttribute('id', 'magic-lamp');
+      div.setAttribute('id', this.namespace.id || 'magic-lamp');
       this.fixtureContainer = div;
     },
 
