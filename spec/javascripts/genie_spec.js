@@ -106,15 +106,10 @@ describe('Genie', function() {
     });
 
     it('makes an get request to the specified path', function() {
-      var xhr = sinon.useFakeXMLHttpRequest();
-      var requests = [];
-      xhr.onCreate = function(xhr) {
-        requests.push(xhr);
-      };
+      stubNetwork();
       subject.xhrRequest(path, callback);
       var request = requests[0];
       request.respond(200);
-      xhr.restore();
 
       expect(request.method).to.equal('GET');
       expect(request.url).to.have.string(path);

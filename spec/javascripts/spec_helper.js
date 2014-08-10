@@ -45,6 +45,8 @@ window.expect = chai.expect;
 
 var spies;
 var stubs;
+var xhr;
+var requests;
 
 function spyOn(object, method, returnValue) {
   var spy = sinon.spy(object, method);
@@ -72,9 +74,17 @@ function removeNode(node) {
   }
 }
 
+function stubNetwork() {
+  xhr = sinon.useFakeXMLHttpRequest();
+  xhr.onCreate = function(xhr) {
+    requests.push(xhr);
+  };
+}
+
 beforeEach(function() {
   spies = [];
   stubs = [];
+  requests = [];
 });
 
 afterEach(function() {
@@ -86,5 +96,9 @@ afterEach(function() {
     stub.restore();
   });
 
+  xhr && xhr.restore();
+
+  requests = undefined;
+  xhr = undefined;
   subject = undefined;
 });
