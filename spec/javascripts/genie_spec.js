@@ -87,7 +87,7 @@ describe('Genie', function() {
       it('throws an error if the fixture is not in the cache', function() {
         expect(function() {
           subject.load(path);
-        }).to.throw(/Fixture was not preloaded/);
+        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\?/);
       });
     });
   });
