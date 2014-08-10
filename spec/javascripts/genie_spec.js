@@ -53,7 +53,7 @@ describe('Genie', function() {
     });
   });
 
-  describe('emptyFixtureContainer', function() {
+  describe('#emptyFixtureContainer', function() {
     beforeEach(function() {
       subject.createFixtureContainer();
       subject.appendFixtureContainer();
