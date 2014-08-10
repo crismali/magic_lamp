@@ -11,7 +11,7 @@
     preload: function() {
       this.cacheOnly = true;
       var self = this;
-      this.xhrRequest('/magic_lamp', function(xhr) {
+      this.xhrRequest(this.namespace.path || '/magic_lamp', function(xhr) {
         var json = JSON.parse(xhr.responseText);
         self.cache = json;
       });

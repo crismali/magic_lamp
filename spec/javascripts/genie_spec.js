@@ -29,16 +29,23 @@ describe('Genie', function() {
   });
 
   describe('#preload', function() {
-    beforeEach(function() {
-      subject.preload();
-    });
-
     it('requests all of the fixtures and puts them in the cache', function() {
+      subject.preload();
       expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form']);
     });
 
     it('sets cacheOnly to true', function() {
+      subject.preload();
       expect(subject.cacheOnly).to.equal(true);
+    });
+
+    it('makes a request to the specified if defined', function() {
+      var path = MagicLamp.path = '/normal_lamp';
+      stubNetwork();
+      subject.preload();
+      delete MagicLamp.path;
+
+      expect(requests[0].url).to.have.string(path);
     });
   });
 
