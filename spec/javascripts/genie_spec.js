@@ -53,23 +53,6 @@ describe('Genie', function() {
     });
   });
 
-  describe('#emptyFixtureContainer', function() {
-    beforeEach(function() {
-      subject.createFixtureContainer();
-      subject.appendFixtureContainer();
-    });
-
-    afterEach(function() {
-      removeNode(subject.fixtureContainer);
-    });
-
-    it('empties the fixture container', function() {
-      testFixtureContainer().innerHTML = 'foo';
-      subject.emptyFixtureContainer();
-      expect(testFixtureContainer().innerHTML).to.equal('');
-    });
-  });
-
   describe('#removeFixtureContainer', function() {
     beforeEach(function() {
       subject.createFixtureContainer();
