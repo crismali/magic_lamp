@@ -16,9 +16,29 @@ describe('Genie', function() {
     });
   });
 
+  describe('cacheOnly', function() {
+    it('is false by default', function() {
+      expect(subject.cacheOnly).to.equal(false);
+    });
+  });
+
   describe('namespace', function() {
     it('is MagicLamp', function() {
       expect(subject.namespace).to.equal(MagicLamp);
+    });
+  });
+
+  describe('#preload', function() {
+    beforeEach(function() {
+      subject.preload();
+    });
+
+    it('requests all of the fixtures and puts them in the cache', function() {
+      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form']);
+    });
+
+    it('sets cacheOnly to true', function() {
+      expect(subject.cacheOnly).to.equal(true);
     });
   });
 

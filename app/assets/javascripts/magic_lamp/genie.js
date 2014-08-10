@@ -2,10 +2,20 @@
 
   function Genie() {
     this.cache = {};
+    this.cacheOnly = false;
     this.namespace = MagicLamp;
   }
 
   Genie.prototype = {
+
+    preload: function() {
+      this.cacheOnly = true;
+      var self = this;
+      this.xhrRequest('/magic_lamp', function(xhr) {
+        var json = JSON.parse(xhr.responseText);
+        self.cache = json;
+      });
+    },
 
     createFixtureContainer: function() {
       var div = document.createElement('div');
