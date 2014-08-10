@@ -22,8 +22,8 @@
       this.fixtureContainer = undefined;
     },
 
-    handleError: function() {
-
+    handleError: function(path, response) {
+      throw new Error("Couldn't find fixture");
     },
 
     request: function(path, callback) {

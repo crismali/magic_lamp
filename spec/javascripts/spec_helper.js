@@ -46,16 +46,16 @@ window.expect = chai.expect;
 var spies;
 var stubs;
 
-function spyOn(object, method) {
+function spyOn(object, method, returnValue) {
   var spy = sinon.spy(object, method);
   spies.push(spy);
   return spy;
 }
 
 function stub(object, method, retVal) {
-  var stub = sinon.stub(object, method).returns(retVal);
-  stubs.push(stub);
-  return stub;
+  var stubObj = sinon.stub(object, method).returns(retVal);
+  stubs.push(stubObj);
+  return stubObj;
 }
 
 function findById(id) {

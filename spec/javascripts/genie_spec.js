@@ -66,6 +66,17 @@ describe('Genie', function() {
     });
   });
 
+  describe('#handleError', function() {
+    it('throws an informative error', function() {
+      var path = 'foo/bar';
+      var response = 'some sort of response';
+
+      expect(function() {
+        subject.handleError(path, response);
+      }).to.throw(/Couldn't find fixture/);
+    });
+  });
+
   describe('#request', function() {
     var callback;
     var callbackCalled;
@@ -75,7 +86,7 @@ describe('Genie', function() {
       callbackCalled = 0;
       callback = function() { callbackCalled += 1 };
       path = 'foo/bar';
-      spyOn(subject, "handleError");
+      stub(subject, 'handleError', true);
     });
 
     it('makes an get request to the specified path', function() {
