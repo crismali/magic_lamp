@@ -38,18 +38,17 @@
 
     xhrRequest: function(path, callback) {
       var xhr = newXhr();
-      var self = this;
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4) {
-          return;
-        }
-        if (xhr.status !== 200) {
-          self.handleError(path);
-        }
-        callback(xhr);
-      };
+
       xhr.open('GET', path, false);
       xhr.send();
+
+      if (xhr.readyState !== 4) {
+        return;
+      }
+      if (xhr.status !== 200) {
+        this.handleError(path);
+      }
+      callback(xhr);
     }
   };
 

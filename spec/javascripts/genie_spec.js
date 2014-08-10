@@ -128,8 +128,7 @@ describe('Genie', function() {
         arg = xhr;
         callbackCalled += 1;
       };
-      path = 'foo/bar';
-      stub(subject, 'handleError', true);
+      path = '/foo/bar';
     });
 
     it('makes an get request to the specified path', function() {
@@ -143,12 +142,15 @@ describe('Genie', function() {
     });
 
     it('calls its callback with the xhr object', function() {
+      path = '/magic_lamp';
       subject.xhrRequest(path, callback);
+
       expect(callbackCalled).to.equal(1);
       expect(arg.constructor).to.equal(XMLHttpRequest);
     });
 
     it('calls handleError if the status is not 200', function() {
+      stub(subject, 'handleError', true);
       subject.xhrRequest(path, callback);
       expect(subject.handleError).to.have.been.calledOnce;
     });
