@@ -99,7 +99,7 @@ describe('Genie', function() {
       arg = false;
       callback = function(xhr) {
         arg = xhr;
-        callbackCalled += 1
+        callbackCalled += 1;
       };
       path = 'foo/bar';
       stub(subject, 'handleError', true);
