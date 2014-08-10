@@ -40,9 +40,6 @@
       xhr.open('GET', path, false);
       xhr.send();
 
-      if (xhr.readyState !== 4) {
-        return;
-      }
       if (xhr.status !== 200) {
         this.handleError(path);
       }
@@ -72,7 +69,7 @@
       }
     }
     if (!xhr) {
-      throw('Unable to make Ajax Request');
+      throw('Unable to make request');
     }
     return xhr;
   }

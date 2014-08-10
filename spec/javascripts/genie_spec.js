@@ -117,24 +117,21 @@ describe('Genie', function() {
   });
 
   describe('#xhrRequest', function() {
-    var path;
-
-    beforeEach(function() {
-      path = '/foo/bar';
-    });
-
     it('makes an get request to the specified path', function() {
-      stubNetwork();
+      var xhrProto = XMLHttpRequest.prototype;
+      stub(subject, 'handleError', true);
+      stub(xhrProto, 'open', true);
+      stub(xhrProto, 'send', true);
+      var path = '/magic_lamp';
       subject.xhrRequest(path);
-      var request = requests[0];
-      request.respond(200);
 
-      expect(request.method).to.equal('GET');
-      expect(request.url).to.have.string(path);
+      expect(xhrProto.open).to.have.been.calledWith('GET', path, false);
+      expect(xhrProto.send).to.have.been.calledOnce;
+
     });
 
     it('returns the xhr object', function() {
-      path = '/magic_lamp';
+      var path = '/magic_lamp';
       var result = subject.xhrRequest(path);
 
       expect(result.constructor).to.equal(XMLHttpRequest);
@@ -142,6 +139,7 @@ describe('Genie', function() {
 
     it('calls handleError if the status is not 200', function() {
       stub(subject, 'handleError', true);
+      var path = '/foo/bar';
       subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledOnce;
     });

@@ -55,7 +55,12 @@ function spyOn(object, method, returnValue) {
 }
 
 function stub(object, method, retVal) {
-  var stubObj = sinon.stub(object, method).returns(retVal);
+  var stubObj;
+  if (_.isFunction(retVal)) {
+    stubObj = sinon.stub(object, method, retVal);
+  } else {
+    stubObj = sinon.stub(object, method).returns(retVal);
+  }
   stubs.push(stubObj);
   return stubObj;
 }
