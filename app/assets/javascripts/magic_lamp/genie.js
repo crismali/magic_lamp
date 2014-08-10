@@ -8,6 +8,21 @@
 
   Genie.prototype = {
 
+    load: function(path) {
+      var fixture = this.cache[path];
+      this.createFixtureContainer();
+
+      if (!fixture && this.cacheOnly) {
+        throw new Error('Fixture was not preloaded');
+      } else if (!fixture) {
+        var xhr = this.xhrRequest((this.namespace.path || '/magic_lamp') + '/' + path);
+        this.cache[path] = fixture = xhr.responseText;
+      }
+
+      this.fixtureContainer.innerHTML = fixture;
+      this.appendFixtureContainer();
+    },
+
     preload: function() {
       this.cacheOnly = true;
       var xhr = this.xhrRequest(this.namespace.path || '/magic_lamp');

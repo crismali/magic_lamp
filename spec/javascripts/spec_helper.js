@@ -74,7 +74,7 @@ function testFixtureContainer() {
 }
 
 function removeNode(node) {
-  if (!!node) {
+  if (!!node && node.parentNode) {
     node.parentNode.removeChild(node);
   }
 }

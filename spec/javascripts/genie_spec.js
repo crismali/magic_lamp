@@ -28,6 +28,70 @@ describe('Genie', function() {
     });
   });
 
+  describe('#load', function() {
+    var path;
+    beforeEach(function() {
+      path = 'orders/foo';
+    });
+
+    afterEach(function() {
+      removeNode(subject.fixtureContainer);
+    });
+
+    describe('cacheOnly false', function() {
+      it('requests the fixture and adds it to the cache', function() {
+        spyOn(subject, 'xhrRequest');
+        subject.load(path);
+        expect(subject.xhrRequest).to.have.been.calledOnce;
+        expect(subject.cache[path]).to.equal('foo\n');
+      });
+
+      it('appends the fixture container with the fixture to the dom', function() {
+        expect(testFixtureContainer()).to.equal(null);
+        subject.load(path);
+        expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+      });
+
+
+      describe('cached', function() {
+        beforeEach(function() {
+          subject.cache[path] = 'howdy';
+        });
+
+        it('does not make a request', function() {
+          spyOn(subject, 'xhrRequest');
+          subject.load(path);
+          expect(subject.xhrRequest).to.not.have.been.calledOnce;
+        });
+
+        it('appends the fixture container to the dom with the cached fixture', function() {
+          expect(testFixtureContainer()).to.equal(null);
+          subject.load(path);
+          expect(testFixtureContainer().innerHTML).to.equal('howdy');
+        });
+      });
+    });
+
+    describe('cacheOnly true', function() {
+      beforeEach(function() {
+        subject.cacheOnly = true;
+      });
+
+      it('does not make a request', function() {
+        spyOn(subject, 'xhrRequest');
+        subject.cache[path] = 'howdy';
+        subject.load(path);
+        expect(subject.xhrRequest).to.not.have.been.calledOnce;
+      });
+
+      it('throws an error if the fixture is not in the cache', function() {
+        expect(function() {
+          subject.load(path);
+        }).to.throw(/Fixture was not preloaded/);
+      });
+    });
+  });
+
   describe('#preload', function() {
     it('requests all of the fixtures and puts them in the cache', function() {
       subject.preload();
