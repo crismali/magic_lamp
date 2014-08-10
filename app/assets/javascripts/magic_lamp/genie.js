@@ -23,7 +23,7 @@
     },
 
     handleError: function(path, response) {
-      throw new Error("Couldn't find fixture");
+      throw new Error('Couldn\'t find fixture');
     },
 
     request: function(path, callback) {
