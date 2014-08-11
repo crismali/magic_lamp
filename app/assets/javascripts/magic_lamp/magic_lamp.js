@@ -1,7 +1,7 @@
 var MagicLamp = {
 
   initialize: function() {
-    this.genie = new MagicLamp.Genie();
+    this.genie = new this.Genie();
   },
 
   load: function() {
