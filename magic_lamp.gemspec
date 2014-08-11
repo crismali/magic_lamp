@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.description = "MagicLamp provides an easy way to generate fixture files from your Rails templates for use in JavaScript specs."
   s.license     = "Apache"
 
-  s.files = Dir["lib/**/*", "LICENSE", "README.md"]
+  s.files = Dir["{app,config,lib}/**/*", "LICENSE", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.2"
