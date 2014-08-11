@@ -2,5 +2,5 @@ Rails.application.routes.draw do
 
   resources :orders
 
-  mount MagicLamp::Engine => "/magic_lamp"
+  mount MagicLamp::Genie => "/magic_lamp"
 end

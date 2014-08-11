@@ -7,6 +7,7 @@ module MagicLamp
   SPEC = "spec"
   STARS = "**"
   TEST = "test"
+  Genie = Engine
 
   class AmbiguousFixtureNameError < StandardError
   end
