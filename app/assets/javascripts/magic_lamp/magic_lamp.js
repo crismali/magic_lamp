@@ -12,3 +12,6 @@ var MagicLamp = {
     this.genie.preload.apply(this.genie, arguments);
   }
 };
+
+MagicLamp.rub = MagicLamp.load;
+MagicLamp.massage = MagicLamp.preload;

@@ -53,4 +53,14 @@ describe('MagicLamp', function() {
       expect(subject.genie.preload).to.have.been.calledWith('foo', 'bar', 'baz');
     });
   });
+
+  describe('aliases', function() {
+    it('preload as "massage"', function() {
+      expect(subject.massage).to.equal(subject.preload);
+    });
+
+    it('load as "rub"', function() {
+      expect(subject.rub).to.equal(subject.load);
+    });
+  });
 });
