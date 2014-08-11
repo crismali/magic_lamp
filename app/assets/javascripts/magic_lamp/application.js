@@ -12,4 +12,3 @@
 //
 //= require magic_lamp/magic_lamp
 //= require magic_lamp/genie
-//= require_self
