@@ -14,6 +14,18 @@ describe MagicLamp do
     it { should respond_to :registered_fixtures= }
   end
 
+  context "aliases" do
+    let(:register_fixture) { subject.method(:register_fixture) }
+
+    it "rub is the same as register_fixture" do
+      expect(subject.method(:rub)).to eq(register_fixture)
+    end
+
+    it "wish is the same as register_fixture" do
+      expect(subject.method(:wish)).to eq(register_fixture)
+    end
+  end
+
   describe "#register_fixture" do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }
