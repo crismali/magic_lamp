@@ -13,7 +13,7 @@
       this.createFixtureContainer();
 
       if (!fixture && this.cacheOnly) {
-        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered?');
+        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Such a bummer.');
       } else if (!fixture) {
         var xhr = this.xhrRequest((this.namespace.path || '/magic_lamp') + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
@@ -45,8 +45,8 @@
       this.fixtureContainer = undefined;
     },
 
-    handleError: function(path, response) {
-      throw new Error('Couldn\'t find fixture');
+    handleError: function(path) {
+      throw new Error('Couldn\'t find fixture(s) at "' + path + '". Either the fixture isn\'t registered or MagicLamp is mounted incorrectly. Serious bummer.');
     },
 
     xhrRequest: function(path) {

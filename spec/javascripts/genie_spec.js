@@ -87,7 +87,7 @@ describe('Genie', function() {
       it('throws an error if the fixture is not in the cache', function() {
         expect(function() {
           subject.load(path);
-        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\?/);
+        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Such a bummer./);
       });
     });
   });
@@ -171,12 +171,11 @@ describe('Genie', function() {
 
   describe('#handleError', function() {
     it('throws an informative error', function() {
-      var path = 'foo/bar';
-      var response = 'some sort of response';
+      var path = '/foo/bar';
 
       expect(function() {
-        subject.handleError(path, response);
-      }).to.throw(/Couldn't find fixture/);
+        subject.handleError(path);
+      }).to.throw(/Couldn't find fixture\(s\) at "\/foo\/bar". Either the fixture isn't registered or MagicLamp is mounted incorrectly. Serious bummer./);
     });
   });
 
