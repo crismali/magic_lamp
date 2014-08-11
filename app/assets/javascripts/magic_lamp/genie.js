@@ -15,7 +15,7 @@
       if (!fixture && this.cacheOnly) {
         throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Such a bummer.');
       } else if (!fixture) {
-        var xhr = this.xhrRequest((this.namespace.path || '/magic_lamp') + '/' + path);
+        var xhr = this.xhrRequest(getPath() + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
       }
 
@@ -25,7 +25,7 @@
 
     preload: function() {
       this.cacheOnly = true;
-      var xhr = this.xhrRequest(this.namespace.path || '/magic_lamp');
+      var xhr = this.xhrRequest(getPath());
       var json = JSON.parse(xhr.responseText);
       this.cache = json;
     },
@@ -63,6 +63,10 @@
   };
 
   // private
+
+  function getPath() {
+    return MagicLamp.path || '/magic_lamp';
+  }
 
   function remove(node) {
     node.parentNode.removeChild(node);
