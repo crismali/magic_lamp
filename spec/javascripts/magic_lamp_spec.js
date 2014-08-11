@@ -54,6 +54,22 @@ describe('MagicLamp', function() {
     });
   });
 
+  describe('#clean', function() {
+    beforeEach(function() {
+      subject.initialize();
+      stub(subject.genie, 'removeFixtureContainer', true);
+      subject.clean();
+    });
+
+    afterEach(function() {
+      delete subject.genie;
+    });
+
+    it('calls removeFixtureContainer on its genie instance', function() {
+      expect(subject.genie.removeFixtureContainer).to.have.been.calledOnce;
+    });
+  });
+
   describe('aliases', function() {
     it('preload as "massage"', function() {
       expect(subject.massage).to.equal(subject.preload);
@@ -61,6 +77,10 @@ describe('MagicLamp', function() {
 
     it('load as "rub"', function() {
       expect(subject.rub).to.equal(subject.load);
+    });
+
+    it('clean as "polish"', function() {
+      expect(subject.polish).to.equal(subject.clean);
     });
   });
 });
