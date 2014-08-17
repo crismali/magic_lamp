@@ -4,6 +4,16 @@ var MagicLamp = {
     this.genie = new this.Genie();
   },
 
+  globalize: function() {
+    var context = this;
+    window.load = function(path) {
+      context.load(path);
+    };
+    window.clean = function() {
+      context.clean();
+    };
+  },
+
   load: function() {
     this.genie.load.apply(this.genie, arguments);
   },
@@ -17,6 +27,7 @@ var MagicLamp = {
   }
 };
 
+// aliases
 MagicLamp.rub = MagicLamp.load;
 MagicLamp.massage = MagicLamp.preload;
 MagicLamp.polish = MagicLamp.clean;

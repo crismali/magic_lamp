@@ -22,6 +22,38 @@ describe('MagicLamp', function() {
     });
   });
 
+  describe('#globalize', function() {
+    beforeEach(function() {
+      subject.globalize();
+    });
+
+    afterEach(function() {
+      _(['load', 'preload', 'clean']).each(function(method) {
+        delete window[method];
+      });
+    });
+
+    it('puts #load on window', function() {
+      expect(window.load).to.be.a('function');
+    });
+
+    it('binds #load', function() {
+      stub(subject, 'load', true);
+      load('orders/foo');
+      expect(subject.load).to.have.been.calledWith('orders/foo');
+    });
+
+    it('puts #clean on window', function() {
+      expect(window.clean).to.be.a('function');
+    });
+
+    it('binds #clean', function() {
+      stub(subject, 'clean', true);
+      clean();
+      expect(subject.clean).to.have.been.calledOnce;
+    });
+  });
+
   describe('#load', function() {
     beforeEach(function() {
       subject.initialize();
