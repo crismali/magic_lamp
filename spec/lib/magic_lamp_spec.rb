@@ -51,6 +51,13 @@ describe MagicLamp do
       end
 
       context "fixture name" do
+        it "raises an error if the fixture is already registered by that name" do
+          subject.register_fixture { render :index }
+          expect do
+            subject.register_fixture { render :index }
+          end.to raise_error(MagicLamp::AlreadyRegisteredFixtureError, "a fixture called 'index' has already been registered")
+        end
+
         context "ApplicationController" do
           it "uses the first argument to render when given 2" do
             render_block = Proc.new { render :index, foo: :bar }

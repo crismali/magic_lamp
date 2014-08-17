@@ -15,6 +15,9 @@ module MagicLamp
   class UnregisteredFixtureError < StandardError
   end
 
+  class AlreadyRegisteredFixtureError < StandardError
+  end
+
   class << self
     attr_accessor :registered_fixtures
 
@@ -29,6 +32,10 @@ module MagicLamp
 
       if fixture_name.nil?
         fixture_name = default_fixture_name(controller_class, fixture_name, block)
+      end
+
+      if registered?(fixture_name)
+        raise AlreadyRegisteredFixtureError, "a fixture called '#{fixture_name}' has already been registered"
       end
 
       registered_fixtures[fixture_name] = [controller_class, block]
