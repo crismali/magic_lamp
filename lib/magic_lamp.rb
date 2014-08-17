@@ -63,7 +63,7 @@ module MagicLamp
 
     def generate_all_fixtures
       load_lamp_files
-      registered_fixtures.each_with_object({}) do |(fixture_name, _), fixtures|
+      registered_fixtures.keys.each_with_object({}) do |fixture_name, fixtures|
         fixtures[fixture_name] = generate_fixture(fixture_name)
       end
     end
