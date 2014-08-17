@@ -2,6 +2,100 @@ require "rails_helper"
 
 module MagicLamp
   describe FixturesController do
+    context "errors" do
+      context "ArgumentError" do
+        before do
+          allow(MagicLamp).to receive(:generate_fixture).and_raise(ArgumentError, "message")
+        end
+
+        it "outputs the error and the message to the server log" do
+          expect(controller.logger).to receive(:error) do |error_message|
+            expect(error_message).to match(/message\n\s\s\s\s.*magic_lamp\//m)
+          end
+          get :show, name: "orders/baz", use_route: :magic_lamp
+        end
+
+        it "renders the error as text for the client side" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.body).to eq("message")
+        end
+
+        it "renders a 500" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.status).to eq(500)
+        end
+      end
+
+      context "AlreadyRegisteredFixtureError" do
+        before do
+          allow(MagicLamp).to receive(:generate_fixture).and_raise(AlreadyRegisteredFixtureError, "message")
+        end
+
+        it "outputs the error and the message to the server log" do
+          expect(controller.logger).to receive(:error) do |error_message|
+            expect(error_message).to match(/message\n\s\s\s\s.*magic_lamp\//m)
+          end
+          get :show, name: "orders/baz", use_route: :magic_lamp
+        end
+
+        it "renders the error as text for the client side" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.body).to eq("message")
+        end
+
+        it "renders a 500" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.status).to eq(500)
+        end
+      end
+
+      context "AmbiguousFixtureNameError" do
+        before do
+          allow(MagicLamp).to receive(:generate_fixture).and_raise(AmbiguousFixtureNameError, "message")
+        end
+
+        it "outputs the error and the message to the server log" do
+          expect(controller.logger).to receive(:error) do |error_message|
+            expect(error_message).to match(/message\n\s\s\s\s.*magic_lamp\//m)
+          end
+          get :show, name: "orders/baz", use_route: :magic_lamp
+        end
+
+        it "renders the error as text for the client side" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.body).to eq("message")
+        end
+
+        it "renders a 500" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.status).to eq(500)
+        end
+      end
+
+      context "UnregisteredFixtureError" do
+        before do
+          allow(MagicLamp).to receive(:generate_fixture).and_raise(UnregisteredFixtureError, "message")
+        end
+
+        it "outputs the error and the message to the server log" do
+          expect(controller.logger).to receive(:error) do |error_message|
+            expect(error_message).to match(/message\n\s\s\s\s.*magic_lamp\//m)
+          end
+          get :show, name: "orders/baz", use_route: :magic_lamp
+        end
+
+        it "renders the error as text for the client side" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.body).to eq("message")
+        end
+
+        it "renders a 500" do
+          get :show, name: "orders/baz", use_route: :magic_lamp
+          expect(response.status).to eq(500)
+        end
+      end
+    end
+
     describe "#show" do
       it "renders the specified template" do
         get :show, name: "orders/foo", use_route: :magic_lamp
