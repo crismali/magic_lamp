@@ -56,7 +56,7 @@
       xhr.send();
 
       if (xhr.status !== 200) {
-        this.handleError(path);
+        this.handleError(xhr.responseText);
       }
       return xhr;
     }

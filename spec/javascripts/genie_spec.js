@@ -171,11 +171,11 @@ describe('Genie', function() {
 
   describe('#handleError', function() {
     it('throws an informative error', function() {
-      var path = '/foo/bar';
+      var message = 'something informative';
 
       expect(function() {
-        subject.handleError(path);
-      }).to.throw(/Couldn't find fixture\(s\) at "\/foo\/bar". Either the fixture isn't registered or MagicLamp is mounted incorrectly. Serious bummer./);
+        subject.handleError(message);
+      }).to.throw(message);
     });
   });
 
@@ -202,9 +202,9 @@ describe('Genie', function() {
 
     it('calls handleError if the status is not 200', function() {
       stub(subject, 'handleError', true);
-      var path = '/foo/bar';
-      subject.xhrRequest(path);
-      expect(subject.handleError).to.have.been.calledOnce;
+      var path = '/magic_lamp/foo/bar';
+      var xhr = subject.xhrRequest(path);
+      expect(subject.handleError).to.have.been.calledWith(xhr.responseText);
     });
   });
 });
