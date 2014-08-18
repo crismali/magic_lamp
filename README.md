@@ -100,10 +100,9 @@ If there are any errors rendering your templates, MagicLamp will log them to the
 
 1. Fork it
 2. Clone it locally
-3. `bundle install`
-4. Run the `./bootstrap` script
-5. Run the specs with `rake`
-6. Create your feature branch (`git checkout -b my-new-feature`)
-7. Commit your changes (`git commit -am 'Add some feature'`)
-8. Push to the branch (`git push origin my-new-feature`)
-9. Create new Pull Request
+3. Run the `./bootstrap` script
+4. Run the specs with `rake`
+5. Create your feature branch (`git checkout -b my-new-feature`)
+6. Commit your changes (`git commit -am 'Add some feature'`)
+7. Push to the branch (`git push origin my-new-feature`)
+8. Create new Pull Request
