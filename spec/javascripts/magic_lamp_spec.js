@@ -160,7 +160,7 @@ describe('MagicLamp', function() {
     it('throws an error when it cannot find the template', function() {
       expect(function() {
         subject.load('not/gonna/happen');
-      }).to.throw(/'not\/gonna\/happen' is not a registered fixture/);
+      }).to.throw(/'not\/gonna\/happen' is not a registered fixture$/);
 
       expect(testFixtureContainer()).to.equal(null);
     });

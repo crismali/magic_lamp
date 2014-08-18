@@ -45,8 +45,8 @@
       this.fixtureContainer = undefined;
     },
 
-    handleError: function(path) {
-      throw new Error('Couldn\'t find fixture(s) at "' + path + '". Either the fixture isn\'t registered or MagicLamp is mounted incorrectly. Serious bummer.');
+    handleError: function(errorMessage) {
+      throw new Error(errorMessage);
     },
 
     xhrRequest: function(path) {
