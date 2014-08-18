@@ -27,7 +27,8 @@ end
 ```
 ### JavaScript side
 You can use any rails JavaScript spec runner that runs your application's server. If you're using [Teaspoon](https://github.com/modeset/teaspoon), simply add `//= require magic_lamp` to your `spec_helper.js`.
-
+### Example
+Here's an [example app](https://github.com/crismali/magic_lamp/tree/master/example).
 ## Usage
 A fixture can be registered like so:
 ```ruby
