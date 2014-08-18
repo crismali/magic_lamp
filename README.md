@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 end
 ```
 ### JavaScript side
-You can use any rails JavaScript spec runner that runs your application's server. If you're using (Teaspoon)[https://github.com/modeset/teaspoon], simply add `//= require magic_lamp` to your `spec_helper.js`.
+You can use any rails JavaScript spec runner that runs your application's server. If you're using [Teaspoon](https://github.com/modeset/teaspoon), simply add `//= require magic_lamp` to your `spec_helper.js`.
 
 ## Usage
 A fixture can be registered like so:
