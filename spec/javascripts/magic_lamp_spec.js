@@ -107,8 +107,16 @@ describe('MagicLamp', function() {
       expect(subject.massage).to.equal(subject.preload);
     });
 
+    it('preload as "wishForMoreWishes"', function() {
+      expect(subject.wishForMoreWishes).to.equal(subject.preload);
+    });
+
     it('load as "rub"', function() {
       expect(subject.rub).to.equal(subject.load);
+    });
+
+    it('load as "wish"', function() {
+      expect(subject.wish).to.equal(subject.load);
     });
 
     it('clean as "polish"', function() {

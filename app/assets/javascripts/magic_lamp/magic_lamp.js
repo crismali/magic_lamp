@@ -29,5 +29,7 @@ var MagicLamp = {
 
 // aliases
 MagicLamp.rub = MagicLamp.load;
+MagicLamp.wish = MagicLamp.load;
 MagicLamp.massage = MagicLamp.preload;
+MagicLamp.wishForMoreWishes = MagicLamp.preload;
 MagicLamp.polish = MagicLamp.clean;
