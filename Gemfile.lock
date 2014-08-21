@@ -141,11 +141,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.6)
   dotenv-rails
   magic_lamp!
   pry
   pry-debugger
   pry-nav
+  rake
   rspec-rails
   selenium-webdriver
   sqlite3
