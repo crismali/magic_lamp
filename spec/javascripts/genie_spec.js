@@ -146,27 +146,38 @@ describe('Genie', function() {
   });
 
   describe('#removeFixtureContainer', function() {
-    beforeEach(function() {
-      subject.createFixtureContainer();
-      subject.appendFixtureContainer();
-    });
-
     afterEach(function() {
       removeNode(subject.fixtureContainer);
     });
 
-    it('removes the fixture container from the dom', function() {
-      expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
-      subject.removeFixtureContainer();
-      expect(testFixtureContainer()).to.equal(null);
-      expect(subject.fixtureContainer).to.be.undefined;
+    describe('without the fixture container', function() {
+      it('logs a message saying that this is a weird thing to do', function() {
+        spyOn(console, 'log');
+        subject.removeFixtureContainer();
+        expect(console.log).to.have.been.calledWith('Tried to remove the fixture container but it was\'t there. Did you forget to load the fixture?')
+      });
     });
 
-    it('removes the fixture container from the genie instance', function() {
-      expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
-      subject.removeFixtureContainer();
-      expect(subject.fixtureContainer).to.be.undefined;
+    describe('with the fixture there', function() {
+      beforeEach(function() {
+        subject.createFixtureContainer();
+        subject.appendFixtureContainer();
+      });
+
+      it('removes the fixture container from the dom', function() {
+        expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
+        subject.removeFixtureContainer();
+        expect(testFixtureContainer()).to.equal(null);
+        expect(subject.fixtureContainer).to.be.undefined;
+      });
+
+      it('removes the fixture container from the genie instance', function() {
+        expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
+        subject.removeFixtureContainer();
+        expect(subject.fixtureContainer).to.be.undefined;
+      });
     });
+
   });
 
   describe('#handleError', function() {
