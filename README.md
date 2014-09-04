@@ -69,7 +69,8 @@ MagicLamp.register_fixture(ApplicationController) do
   @orders = [Order.new, Order.new, Order.new]
   render "orders/new"
 end
-``` 
+```
+
 In this example, the template will be registered as `"orders/index"`. The default name for a fixture is the controller's name followed by the template (unless it's the `ApplicationController`). If you have name collisions (or if you just want a more informative fixture name), simply specify the name as the second argument to `register_fixture`.
 
 ```ruby
