@@ -1,7 +1,7 @@
 module MagicLamp
   class FixturesController < ApplicationController
     ERRORS = [
-      "ArgumentError",
+      "MagicLamp::ArgumentError",
       "MagicLamp::AlreadyRegisteredFixtureError",
       "MagicLamp::AmbiguousFixtureNameError",
       "MagicLamp::UnregisteredFixtureError"

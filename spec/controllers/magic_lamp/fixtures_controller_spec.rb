@@ -27,7 +27,7 @@ module MagicLamp
 
     context "ArgumentError" do
       it_behaves_like "it handles errors" do
-        let(:error) { ArgumentError }
+        let(:error) { MagicLamp::ArgumentError }
       end
     end
 

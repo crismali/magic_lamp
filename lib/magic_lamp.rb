@@ -18,6 +18,9 @@ module MagicLamp
   class AlreadyRegisteredFixtureError < StandardError
   end
 
+  class ArgumentError < StandardError
+  end
+
   class << self
     attr_accessor :registered_fixtures
 
