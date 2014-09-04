@@ -17,7 +17,7 @@ And then execute:
 Or install it yourself with:
 
     $ gem install magic_lamp
-    
+
 Setup
 -----
 
@@ -63,7 +63,7 @@ This will load the `"orders/new"` template into a `div` with an id of `magic-lam
 `MagicLamp#register_fixture` requires a block. This block is scoped to the given controller instance, which provides access to private and public methods. Any instance variables defined in the block will also be available to the template.
 
 If a controller is not passed to `register_fixture`, `ApplicationController` will be set as the scope for the block. Here's a more explicit version of the example above:
-	
+
 ```ruby
 MagicLamp.register_fixture(ApplicationController) do
   @orders = [Order.new, Order.new, Order.new]
@@ -163,4 +163,3 @@ MagicLamp.polish => clean
 6. Commit your changes (`git commit -am 'Add some feature'`)
 7. Push to the branch (`git push origin my-new-feature`)
 8. Create new Pull Request
-st
