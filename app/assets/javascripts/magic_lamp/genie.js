@@ -44,8 +44,6 @@
       if (this.fixtureContainer) {
         remove(this.fixtureContainer);
         this.fixtureContainer = undefined;
-      } else {
-        console.log('Tried to remove the fixture container but it was\'t there. Did you forget to load the fixture?');
       }
     },
 

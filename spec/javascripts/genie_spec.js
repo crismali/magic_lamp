@@ -152,9 +152,10 @@ describe('Genie', function() {
 
     describe('without the fixture container', function() {
       it('logs a message saying that this is a weird thing to do', function() {
-        spyOn(console, 'log');
-        subject.removeFixtureContainer();
-        expect(console.log).to.have.been.calledWith('Tried to remove the fixture container but it was\'t there. Did you forget to load the fixture?')
+        expect(function() {
+          subject.removeFixtureContainer();
+          subject.removeFixtureContainer();
+        }).to.not.throw()
       });
     });
 
