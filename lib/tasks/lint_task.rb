@@ -1,5 +1,3 @@
-require "rake"
-
 namespace :magic_lamp do
   desc "Generates all Magic Lamp fixtures for debugging"
   task :lint do

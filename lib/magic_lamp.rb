@@ -1,7 +1,9 @@
+require "rake"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 require "magic_lamp/engine"
 require "tasks/lint_task"
+require "tasks/fixture_names_task"
 
 module MagicLamp
   LAMP = "_lamp"
