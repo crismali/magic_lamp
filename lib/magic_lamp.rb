@@ -28,13 +28,15 @@ module MagicLamp
       Rails.root.join(directory_path)
     end
 
-    def register_fixture(controller_class = ::ApplicationController, fixture_name = nil, &block)
+    def register_fixture(options = {}, &block)
+      controller_class = options.fetch(:controller, ::ApplicationController)
+      fixture_name = options[:name]
       if block.nil?
         raise ArgumentError, "MagicLamp#register_fixture requires a block"
       end
 
       if fixture_name.nil?
-        fixture_name = default_fixture_name(controller_class, fixture_name, block)
+        fixture_name = default_fixture_name(controller_class, block)
       end
 
       if registered?(fixture_name)
@@ -73,7 +75,7 @@ module MagicLamp
 
     private
 
-    def default_fixture_name(controller_class, fixture_name, block)
+    def default_fixture_name(controller_class, block)
       first_arg = first_render_arg(block)
       fixture_name = template_name(first_arg).to_s
       if fixture_name.blank?
