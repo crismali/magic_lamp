@@ -111,6 +111,13 @@ describe MagicLamp do
     end
   end
 
+  describe "#load_config" do
+    it "loads the magic lamp config file" do
+      expect(subject).to receive(:registered_fixtures)
+      subject.load_config
+    end
+  end
+
   describe "#load_lamp_files" do
     it "loads all lamp files" do
       subject.load_lamp_files

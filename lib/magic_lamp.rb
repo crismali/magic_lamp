@@ -56,9 +56,13 @@ module MagicLamp
       registered_fixtures.key?(fixture_name)
     end
 
+    def load_config
+      require_all(config_files)
+    end
+
     def load_lamp_files
       self.registered_fixtures = {}
-      load_all(Dir[path.join(STARS, "*#{LAMP}.rb")])
+      load_all(lamp_files)
     end
 
     def generate_fixture(fixture_name)
@@ -77,6 +81,14 @@ module MagicLamp
     end
 
     private
+
+    def config_files
+      Dir[path.join(STARS, "magic#{LAMP}_config.rb")]
+    end
+
+    def lamp_files
+      Dir[path.join(STARS, "*#{LAMP}.rb")]
+    end
 
     def default_fixture_name(controller_class, block)
       first_arg = first_render_arg(block)
@@ -117,6 +129,10 @@ module MagicLamp
 
     def load_all(files)
       files.each { |file| load file }
+    end
+
+    def require_all(files)
+      files.each { |file| require file }
     end
   end
 end

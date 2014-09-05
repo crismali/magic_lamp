@@ -1,0 +1,1 @@
+MagicLamp.registered_fixtures
