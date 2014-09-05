@@ -100,7 +100,8 @@ module MagicLamp
 
     def prepend_controller_name(fixture_name, controller_class)
       controller_name = controller_class.controller_name
-      if controller_name == "application"
+      controller_name_regex = Regexp.new("\\A#{controller_name}")
+      if controller_name == "application" || fixture_name.match(controller_name_regex)
         fixture_name
       else
         "#{controller_name}/#{fixture_name}"

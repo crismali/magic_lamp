@@ -99,6 +99,13 @@ describe MagicLamp do
             subject.register_fixture(controller: OrdersController, &render_block)
             expect(subject.registered_fixtures["orders/index"]).to eq([OrdersController, render_block])
           end
+
+          it "does not prepend the controller's name when it is already the beginning of the string" do
+            render_block = Proc.new { render partial: "orders/order" }
+            subject.register_fixture(controller: OrdersController, &render_block)
+            expect(subject.registered_fixtures["orders/orders/order"]).to be_nil
+            expect(subject.registered_fixtures["orders/order"]).to eq([OrdersController, render_block])
+          end
         end
       end
     end
