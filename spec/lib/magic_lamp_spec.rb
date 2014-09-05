@@ -116,6 +116,12 @@ describe MagicLamp do
       expect(subject).to receive(:registered_fixtures)
       subject.load_config
     end
+
+    it "does not raise an error if there's no config" do
+      allow(Dir).to receive(:[]).and_return([])
+      expect(subject).to_not receive(:registered_fixtures)
+      subject.load_config
+    end
   end
 
   describe "#load_lamp_files" do
@@ -132,6 +138,11 @@ describe MagicLamp do
       old_registry = subject.registered_fixtures
       subject.load_lamp_files
       expect(subject.registered_fixtures).to_not equal(old_registry)
+    end
+
+    it "loads its config" do
+      expect(subject).to receive(:load_config)
+      subject.load_lamp_files
     end
   end
 

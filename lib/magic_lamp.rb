@@ -57,11 +57,12 @@ module MagicLamp
     end
 
     def load_config
-      require_all(config_files)
+      load_all(config_files)
     end
 
     def load_lamp_files
       self.registered_fixtures = {}
+      load_config
       load_all(lamp_files)
     end
 
@@ -129,10 +130,6 @@ module MagicLamp
 
     def load_all(files)
       files.each { |file| load file }
-    end
-
-    def require_all(files)
-      files.each { |file| require file }
     end
   end
 end
