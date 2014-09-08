@@ -28,6 +28,23 @@ describe('Genie', function() {
     });
   });
 
+  describe('fixtureNames', function() {
+    beforeEach(function() {
+      stub(console, 'log', true);
+      subject.cache = { foo: 'template', bar: 'other template' };
+    });
+
+    it('returns all of the fixtures named in the cache', function() {
+      expect(subject.fixtureNames()).to.be.like(['bar', 'foo']);
+    });
+
+    it('logs all of the fixture names in the cache', function() {
+      subject.fixtureNames();
+      expect(console.log).to.have.been.calledWith('bar');
+      expect(console.log).to.have.been.calledWith('foo');
+    });
+  });
+
   describe('#load', function() {
     var path;
     beforeEach(function() {
@@ -51,7 +68,6 @@ describe('Genie', function() {
         subject.load(path);
         expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       });
-
 
       describe('cached', function() {
         beforeEach(function() {

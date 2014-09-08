@@ -30,6 +30,17 @@
       this.cache = json;
     },
 
+    fixtureNames: function() {
+      var names = [];
+      for (fixtureName in this.cache) {
+        if (this.cache.hasOwnProperty(fixtureName)) {
+          console.log(fixtureName);
+          names.push(fixtureName);
+        }
+      }
+      return names.sort();
+    },
+
     createFixtureContainer: function() {
       var div = document.createElement('div');
       div.setAttribute('id', this.namespace.id || 'magic-lamp');
