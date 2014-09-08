@@ -22,6 +22,26 @@ describe('MagicLamp', function() {
     });
   });
 
+  describe('#fixtureNames', function() {
+    beforeEach(function() {
+      subject.initialize();
+      stub(subject.genie, 'fixtureNames', true);
+      subject.fixtureNames();
+    });
+
+    afterEach(function() {
+      delete subject.genie;
+    });
+
+    it('passes through to its genie instance', function() {
+      expect(subject.genie.fixtureNames).to.have.been.calledOnce;
+    });
+
+    it('returns the genie instance\'s return value', function() {
+      expect(subject.fixtureNames()).to.equal(true);
+    });
+  });
+
   describe('#globalize', function() {
     beforeEach(function() {
       subject.globalize();

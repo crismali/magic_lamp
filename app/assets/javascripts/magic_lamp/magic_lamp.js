@@ -4,6 +4,10 @@ var MagicLamp = {
     this.genie = new this.Genie();
   },
 
+  fixtureNames: function() {
+    return this.genie.fixtureNames();
+  },
+
   globalize: function() {
     var context = this;
     window.load = function(path) {
