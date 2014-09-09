@@ -81,7 +81,7 @@ describe MagicLamp do
     it "raises an error without a block" do
       expect do
         subject.register_fixture(controller: controller_class, name: fixture_name)
-      end.to raise_error(MagicLamp::ArgumentError, /requires a block/)
+      end.to raise_error(MagicLamp::ArgumentError, /register_fixture requires a block/)
     end
 
     context "defaults" do
