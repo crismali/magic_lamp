@@ -3,15 +3,25 @@ require "rails_helper"
 describe MagicLamp do
   before do
     subject.registered_fixtures = {}
+    subject.before_each_proc = nil
+    subject.after_each_proc = nil
   end
 
   after do
     subject.registered_fixtures = {}
+    subject.before_each_proc = nil
+    subject.after_each_proc = nil
   end
 
   context "attr_accessor" do
     it { should respond_to :registered_fixtures }
     it { should respond_to :registered_fixtures= }
+
+    it { should respond_to :before_each_proc }
+    it { should respond_to :before_each_proc= }
+
+    it { should respond_to :after_each_proc }
+    it { should respond_to :after_each_proc= }
   end
 
   context "aliases" do
@@ -23,6 +33,34 @@ describe MagicLamp do
 
     it "wish is the same as register_fixture" do
       expect(subject.method(:wish)).to eq(register_fixture)
+    end
+  end
+
+  describe "#before_each" do
+    it "saves its given block" do
+      block = Proc.new { "something before" }
+      subject.before_each(&block)
+      expect(subject.before_each_proc).to eq(block)
+    end
+
+    it "raises an error when not given a block" do
+      expect do
+        subject.before_each
+      end.to raise_error(MagicLamp::ArgumentError, /before_each requires a block/)
+    end
+  end
+
+  describe "#after_each" do
+    it "saves its given block" do
+      block = Proc.new { "something before" }
+      subject.after_each(&block)
+      expect(subject.after_each_proc).to eq(block)
+    end
+
+    it "raises an error when not given a block" do
+      expect do
+        subject.after_each
+      end.to raise_error(MagicLamp::ArgumentError, /after_each requires a block/)
     end
   end
 
