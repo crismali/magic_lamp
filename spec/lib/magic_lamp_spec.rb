@@ -34,6 +34,10 @@ describe MagicLamp do
     it "wish is the same as register_fixture" do
       expect(subject.method(:wish)).to eq(register_fixture)
     end
+
+    it "configure is the same as tap" do
+      expect(subject.method(:configure)).to eq(subject.method(:tap))
+    end
   end
 
   describe "#before_each" do

@@ -26,6 +26,7 @@ module MagicLamp
 
   class << self
     attr_accessor :registered_fixtures, :after_each_proc, :before_each_proc
+    alias_method :configure, :tap
 
     def path
       Rails.root.join(directory_path)
