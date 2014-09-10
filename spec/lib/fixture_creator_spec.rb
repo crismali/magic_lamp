@@ -25,6 +25,17 @@ describe MagicLamp::FixtureCreator do
     it "does not render the layout by default" do
       expect(rendered).to_not match(/The layout/)
     end
+
+    it "executes the callbacks around generation of the template" do
+      dummy = double
+      expect(subject).to receive(:execute_before_each_callback).ordered
+      expect(dummy).to receive(:render).ordered
+      expect(subject).to receive(:execute_after_each_callback).ordered
+      subject.generate_template(OrdersController) do
+        dummy.render
+        render :foo
+      end
+    end
   end
 
   describe "#new_controller" do
