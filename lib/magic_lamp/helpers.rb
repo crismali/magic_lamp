@@ -5,11 +5,18 @@ module MagicLamp
     end
 
     def execute_before_each_callback
-      namespace.before_each_proc.call unless namespace.before_each_proc.nil?
+      execute_callback(:before)
     end
 
     def execute_after_each_callback
-      namespace.after_each_proc.call unless namespace.after_each_proc.nil?
+      execute_callback(:after)
+    end
+
+    private
+
+    def execute_callback(type)
+      callback = namespace.send("#{type}_each_proc")
+      callback.call unless callback.nil?
     end
   end
 end
