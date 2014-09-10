@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe RenderCatcher do
+describe MagicLamp::RenderCatcher do
 
   context "attr_accessor" do
     it { is_expected.to respond_to :render_argument }
