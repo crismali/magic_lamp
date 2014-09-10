@@ -9,7 +9,9 @@ module MagicLamp
     end
 
     def first_render_argument(&block)
+      execute_before_each_callback
       instance_eval(&block)
+      execute_after_each_callback
       render_argument
     end
 

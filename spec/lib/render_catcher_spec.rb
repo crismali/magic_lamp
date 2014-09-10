@@ -23,6 +23,13 @@ describe MagicLamp::RenderCatcher do
     it "returns the first argument to render given a block" do
       expect(result).to eq(:foo)
     end
+
+    it "executes callbacks around the evaluation of the block" do
+      expect(subject).to receive(:execute_before_each_callback).ordered
+      expect(subject).to receive(:instance_eval).ordered
+      expect(subject).to receive(:execute_after_each_callback).ordered
+      subject.first_render_argument { render :foo }
+    end
   end
 
   describe "#method_missing" do
