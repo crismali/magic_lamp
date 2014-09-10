@@ -7,6 +7,12 @@ describe RenderCatcher do
     it { is_expected.to respond_to :render_argument= }
   end
 
+  describe "#namespace" do
+    it "is MagicLamp" do
+      expect(subject.namespace).to eq(MagicLamp)
+    end
+  end
+
   describe "#render" do
     it "saves its first arguments as render argument" do
       subject.render :foo, :bar, :baz

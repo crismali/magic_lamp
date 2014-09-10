@@ -1,6 +1,10 @@
 class RenderCatcher
   attr_accessor :render_argument
 
+  def namespace
+    MagicLamp
+  end
+
   def render(first_arg, *args)
     self.render_argument = first_arg
   end
