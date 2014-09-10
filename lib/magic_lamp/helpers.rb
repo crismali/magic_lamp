@@ -1,9 +1,5 @@
 module MagicLamp
   module Helpers
-    def namespace
-      MagicLamp
-    end
-
     def execute_before_each_callback
       execute_callback(:before)
     end
@@ -15,7 +11,7 @@ module MagicLamp
     private
 
     def execute_callback(type)
-      callback = namespace.send("#{type}_each_proc")
+      callback = MagicLamp.send("#{type}_each_proc")
       callback.call unless callback.nil?
     end
   end
