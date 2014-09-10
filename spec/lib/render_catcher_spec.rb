@@ -3,8 +3,8 @@ require "rails_helper"
 describe RenderCatcher do
 
   context "attr_accessor" do
-    it { should respond_to :render_argument }
-    it { should respond_to :render_argument= }
+    it { is_expected.to respond_to :render_argument }
+    it { is_expected.to respond_to :render_argument= }
   end
 
   describe "#render" do

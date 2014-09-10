@@ -14,14 +14,14 @@ describe MagicLamp do
   end
 
   context "attr_accessor" do
-    it { should respond_to :registered_fixtures }
-    it { should respond_to :registered_fixtures= }
+    it { is_expected.to respond_to :registered_fixtures }
+    it { is_expected.to respond_to :registered_fixtures= }
 
-    it { should respond_to :before_each_proc }
-    it { should respond_to :before_each_proc= }
+    it { is_expected.to respond_to :before_each_proc }
+    it { is_expected.to respond_to :before_each_proc= }
 
-    it { should respond_to :after_each_proc }
-    it { should respond_to :after_each_proc= }
+    it { is_expected.to respond_to :after_each_proc }
+    it { is_expected.to respond_to :after_each_proc= }
   end
 
   context "aliases" do
