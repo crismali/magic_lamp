@@ -1,10 +1,8 @@
 module MagicLamp
   class RenderCatcher
-    attr_accessor :render_argument
+    include Helpers
 
-    def namespace
-      MagicLamp
-    end
+    attr_accessor :render_argument
 
     def render(first_arg, *args)
       self.render_argument = first_arg

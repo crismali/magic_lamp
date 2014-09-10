@@ -2,15 +2,11 @@ require "rails_helper"
 
 describe MagicLamp::RenderCatcher do
 
+  it { is_expected.to be_kind_of(MagicLamp::Helpers) }
+
   context "attr_accessor" do
     it { is_expected.to respond_to :render_argument }
     it { is_expected.to respond_to :render_argument= }
-  end
-
-  describe "#namespace" do
-    it "is MagicLamp" do
-      expect(subject.namespace).to eq(MagicLamp)
-    end
   end
 
   describe "#render" do

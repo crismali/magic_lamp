@@ -1,21 +1,13 @@
 require "rails_helper"
 
 describe MagicLamp::FixtureCreator do
+
+  it { is_expected.to be_kind_of(MagicLamp::Helpers) }
+
   context "attr_accessor" do
     context "render_arguments" do
       it { is_expected.to respond_to :render_arguments }
       it { is_expected.to respond_to :render_arguments= }
-    end
-
-    context "namespace" do
-      it { is_expected.to respond_to :namespace }
-      it { is_expected.to respond_to :namespace= }
-    end
-  end
-
-  describe "#initialize" do
-    it "sets MagicLamp as namespace" do
-      expect(subject.namespace).to eq(MagicLamp)
     end
   end
 

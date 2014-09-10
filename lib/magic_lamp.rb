@@ -1,4 +1,7 @@
 require "rake"
+
+require "magic_lamp/helpers"
+
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 require "magic_lamp/engine"
@@ -52,14 +55,6 @@ module MagicLamp
 
     alias_method :rub, :register_fixture
     alias_method :wish, :register_fixture
-
-    def execute_before_each_callback
-      before_each_proc.call unless before_each_proc.nil?
-    end
-
-    def execute_after_each_callback
-      after_each_proc.call unless after_each_proc.nil?
-    end
 
     def before_each(&block)
       register_callback(:before, block)

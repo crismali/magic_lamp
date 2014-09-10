@@ -15,6 +15,12 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  config.before(:each) do
+    MagicLamp.registered_fixtures = {}
+    MagicLamp.before_each_proc = nil
+    MagicLamp.after_each_proc = nil
+  end
+
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
 

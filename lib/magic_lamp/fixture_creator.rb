@@ -1,10 +1,8 @@
 module MagicLamp
   class FixtureCreator
-    attr_accessor :render_arguments, :namespace
+    include Helpers
 
-    def initialize
-      self.namespace = MagicLamp
-    end
+    attr_accessor :render_arguments
 
     def generate_template(controller_class, &block)
       controller = new_controller(controller_class, &block)
