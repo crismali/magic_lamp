@@ -1,5 +1,5 @@
 module MagicLamp
-  module Helpers
+  module Callbacks
     def execute_before_each_callback
       execute_callback(:before)
     end

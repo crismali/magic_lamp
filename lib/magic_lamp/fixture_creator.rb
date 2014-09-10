@@ -1,6 +1,6 @@
 module MagicLamp
   class FixtureCreator
-    include Helpers
+    include Callbacks
 
     attr_accessor :render_arguments
 

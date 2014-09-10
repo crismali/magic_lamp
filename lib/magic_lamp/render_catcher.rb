@@ -1,6 +1,6 @@
 module MagicLamp
   class RenderCatcher
-    include Helpers
+    include Callbacks
 
     attr_accessor :render_argument
 

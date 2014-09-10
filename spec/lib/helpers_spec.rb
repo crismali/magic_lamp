@@ -1,9 +1,9 @@
 require "rails_helper"
 
 
-describe MagicLamp::Helpers do
+describe MagicLamp::Callbacks do
   class DummyObject
-    include MagicLamp::Helpers
+    include MagicLamp::Callbacks
   end
 
   subject { DummyObject.new }

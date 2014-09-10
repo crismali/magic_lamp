@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe MagicLamp::FixtureCreator do
 
-  it { is_expected.to be_kind_of(MagicLamp::Helpers) }
+  it { is_expected.to be_kind_of(MagicLamp::Callbacks) }
 
   context "attr_accessor" do
     context "render_arguments" do
