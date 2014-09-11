@@ -103,7 +103,7 @@ describe('Genie', function() {
       it('throws an error if the fixture is not in the cache', function() {
         expect(function() {
           subject.load(path);
-        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Such a bummer./);
+        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Call `MagicLamp.fixtureNames\(\)` to see what is registered./);
       });
     });
   });

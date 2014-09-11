@@ -13,7 +13,7 @@
       this.createFixtureContainer();
 
       if (!fixture && this.cacheOnly) {
-        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Such a bummer.');
+        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Call `MagicLamp.fixtureNames()` to see what is registered.');
       } else if (!fixture) {
         var xhr = this.xhrRequest(getPath() + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
