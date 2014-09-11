@@ -170,7 +170,7 @@ describe('MagicLamp', function() {
       expect(testFixtureContainer()).to.equal(null);
       subject.load('orders/bar');
       expect(testFixtureContainer().innerHTML).to.equal('bar\n');
-      subject.clean();
+      _(3).times(function() { subject.clean(); });
       expect(testFixtureContainer()).to.equal(null);
     });
 
@@ -189,7 +189,8 @@ describe('MagicLamp', function() {
       expect(function() {
         subject.load('not/gonna/happen');
       }).to.throw(/'not\/gonna\/happen' is not a registered fixture$/);
-
+      _(3).times(function() { subject.clean(); });
+      subject.clean();
       expect(testFixtureContainer()).to.equal(null);
     });
 
@@ -198,7 +199,7 @@ describe('MagicLamp', function() {
       expect(function() {
         subject.load('still/not/gonna/happen');
       }).to.throw();
-
+      _(3).times(function() { subject.clean(); });
       expect(testFixtureContainer()).to.equal(null);
     });
   });

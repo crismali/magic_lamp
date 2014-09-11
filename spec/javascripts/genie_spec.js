@@ -111,7 +111,7 @@ describe('Genie', function() {
   describe('#preload', function() {
     it('requests all of the fixtures and puts them in the cache', function() {
       subject.preload();
-      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form']);
+      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form', 'custom_name', 'super_specified']);
     });
 
     it('sets cacheOnly to true', function() {
@@ -169,9 +169,20 @@ describe('Genie', function() {
     describe('without the fixture container', function() {
       it('logs a message saying that this is a weird thing to do', function() {
         expect(function() {
-          subject.removeFixtureContainer();
-          subject.removeFixtureContainer();
+          _(3).times(function() { subject.removeFixtureContainer(); });
         }).to.not.throw()
+      });
+    });
+
+    describe('with the fixture container created', function() {
+      beforeEach(function() {
+        subject.createFixtureContainer();
+      });
+
+      it('removes the fixture container from the genie instance', function() {
+        expect(subject.fixtureContainer).to.be.defined;
+        subject.removeFixtureContainer();
+        expect(subject.fixtureContainer).to.be.undefined;
       });
     });
 

@@ -39,7 +39,6 @@ describe MagicLamp::FixtureCreator do
   end
 
   describe "#new_controller" do
-
     it "returns an instance of the passed controller class" do
       expect(subject.new_controller(OrdersController) {} ).to be_a(OrdersController)
     end

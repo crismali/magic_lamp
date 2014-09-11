@@ -2,7 +2,7 @@ MagicLamp.register_fixture do
   render "orders/foo"
 end
 
-MagicLamp.register_fixture do
+MagicLamp.register_fixture(controller: OrdersController) do
   render "orders/bar"
 end
 

@@ -82,7 +82,8 @@
   }
 
   function remove(node) {
-    node.parentNode.removeChild(node);
+    var parentNode = node.parentNode;
+    parentNode && parentNode.removeChild(node);
   }
 
   function newXhr() {
