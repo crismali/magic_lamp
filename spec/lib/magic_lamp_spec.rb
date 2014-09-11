@@ -57,6 +57,14 @@ describe MagicLamp do
     end
   end
 
+  context "callbacks with database cleaner" do
+    it "keeps the database clean" do
+      allow(subject).to receive(:path).and_return(Rails.root.join("persisted_specs"))
+      subject.generate_all_fixtures
+      expect(Order.count).to eq(0)
+    end
+  end
+
   describe "#register_fixture" do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }

@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">= 3.2"
+  s.add_dependency "rake"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "selenium-webdriver"
@@ -25,5 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"
   s.add_development_dependency "bundler", "~> 1.6"
-  s.add_development_dependency "rake"
+  s.add_development_dependency "database_cleaner"
 end
