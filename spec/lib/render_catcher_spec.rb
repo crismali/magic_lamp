@@ -17,7 +17,7 @@ describe MagicLamp::RenderCatcher do
   end
 
   describe "#first_render_argument" do
-    let(:block) { Proc.new { render :foo, :bar, :baz } }
+    let(:block) { proc { render :foo, :bar, :baz } }
     let(:result) { subject.first_render_argument(&block) }
 
     it "returns the first argument to render given a block" do

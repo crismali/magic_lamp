@@ -31,7 +31,7 @@ describe MagicLamp do
 
   describe "#before_each" do
     it "saves its given block" do
-      block = Proc.new { "something before" }
+      block = proc { "something before" }
       subject.before_each(&block)
       expect(subject.before_each_proc).to eq(block)
     end
@@ -45,7 +45,7 @@ describe MagicLamp do
 
   describe "#after_each" do
     it "saves its given block" do
-      block = Proc.new { "something before" }
+      block = proc { "something before" }
       subject.after_each(&block)
       expect(subject.after_each_proc).to eq(block)
     end
@@ -68,7 +68,7 @@ describe MagicLamp do
   describe "#register_fixture" do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }
-    let(:block) { Proc.new { "so?" } }
+    let(:block) { proc { "so?" } }
 
     it "caches the controller class and block" do
       subject.register_fixture(controller: controller_class, name: fixture_name, &block)
@@ -99,14 +99,14 @@ describe MagicLamp do
 
         context "ApplicationController" do
           it "uses the first argument to render when given 2" do
-            render_block = Proc.new { render :index, foo: :bar }
+            render_block = proc { render :index, foo: :bar }
             subject.register_fixture(controller: ::ApplicationController, &render_block)
 
             expect(at_index).to eq([::ApplicationController, render_block])
           end
 
           it "uses the only argument when it isn't a hash" do
-            render_block = Proc.new { render :index }
+            render_block = proc { render :index }
             subject.register_fixture(controller: ::ApplicationController, &render_block)
             expect(at_index).to eq([::ApplicationController, render_block])
           end
@@ -119,13 +119,13 @@ describe MagicLamp do
             end
 
             it "uses the name at the template key" do
-              render_block = Proc.new { render template: :index }
+              render_block = proc { render template: :index }
               subject.register_fixture(controller: ::ApplicationController, &render_block)
               expect(at_index).to eq([::ApplicationController, render_block])
             end
 
             it "uses the name at the partial key" do
-              render_block = Proc.new { render partial: :index }
+              render_block = proc { render partial: :index }
               subject.register_fixture(controller: ::ApplicationController, &render_block)
               expect(at_index).to eq([::ApplicationController, render_block])
             end
@@ -134,13 +134,13 @@ describe MagicLamp do
 
         context "other controller" do
           it "prepends the controller's name to the fixture_name" do
-            render_block = Proc.new { render partial: :index }
+            render_block = proc { render partial: :index }
             subject.register_fixture(controller: OrdersController, &render_block)
             expect(subject.registered_fixtures["orders/index"]).to eq([OrdersController, render_block])
           end
 
           it "does not prepend the controller's name when it is already the beginning of the string" do
-            render_block = Proc.new { render partial: "orders/order" }
+            render_block = proc { render partial: "orders/order" }
             subject.register_fixture(controller: OrdersController, &render_block)
             expect(subject.registered_fixtures["orders/orders/order"]).to be_nil
             expect(subject.registered_fixtures["orders/order"]).to eq([OrdersController, render_block])
@@ -198,7 +198,7 @@ describe MagicLamp do
   end
 
   describe "#generate_fixture" do
-    let(:block) { Proc.new { render :foo } }
+    let(:block) { proc { render :foo } }
 
     before do
       subject.registered_fixtures["foo_test"] = [OrdersController, block]
