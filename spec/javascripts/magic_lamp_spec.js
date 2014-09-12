@@ -154,35 +154,35 @@ describe('MagicLamp', function() {
     });
 
     it('can load the foo template and clean up', function() {
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.load('orders/foo');
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
     it('can preload the templates and clean up', function() {
       subject.preload();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.load('orders/foo');
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.load('orders/bar');
       expect(testFixtureContainer().innerHTML).to.equal('bar\n');
       _(3).times(function() { subject.clean(); });
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
-    it('can specify the id used for the fixture container', function() {
-      var newId = subject.id = 'the-eye';
+    it('can specify the class used for the fixture container', function() {
+      var newClass = subject.class = 'the-eye';
       subject.load('orders/foo');
-      expect(testFixtureContainer()).to.equal(null);
-      expect(document.getElementById(newId)).to.exist;
-      expect(document.getElementById(newId).innerHTML).to.equal('foo\n');
+      expect(testFixtureContainer()).to.be.undefined;
+      expect(findByClassName(newClass)).to.exist;
+      expect(findByClassName(newClass).innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(document.getElementById(newId)).to.not.exist;
-      delete subject.id;
+      expect(findByClassName(newClass)).to.not.exist;
+      delete subject.class;
     });
 
     it('throws an error when it cannot find the template', function() {
@@ -191,7 +191,7 @@ describe('MagicLamp', function() {
       }).to.throw(/'not\/gonna\/happen' is not a registered fixture$/);
       _(3).times(function() { subject.clean(); });
       subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
     it('throws an error when it cannot find the preloaded template', function() {
@@ -200,7 +200,7 @@ describe('MagicLamp', function() {
         subject.load('still/not/gonna/happen');
       }).to.throw();
       _(3).times(function() { subject.clean(); });
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
     });
   });
 });

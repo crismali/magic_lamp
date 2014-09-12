@@ -64,7 +64,7 @@ describe('Genie', function() {
       });
 
       it('appends the fixture container with the fixture to the dom', function() {
-        expect(testFixtureContainer()).to.equal(null);
+        expect(testFixtureContainer()).to.be.undefined;
         subject.load(path);
         expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       });
@@ -81,7 +81,7 @@ describe('Genie', function() {
         });
 
         it('appends the fixture container to the dom with the cached fixture', function() {
-          expect(testFixtureContainer()).to.equal(null);
+          expect(testFixtureContainer()).to.be.undefined;
           subject.load(path);
           expect(testFixtureContainer().innerHTML).to.equal('howdy');
         });
@@ -131,17 +131,17 @@ describe('Genie', function() {
   });
 
   describe('#createFixtureContainer', function() {
-    it('creates a div with an id of "magic-lamp" and caches it', function() {
+    it('creates a div with a class of "magic-lamp" and caches it', function() {
       subject.createFixtureContainer();
       expect(subject.fixtureContainer.tagName).to.equal('DIV');
-      expect(subject.fixtureContainer.id).to.equal('magic-lamp');
+      expect(subject.fixtureContainer.className).to.equal('magic-lamp');
     });
 
-    it('creates a div with an id of MagicLamp.id if present', function() {
-      var id = MagicLamp.id = 'footastic';
+    it('creates a div with a class of MagicLamp.class if present', function() {
+      var specifiedClass = MagicLamp.class = 'footastic';
       subject.createFixtureContainer();
-      delete MagicLamp.id;
-      expect(subject.fixtureContainer.id).to.equal(id);
+      delete MagicLamp.class;
+      expect(subject.fixtureContainer.className).to.equal(specifiedClass);
     });
   });
 
@@ -155,7 +155,7 @@ describe('Genie', function() {
     });
 
     it('appends the fixtureContainer to the body', function() {
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.appendFixtureContainer();
       expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
     });
@@ -195,7 +195,7 @@ describe('Genie', function() {
       it('removes the fixture container from the dom', function() {
         expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
         subject.removeFixtureContainer();
-        expect(testFixtureContainer()).to.equal(null);
+        expect(testFixtureContainer()).to.be.undefined;
         expect(subject.fixtureContainer).to.be.undefined;
       });
 

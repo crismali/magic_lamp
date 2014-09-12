@@ -43,7 +43,7 @@
 
     createFixtureContainer: function() {
       var div = document.createElement('div');
-      div.setAttribute('id', this.namespace.id || 'magic-lamp');
+      div.setAttribute('class', this.namespace.class || 'magic-lamp');
       this.fixtureContainer = div;
     },
 

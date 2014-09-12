@@ -66,12 +66,12 @@ function stub(object, method, retVal) {
   return stubObj;
 }
 
-function findById(id) {
-  return document.getElementById(id);
+function findByClassName(className) {
+  return document.getElementsByClassName(className)[0];
 }
 
 function testFixtureContainer() {
-  return findById('magic-lamp');
+  return findByClassName('magic-lamp');
 }
 
 function removeNode(node) {
