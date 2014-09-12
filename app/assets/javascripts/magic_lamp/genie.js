@@ -9,6 +9,7 @@
   Genie.prototype = {
 
     load: function(path) {
+      this.removeFixtureContainer();
       var fixture = this.cache[path];
       this.createFixtureContainer();
 

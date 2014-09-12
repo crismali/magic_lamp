@@ -55,6 +55,13 @@ describe('Genie', function() {
       removeNode(subject.fixtureContainer);
     });
 
+    it('does not double append fixture containers', function() {
+      subject.cache[path] = 'some template';
+      subject.cacheOnly = true;
+      _(2).times(function() { subject.load(path); });
+      expect(document.getElementsByClassName('magic-lamp').length).to.equal(1);
+    });
+
     describe('cacheOnly false', function() {
       it('requests the fixture and adds it to the cache', function() {
         spyOn(subject, 'xhrRequest');
