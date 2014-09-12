@@ -150,6 +150,7 @@ describe('MagicLamp', function() {
     });
 
     afterEach(function() {
+      subject.clean();
       delete subject.genie;
     });
 
@@ -164,7 +165,8 @@ describe('MagicLamp', function() {
     it('can preload the templates and clean up', function() {
       subject.preload();
       expect(testFixtureContainer()).to.be.undefined;
-      subject.load('orders/foo');
+      _(2).times(function() { subject.load('orders/foo'); });
+      expect(document.getElementsByClassName('magic-lamp').length).to.equal(1);
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       subject.clean();
       expect(testFixtureContainer()).to.be.undefined;
@@ -201,6 +203,16 @@ describe('MagicLamp', function() {
       }).to.throw();
       _(3).times(function() { subject.clean(); });
       expect(testFixtureContainer()).to.be.undefined;
+    });
+
+    it('can load fixtures with specified names', function() {
+      subject.load('custom_name');
+      expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+    });
+
+    it('can load fixtures with specified names and controllers', function() {
+      subject.load('super_specified')
+      expect(testFixtureContainer().innerHTML).to.equal('foo\n');
     });
   });
 });
