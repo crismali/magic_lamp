@@ -42,6 +42,7 @@ describe('Genie', function() {
       subject.fixtureNames();
       expect(console.log).to.have.been.calledWith('bar');
       expect(console.log).to.have.been.calledWith('foo');
+      expect(console.log.args).to.be.like([['bar'], ['foo']]);
     });
   });
 

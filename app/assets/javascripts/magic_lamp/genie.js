@@ -35,11 +35,15 @@
       var names = [];
       for (fixtureName in this.cache) {
         if (this.cache.hasOwnProperty(fixtureName)) {
-          console.log(fixtureName);
           names.push(fixtureName);
         }
       }
-      return names.sort();
+      var sortedNames = names.sort();
+      for (var i = 0; i < sortedNames.length; i++) {
+        console.log(sortedNames[i]);
+      };
+
+      return sortedNames;
     },
 
     createFixtureContainer: function() {
