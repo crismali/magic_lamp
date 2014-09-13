@@ -1,5 +1,11 @@
 module MagicLamp
   module Callbacks
+    attr_accessor :configuration
+
+    def initialize(configuration)
+      self.configuration = configuration
+    end
+
     def execute_before_each_callback
       execute_callback(:before)
     end
@@ -11,7 +17,7 @@ module MagicLamp
     private
 
     def execute_callback(type)
-      callback = MagicLamp.configuration.send("#{type}_each_proc")
+      callback = configuration.send("#{type}_each_proc")
       callback.call unless callback.nil?
     end
   end

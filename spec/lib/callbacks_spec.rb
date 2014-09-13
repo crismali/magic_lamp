@@ -5,19 +5,32 @@ describe MagicLamp::Callbacks do
     include MagicLamp::Callbacks
   end
 
-  subject { DummyObject.new }
+  subject { DummyObject.new(MagicLamp::Configuration.new) }
+
+  context "attr_accessor" do
+    it { is_expected.to respond_to(:configuration) }
+    it { is_expected.to respond_to(:configuration=) }
+  end
+
+  describe "#initialize" do
+    it "sets configuration to the given argument" do
+      configuration = double
+      subject = DummyObject.new(configuration)
+      expect(subject.configuration).to eq(configuration)
+    end
+  end
 
   describe "#execute_before_each_callback" do
     it "calls the before each callback" do
       dummy = double
       expect(dummy).to receive(:call)
-      MagicLamp.configuration.before_each_proc = dummy
+      subject.configuration.before_each_proc = dummy
       subject.execute_before_each_callback
     end
 
     context "no callback" do
       it "does not raise an error" do
-        MagicLamp.configuration.before_each_proc = nil
+        subject.configuration.before_each_proc = nil
         expect do
           subject.execute_before_each_callback
         end.to_not raise_error
@@ -29,13 +42,13 @@ describe MagicLamp::Callbacks do
     it "calls the after each callback" do
       dummy = double
       expect(dummy).to receive(:call)
-      MagicLamp.configuration.after_each_proc = dummy
+      subject.configuration.after_each_proc = dummy
       subject.execute_after_each_callback
     end
 
     context "no callback" do
       it "does not raise an error" do
-        MagicLamp.configuration.after_each_proc = nil
+        subject.configuration.after_each_proc = nil
         expect do
           subject.execute_after_each_callback
         end.to_not raise_error

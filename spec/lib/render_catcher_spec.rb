@@ -1,6 +1,7 @@
 require "rails_helper"
 
 describe MagicLamp::RenderCatcher do
+  subject { MagicLamp::RenderCatcher.new(MagicLamp::Configuration.new) }
 
   it { is_expected.to be_kind_of(MagicLamp::Callbacks) }
 

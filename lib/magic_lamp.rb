@@ -82,7 +82,7 @@ module MagicLamp
         raise UnregisteredFixtureError, "'#{fixture_name}' is not a registered fixture"
       end
       controller_class, block = registered_fixtures[fixture_name]
-      FixtureCreator.new.generate_template(controller_class, &block)
+      FixtureCreator.new(configuration).generate_template(controller_class, &block)
     end
 
     def generate_all_fixtures
@@ -113,7 +113,7 @@ module MagicLamp
     end
 
     def first_render_arg(block)
-      render_catcher = RenderCatcher.new
+      render_catcher = RenderCatcher.new(configuration)
       render_catcher.first_render_argument(&block)
     end
 

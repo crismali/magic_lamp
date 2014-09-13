@@ -90,6 +90,11 @@ describe MagicLamp do
             expect(at_index).to eq([::ApplicationController, render_block])
           end
 
+          it "passes its configuration object to the render catcher" do
+            expect(MagicLamp::RenderCatcher).to receive(:new).with(subject.configuration).and_call_original
+            subject.register_fixture { render :foo }
+          end
+
           context "1 hash argument" do
             it "raises an error if it can't figure out a default name" do
               expect do
@@ -191,6 +196,13 @@ describe MagicLamp do
       expect do
         subject.generate_fixture("brokenture")
       end.to raise_error(MagicLamp::UnregisteredFixtureError, /is not a registered fixture/)
+    end
+
+    it "passes its configuration object to the render catcher" do
+      subject.registered_fixtures["foo"] = []
+      dummy = double(generate_template: :generate_template)
+      expect(MagicLamp::FixtureCreator).to receive(:new).with(subject.configuration).and_return(dummy)
+      subject.generate_fixture("foo")
     end
   end
 
