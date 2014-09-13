@@ -11,7 +11,7 @@ module MagicLamp
     private
 
     def execute_callback(type)
-      callback = MagicLamp.send("#{type}_each_proc")
+      callback = MagicLamp.configuration.send("#{type}_each_proc")
       callback.call unless callback.nil?
     end
   end

@@ -17,8 +17,7 @@
 RSpec.configure do |config|
   config.before(:each) do
     MagicLamp.registered_fixtures = {}
-    MagicLamp.before_each_proc = nil
-    MagicLamp.after_each_proc = nil
+    MagicLamp.configuration = MagicLamp::Configuration.new
   end
 
   # The settings below are suggested to provide a good initial experience

@@ -6,11 +6,8 @@ describe MagicLamp do
     it { is_expected.to respond_to :registered_fixtures }
     it { is_expected.to respond_to :registered_fixtures= }
 
-    it { is_expected.to respond_to :before_each_proc }
-    it { is_expected.to respond_to :before_each_proc= }
-
-    it { is_expected.to respond_to :after_each_proc }
-    it { is_expected.to respond_to :after_each_proc= }
+    it { is_expected.to respond_to :configuration }
+    it { is_expected.to respond_to :configuration= }
   end
 
   context "aliases" do
@@ -23,37 +20,19 @@ describe MagicLamp do
     it "wish is the same as register_fixture" do
       expect(subject.method(:wish)).to eq(register_fixture)
     end
-
-    it "configure is the same as tap" do
-      expect(subject.method(:configure)).to eq(subject.method(:tap))
-    end
   end
 
-  describe "#before_each" do
-    it "saves its given block" do
-      block = proc { "something before" }
-      subject.before_each(&block)
-      expect(subject.before_each_proc).to eq(block)
+  describe "#configure" do
+    it "yields its configuration object to the block" do
+      subject.configuration = double
+      expect(subject.configuration).to receive(:foo)
+      subject.configure(&:foo)
     end
 
-    it "raises an error when not given a block" do
+    it "raises an error without a block" do
       expect do
-        subject.before_each
-      end.to raise_error(MagicLamp::ArgumentError, /before_each requires a block/)
-    end
-  end
-
-  describe "#after_each" do
-    it "saves its given block" do
-      block = proc { "something before" }
-      subject.after_each(&block)
-      expect(subject.after_each_proc).to eq(block)
-    end
-
-    it "raises an error when not given a block" do
-      expect do
-        subject.after_each
-      end.to raise_error(MagicLamp::ArgumentError, /after_each requires a block/)
+        subject.configure
+      end.to raise_error(MagicLamp::ArgumentError, /configure requires a block/)
     end
   end
 

@@ -2,6 +2,7 @@ require "rake"
 
 require "magic_lamp/callbacks"
 
+require "magic_lamp/configuration"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 require "magic_lamp/engine"
@@ -28,8 +29,7 @@ module MagicLamp
   end
 
   class << self
-    attr_accessor :registered_fixtures, :after_each_proc, :before_each_proc
-    alias_method :configure, :tap
+    attr_accessor :registered_fixtures, :configuration
 
     def path
       Rails.root.join(directory_path)
@@ -56,12 +56,11 @@ module MagicLamp
     alias_method :rub, :register_fixture
     alias_method :wish, :register_fixture
 
-    def before_each(&block)
-      register_callback(:before, block)
-    end
-
-    def after_each(&block)
-      register_callback(:after, block)
+    def configure(&block)
+      if block.nil?
+        raise ArgumentError, "MagicLamp#configure requires a block"
+      end
+      block.call(configuration)
     end
 
     def registered?(fixture_name)
@@ -94,13 +93,6 @@ module MagicLamp
     end
 
     private
-
-    def register_callback(type, block)
-      if block.nil?
-        raise ArgumentError, "MagicLamp##{type}_each requires a block"
-      end
-      send("#{type}_each_proc=", block)
-    end
 
     def config_files
       Dir[path.join(STARS, "magic#{LAMP}_config.rb")]
@@ -152,3 +144,5 @@ module MagicLamp
     end
   end
 end
+
+MagicLamp.configuration = MagicLamp::Configuration.new

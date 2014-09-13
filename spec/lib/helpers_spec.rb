@@ -12,13 +12,13 @@ describe MagicLamp::Callbacks do
     it "calls the before each callback" do
       dummy = double
       expect(dummy).to receive(:call)
-      MagicLamp.before_each_proc = dummy
+      MagicLamp.configuration.before_each_proc = dummy
       subject.execute_before_each_callback
     end
 
     context "no callback" do
       it "does not raise an error" do
-        MagicLamp.before_each_proc = nil
+        MagicLamp.configuration.before_each_proc = nil
         expect do
           subject.execute_before_each_callback
         end.to_not raise_error
@@ -30,13 +30,13 @@ describe MagicLamp::Callbacks do
     it "calls the after each callback" do
       dummy = double
       expect(dummy).to receive(:call)
-      MagicLamp.after_each_proc = dummy
+      MagicLamp.configuration.after_each_proc = dummy
       subject.execute_after_each_callback
     end
 
     context "no callback" do
       it "does not raise an error" do
-        MagicLamp.after_each_proc = nil
+        MagicLamp.configuration.after_each_proc = nil
         expect do
           subject.execute_after_each_callback
         end.to_not raise_error
