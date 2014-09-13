@@ -6,6 +6,7 @@ require "magic_lamp/configuration"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 require "magic_lamp/engine"
+
 require "tasks/lint_task"
 require "tasks/fixture_names_task"
 
@@ -37,15 +38,8 @@ module MagicLamp
 
     def register_fixture(options = {}, &block)
       controller_class = options.fetch(:controller, ::ApplicationController)
-      fixture_name = options[:name]
-
       raise_missing_block_error(block, __method__)
-
-      if fixture_name.nil? && configuration.infer_names
-        fixture_name = default_fixture_name(controller_class, block)
-      elsif fixture_name.nil?
-        raise ArgumentError, "You must specify a name since `infer_names` is configured to `false`"
-      end
+      fixture_name = fixture_name_or_raise(options[:name], controller_class, block)
 
       if registered?(fixture_name)
         raise AlreadyRegisteredFixtureError, "a fixture called '#{fixture_name}' has already been registered"
@@ -92,6 +86,16 @@ module MagicLamp
     end
 
     private
+
+    def fixture_name_or_raise(fixture_name, controller_class, block)
+      if fixture_name.nil? && configuration.infer_names
+        default_fixture_name(controller_class, block)
+      elsif fixture_name.nil?
+        raise ArgumentError, "You must specify a name since `infer_names` is configured to `false`"
+      else
+        fixture_name
+      end
+    end
 
     def raise_missing_block_error(block, method_name)
       if block.nil?
