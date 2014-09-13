@@ -28,7 +28,7 @@ describe('Genie', function() {
     });
   });
 
-  describe('fixtureNames', function() {
+  describe('#fixtureNames', function() {
     beforeEach(function() {
       stub(console, 'log', true);
       subject.cache = { foo: 'template', bar: 'other template' };
@@ -36,6 +36,7 @@ describe('Genie', function() {
 
     it('returns all of the fixtures named in the cache', function() {
       expect(subject.fixtureNames()).to.be.like(['bar', 'foo']);
+      console.log.restore();
     });
 
     it('logs all of the fixture names in the cache', function() {
@@ -43,6 +44,7 @@ describe('Genie', function() {
       expect(console.log).to.have.been.calledWith('bar');
       expect(console.log).to.have.been.calledWith('foo');
       expect(console.log.args).to.be.like([['bar'], ['foo']]);
+      console.log.restore();
     });
   });
 

@@ -20,8 +20,8 @@ Teaspoon.configure do |config|
   #config.asset_paths = ["spec/javascripts", "spec/javascripts/stylesheets"]
   config.asset_paths << MagicLamp::Engine.root.join("lib/magic_lamp")
 
-  config.driver = "selenium"
-  config.driver_options = { client_driver: :chrome }
+  # config.driver = "selenium"
+  # config.driver_options = { client_driver: :chrome }
 
   # Fixtures are rendered through a controller, which allows using HAML, RABL/JBuilder, etc. Files in these paths will
   # be rendered as fixtures.
