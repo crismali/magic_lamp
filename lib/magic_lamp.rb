@@ -38,9 +38,8 @@ module MagicLamp
     def register_fixture(options = {}, &block)
       controller_class = options.fetch(:controller, ::ApplicationController)
       fixture_name = options[:name]
-      if block.nil?
-        raise ArgumentError, "MagicLamp#register_fixture requires a block"
-      end
+
+      raise_missing_block_error(block, __method__)
 
       if fixture_name.nil? && configuration.infer_names
         fixture_name = default_fixture_name(controller_class, block)
@@ -59,9 +58,7 @@ module MagicLamp
     alias_method :wish, :register_fixture
 
     def configure(&block)
-      if block.nil?
-        raise ArgumentError, "MagicLamp#configure requires a block"
-      end
+      raise_missing_block_error(block, __method__)
       block.call(configuration)
     end
 
@@ -95,6 +92,12 @@ module MagicLamp
     end
 
     private
+
+    def raise_missing_block_error(block, method_name)
+      if block.nil?
+        raise ArgumentError, "MagicLamp##{method_name} requires a block"
+      end
+    end
 
     def config_files
       Dir[path.join(STARS, "magic#{LAMP}_config.rb")]
