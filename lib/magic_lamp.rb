@@ -42,8 +42,10 @@ module MagicLamp
         raise ArgumentError, "MagicLamp#register_fixture requires a block"
       end
 
-      if fixture_name.nil?
+      if fixture_name.nil? && configuration.infer_names
         fixture_name = default_fixture_name(controller_class, block)
+      elsif fixture_name.nil?
+        raise ArgumentError, "You must specify a name since `infer_names` is configured to `false`"
       end
 
       if registered?(fixture_name)

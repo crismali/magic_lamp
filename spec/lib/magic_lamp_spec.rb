@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe MagicLamp do
-
   context "attr_accessor" do
     it { is_expected.to respond_to :registered_fixtures }
     it { is_expected.to respond_to :registered_fixtures= }
@@ -58,6 +57,15 @@ describe MagicLamp do
       expect do
         subject.register_fixture(controller: controller_class, name: fixture_name)
       end.to raise_error(MagicLamp::ArgumentError, /register_fixture requires a block/)
+    end
+
+    context "don't infer names" do
+      it "raises an error without a specified name" do
+        subject.configuration.infer_names = false
+        expect do
+          subject.register_fixture { render :foo }
+        end.to raise_error(MagicLamp::ArgumentError, /You must specify a name since `infer_names` is configured to `false`/)
+      end
     end
 
     context "defaults" do

@@ -7,6 +7,15 @@ describe MagicLamp::Configuration do
 
     it { is_expected.to respond_to :after_each_proc }
     it { is_expected.to respond_to :after_each_proc= }
+
+    it { is_expected.to respond_to :infer_names }
+    it { is_expected.to respond_to :infer_names= }
+  end
+
+  describe "#initialize" do
+    it "infers names by default" do
+      expect(subject.infer_names).to eq(true)
+    end
   end
 
   describe "#before_each" do
