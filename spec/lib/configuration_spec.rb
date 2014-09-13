@@ -28,7 +28,7 @@ describe MagicLamp::Configuration do
     it "raises an error when not given a block" do
       expect do
         subject.before_each
-      end.to raise_error(MagicLamp::ArgumentError, /before_each requires a block/)
+      end.to raise_error(MagicLamp::ArgumentError, /configuration#before_each requires a block/)
     end
   end
 
@@ -42,7 +42,7 @@ describe MagicLamp::Configuration do
     it "raises an error when not given a block" do
       expect do
         subject.after_each
-      end.to raise_error(MagicLamp::ArgumentError, /after_each requires a block/)
+      end.to raise_error(MagicLamp::ArgumentError, /configuration#after_each requires a block/)
     end
   end
 end

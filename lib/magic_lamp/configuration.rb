@@ -18,7 +18,7 @@ module MagicLamp
 
     def register_callback(type, block)
       if block.nil?
-        raise ArgumentError, "MagicLamp##{type}_each requires a block"
+        raise ArgumentError, "MagicLamp.configuration##{type}_each requires a block"
       end
       send("#{type}_each_proc=", block)
     end
