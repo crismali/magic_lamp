@@ -41,5 +41,9 @@ describe MagicLamp::RenderCatcher do
         subject.bar(1, 2, 3) { |x| "never gonna happen" }
       end.to_not raise_error
     end
+
+    it "returns itself" do
+      expect(subject.foo.bar.baz).to eq(subject)
+    end
   end
 end

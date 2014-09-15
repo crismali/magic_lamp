@@ -16,6 +16,7 @@ module MagicLamp
     end
 
     def method_missing(method, *args, &block)
+      self
     end
   end
 end
