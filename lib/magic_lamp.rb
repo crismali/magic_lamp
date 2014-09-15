@@ -53,6 +53,7 @@ module MagicLamp
 
     def configure(&block)
       raise_missing_block_error(block, __method__)
+      self.configuration = Configuration.new
       block.call(configuration)
     end
 

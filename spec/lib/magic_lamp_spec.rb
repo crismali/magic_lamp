@@ -22,10 +22,18 @@ describe MagicLamp do
   end
 
   describe "#configure" do
-    it "yields its configuration object to the block" do
-      subject.configuration = double
-      expect(subject.configuration).to receive(:foo)
-      subject.configure(&:foo)
+    it "yields a configuration object to the block" do
+      subject.configure do |config|
+        expect(config).to be_a(MagicLamp::Configuration)
+      end
+    end
+
+    it "replaces its configuration object if called again" do
+      subject.configure { |config| config.infer_names = false }
+      first_config = subject.configuration
+      subject.configure { |config| config.infer_names = false }
+      second_config = subject.configuration
+      expect(first_config).to_not eq(second_config)
     end
 
     it "raises an error without a block" do
