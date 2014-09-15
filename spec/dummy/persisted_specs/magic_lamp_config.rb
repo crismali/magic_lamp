@@ -1,7 +1,5 @@
 require "database_cleaner"
 
-MagicLamp.registered_fixtures
-
 MagicLamp.configure do |config|
 
   DatabaseCleaner.strategy = :transaction
