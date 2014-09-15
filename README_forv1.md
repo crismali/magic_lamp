@@ -2,7 +2,15 @@ MagicLamp
 =========
 
 MagicLamp makes sure that your JavaScript tests break when you change a view your code depends on. It also
-let's you test your views in JavaScript(`$('selector')` > `assert_select`).
+let's you test your views with JavaScript in case that's what you're into.
+
+Table of Contents
+-----------------
+1. [Installation](#installation)
+2. [Basic Usage](#usage)
+3. [Where the files go](#where-the-files-go)
+4. [Ruby API](#ruby-api)
+5. [JavaScript API](#javascript-api)
 
 Installation
 ------------
@@ -30,18 +38,20 @@ end
 ```
 This mounts the Magic Lamp engine in your app.
 
-Drop this:
+Then drop this:
 ```js
 //= require magic_lamp
 ```
-at the top of your `spec_helper.js` (assuming your using Teaspoon or another JavaScript spec runner for Rails that
+at the top of your `spec_helper.js` (assuming your using [Teaspoon](https://github.com/modeset/teaspoon) or another JavaScript spec runner for Rails that
 allows for the use of Sprockets directives).
 
 Now you've got the basic setup.
 
+Note: I highly recommend that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript spec runner.
+
 ### With Database Cleaner
 
-This is probably the setup most users want.
+You don't need [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) to use this gem, but this is probably the setup most people want.
 
 First make sure you have Database Cleaner installed, then you'll want to do something like this:
 ```ruby
@@ -60,13 +70,13 @@ MagicLamp.configure do |config|
   end
 end
 ```
-in a file called `magic_lamp_config.rb` which you can placeanywhere in your `spec` or `test` directories. You could
+in a file called `magic_lamp_config.rb` which you can place anywhere in your `spec` or `test` directories. You could
  configure Magic Lamp in your `teaspoon_env.rb` file as well.
 
-This way your Magic Lamp fixtures won't pollute your database if you'd like to actually create
-records to take advantage of your model's before and after create callbacks.
+This way you can take advantage of `after_create` callbacks for your fixture setup without polluting
+your database everytime you run your JavaScript specs.
 
-What You Want To Do
+Basic Usage
 -------------------
 Magic Lamp will load all files in your `spec` or `test` directory that end with `_lamp.rb` (your app's
 "lamp files). I'd recommend starting with a single `magic_lamp.rb` file and breaking it into smaller
@@ -133,9 +143,9 @@ MagicLamp.register_fixture(controller: OrdersController, name: "other_custom_nam
   render :foo
 end
 ```
-File/Directory Structure
+Where the files go
 ------------------------
-### Configuration
+### Config File
 Magic Lamp first loads the `magic_lamp_config.rb` file. It can be anywhere in your `spec` or `test`
 directory but it's not required.
 ### Lamp files
@@ -267,3 +277,47 @@ describe("Foo", function() {
   // ...
 });
 ```
+## Tasks
+### fixture_names
+### lint
+
+## Errors
+
+If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
+error. Errors will also appear in your server log (if you're running the in browser specs).
+
+To see errors outside of the server log (which may be noisy), you can run `rake magic_lamp:lint`
+which will attempt to render all of your templates. If there are any errors they'll show up there in a
+somewhat less noisy environment.
+
+If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
+without using the fully qualified path to the partial. Specifying the controller should help rails find the template.
+
+## Sweet aliases
+
+### Ruby
+
+```ruby
+MagicLamp.rub => register_fixture
+MagicLamp.wish => register_fixture
+```
+
+### JavaScript
+```js
+MagicLamp.rub => load
+MagicLamp.wish => load
+MagicLamp.massage => preload
+MagicLamp.wishForMoreWishes => preload
+MagicLamp.polish => clean
+```
+
+## Contributing
+
+1. Fork it
+2. Clone it locally
+3. Run the `./bootstrap` script
+4. Run the specs with `rake`
+5. Create your feature branch (`git checkout -b my-new-feature`)
+6. Commit your changes (`git commit -am 'Add some feature'`)
+7. Push to the branch (`git push origin my-new-feature`)
+8. Create new Pull Request
