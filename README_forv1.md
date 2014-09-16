@@ -85,7 +85,7 @@ Magic Lamp will load all files in your `spec` or `test` directory that end with 
 "lamp files). I'd recommend starting with a single `magic_lamp.rb` file and breaking it into smaller
 files once it gets unwieldy (one for each controller would be a good approach).
 
-In your lamp files you just call `MagicLamp.register_fixture` like so:
+In your lamp files you just call [`MagicLamp.register_fixture`](#register_fixture) like so:
 ```ruby
 MagicLamp.register_fixture do
   @order = Order.new
@@ -121,7 +121,7 @@ or partial.
 Since we didn't specify the name of our fixture and we're not using the `ApplicationController`
 to render the template the fixture will be named "orders/order".
 
-We're also taking advantage of `render`s `:collection` option.
+We're also taking advantage of `render`'s `:collection` option.
 ```ruby
 MagicLamp.register_fixture(controller: OrdersController) do
   orders = 3.times.map { Order.new }
@@ -188,12 +188,12 @@ It requires a block to which it yields the configuration object. Here you can se
 * `before_each`
   * takes a block
   * defaults to `nil`
-  * called before each block you pass to register fixture is executed
+  * called before each block you pass to `register_fixture` is executed
   * note: if you call it a second time with a second block, only the second block will be executed
 * `after_each`
   * takes a block
   * defaults to `nil`
-  * called after each block you pass to register fixture is executed
+  * called after each block you pass to `register_fixture` is executed
   * note: if you call it a second time with a second block, only the second block will be executed
 * `infer_names`
   * defaults to `true`
@@ -290,7 +290,7 @@ describe("Foo", function() {
 Errors
 ------
 If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
-error. Errors will also appear in your server log (if you're running the in browser specs).
+error. Errors will also appear in your server log (if you're running the in-browser specs).
 
 To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks)
 which will attempt to render all of your templates. If there are any errors they'll show up there in a
