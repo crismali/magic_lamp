@@ -50,6 +50,8 @@ allows for the use of Sprockets directives).
 
 Now you've got the basic setup.
 
+In case you need it, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
+
 Note: I highly recommend that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript spec runner.
 
 ### With Database Cleaner
@@ -146,6 +148,7 @@ MagicLamp.register_fixture(controller: OrdersController, name: "other_custom_nam
   render :foo
 end
 ```
+If you're interested, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
 Where the files go
 ------------------------
 ### Config File
