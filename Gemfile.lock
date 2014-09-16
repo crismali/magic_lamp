@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    magic_lamp (0.9.9)
+    magic_lamp (1.0.0)
       rails (>= 3.2)
       rake
 

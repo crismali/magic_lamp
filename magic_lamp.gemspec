@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Michael Crismali"]
   s.email       = ["michael.crismali@gmail.com"]
   s.homepage    = "https://github.com/crismali/magic_lamp"
-  s.summary     = "Makes sure your JavaScript specs break when your templates change."
+  s.summary     = "Makes sure your JavaScript tests break when if your templates change."
   s.description = "MagicLamp provides an easy way to get your Rails templates into your JavaScript specs."
   s.license     = "Apache"
 
