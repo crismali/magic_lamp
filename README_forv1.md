@@ -9,8 +9,12 @@ Table of Contents
 1. [Installation](#installation)
 2. [Basic Usage](#usage)
 3. [Where the files go](#where-the-files-go)
-4. [Ruby API](#ruby-api)
-5. [JavaScript API](#javascript-api)
+4. [Tasks](#tasks)
+5. [Ruby API](#ruby-api)
+6. [JavaScript API](#javascript-api)
+7. [Errors](#errors)
+8. [Sweet Aliases](#sweet-aliases)
+9. [Contributing](#contributing)
 
 Installation
 ------------
@@ -74,7 +78,7 @@ in a file called `magic_lamp_config.rb` which you can place anywhere in your `sp
  configure Magic Lamp in your `teaspoon_env.rb` file as well.
 
 This way you can take advantage of `after_create` callbacks for your fixture setup without polluting
-your database everytime you run your JavaScript specs.
+your database every time you run your JavaScript specs.
 
 Basic Usage
 -------------------
@@ -98,7 +102,7 @@ key in the argument hash).
 
 `render` here also works normally except that it won't render the layout by default.
 
-Then in your JavaScript you can do this:
+Then in your JavaScript you can call [`load`](#load):
 ```js
 beforeEach(function() {
   MagicLamp.load("orders/form");
@@ -106,7 +110,7 @@ beforeEach(function() {
 ```
 which will put the `orders/form` partial in a div with a class of `magic-lamp`. Then you
 can go nuts testing your JavaScript against your actual template. If you'd like to only make
-one request for your templates, simply call `MagicLamp.preload();` in your `spec_helper.js` to
+one request for your templates, simply call [`MagicLamp.preload();`](#preload) in your `spec_helper.js` to
 populate Magic Lamp's cache.
 
 ### A few more examples
@@ -150,6 +154,13 @@ Magic Lamp first loads the `magic_lamp_config.rb` file. It can be anywhere in yo
 directory but it's not required.
 ### Lamp files
 Magic Lamp will load any files in your `spec` or `test` directory that end with `_lamp.rb`.
+
+Tasks
+-----
+### fixture_names
+Call `rake magic_lamp:fixture_names` to see a list of all of your app's fixture names.
+### lint
+Call `rake magic_lamp:lint` to see if there are any errors when registering or rendering your fixtures.
 
 Ruby API
 ---
@@ -277,16 +288,12 @@ describe("Foo", function() {
   // ...
 });
 ```
-## Tasks
-### fixture_names
-### lint
-
 ## Errors
 
 If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
 error. Errors will also appear in your server log (if you're running the in browser specs).
 
-To see errors outside of the server log (which may be noisy), you can run `rake magic_lamp:lint`
+To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks)
 which will attempt to render all of your templates. If there are any errors they'll show up there in a
 somewhat less noisy environment.
 
