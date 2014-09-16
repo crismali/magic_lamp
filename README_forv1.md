@@ -1,13 +1,12 @@
 MagicLamp
 =========
-
-MagicLamp makes sure that your JavaScript tests break when you change a view your code depends on. It also
-let's you test your views with JavaScript in case that's what you're into.
+Magic Lamp makes sure you JavaScript tests break in your Rails app when you change a template your JavaScript
+code depends on. You could also use it to test your views with JavaScript.
 
 Table of Contents
 -----------------
 1. [Installation](#installation)
-2. [Basic Usage](#usage)
+2. [Basic Usage](#basic-usage)
 3. [Where the files go](#where-the-files-go)
 4. [Tasks](#tasks)
 5. [Ruby API](#ruby-api)
@@ -19,7 +18,7 @@ Table of Contents
 Installation
 ------------
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 ```ruby
   gem "magic_lamp"
 ```
@@ -81,7 +80,7 @@ This way you can take advantage of `after_create` callbacks for your fixture set
 your database every time you run your JavaScript specs.
 
 Basic Usage
--------------------
+-----------
 Magic Lamp will load all files in your `spec` or `test` directory that end with `_lamp.rb` (your app's
 "lamp files). I'd recommend starting with a single `magic_lamp.rb` file and breaking it into smaller
 files once it gets unwieldy (one for each controller would be a good approach).
@@ -163,7 +162,7 @@ Call `rake magic_lamp:fixture_names` to see a list of all of your app's fixture 
 Call `rake magic_lamp:lint` to see if there are any errors when registering or rendering your fixtures.
 
 Ruby API
----
+--------
 ### register_fixture
 It requires a block that invokes `render` which is invoked in the context of a controller.
 It also takes an optional hash of arguments. The arguments hash recognizes:
@@ -220,7 +219,7 @@ end
 ```
 
 JavaScript API
----
+--------------
 ### clean
 Calling `MagicLamp.clean()` will remove the Magic Lamp fixture container from the page.
 
@@ -258,7 +257,7 @@ MagicLamp.preload();
 ```
 ### fixtureNames
 `MagicLamp.fixtureNames()` will return an array of all of the fixture names available in the cache
-(which is all of them if you've called `preload`). It will also `consol.log` them all out.
+(which is all of them if you've called [`preload`](#preload)). It will also `console.log` them out.
 
 Example
 ```js
@@ -288,8 +287,8 @@ describe("Foo", function() {
   // ...
 });
 ```
-## Errors
-
+Errors
+------
 If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
 error. Errors will also appear in your server log (if you're running the in browser specs).
 
@@ -298,10 +297,10 @@ which will attempt to render all of your templates. If there are any errors they
 somewhat less noisy environment.
 
 If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
-without using the fully qualified path to the partial. Specifying the controller should help rails find the template.
+without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
 
-## Sweet aliases
-
+Sweet aliases
+-------------
 ### Ruby
 
 ```ruby
@@ -318,8 +317,8 @@ MagicLamp.wishForMoreWishes => preload
 MagicLamp.polish => clean
 ```
 
-## Contributing
-
+Contributing
+------------
 1. Fork it
 2. Clone it locally
 3. Run the `./bootstrap` script
