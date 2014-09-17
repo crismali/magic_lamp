@@ -239,7 +239,6 @@ describe('Genie', function() {
 
       expect(xhrProto.open).to.have.been.calledWith('GET', path, false);
       expect(xhrProto.send).to.have.been.calledOnce;
-
     });
 
     it('returns the xhr object', function() {
@@ -249,11 +248,26 @@ describe('Genie', function() {
       expect(result.constructor).to.equal(XMLHttpRequest);
     });
 
-    it('calls handleError if the status is not 200', function() {
+    it('calls handleError with the response text if the status was 400', function() {
       stub(subject, 'handleError', true);
       var path = '/magic_lamp/foo/bar';
       var xhr = subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledWith(xhr.responseText);
+    });
+
+    it('calls handleError with the default error message if the status was 500', function() {
+      stub(subject, 'handleError', true);
+      stub(subject, 'xhrStatus', 500);
+      var path = '/magic_lamp/foo/bar';
+      var xhr = subject.xhrRequest(path);
+      expect(subject.handleError).to.have.been.calledWith('Something went wrong while generating the fixture, please check the server log or run `rake magic_lamp:lint` for more information');
+    });
+  });
+
+  describe('#xhrStatus', function() {
+    it('returns the status of the xhr', function() {
+      var status = 200;
+      expect(subject.xhrStatus({ status: status })).to.equal(status);
     });
   });
 });

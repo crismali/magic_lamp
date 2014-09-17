@@ -73,10 +73,16 @@
       xhr.open('GET', path, false);
       xhr.send();
 
-      if (xhr.status !== 200) {
+      if (this.xhrStatus(xhr) === 400) {
         this.handleError(xhr.responseText);
+      } else if (this.xhrStatus(xhr) === 500) {
+        this.handleError('Something went wrong while generating the fixture, please check the server log or run `rake magic_lamp:lint` for more information');
       }
       return xhr;
+    },
+
+    xhrStatus: function(xhr) {
+      return xhr.status;
     }
   };
 

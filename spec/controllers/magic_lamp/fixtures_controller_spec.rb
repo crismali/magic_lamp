@@ -21,7 +21,7 @@ module MagicLamp
 
       it "renders a 500" do
         get :show, name: "orders/baz", use_route: :magic_lamp
-        expect(response.status).to eq(500)
+        expect(response.status).to eq(400)
       end
     end
 
