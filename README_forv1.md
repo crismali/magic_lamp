@@ -1,7 +1,10 @@
-MagicLamp
+Magic Lamp
 =========
-Magic Lamp makes sure you JavaScript tests break in your Rails app when you change a template your JavaScript
-code depends on. You could also use it to test your views with JavaScript.
+Magic Lamp helps you get your Rails templates into your JavaScript tests. This means that way your JavaScript tests break
+if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
+All you have to do is set up your data just like you would in a controller.
+
+It's not required that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript test runner, but you should.
 
 Table of Contents
 -----------------
@@ -24,7 +27,7 @@ Add this line to your application's `Gemfile`:
 ```
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself with:
 
