@@ -25,10 +25,10 @@
     },
 
     preload: function() {
-      this.cacheOnly = true;
       var xhr = this.xhrRequest(getPath());
       var json = JSON.parse(xhr.responseText);
       this.cache = json;
+      this.cacheOnly = true;
     },
 
     fixtureNames: function() {

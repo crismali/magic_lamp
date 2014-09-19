@@ -129,6 +129,12 @@ describe('Genie', function() {
       expect(subject.cacheOnly).to.equal(true);
     });
 
+    it('does not set cacheOnly to true if the request fails', function() {
+      subject.xhrRequest = function() { throw new Error(); }
+      expect(function() { subject.preload(); }).to.throw();
+      expect(subject.cacheOnly).to.equal(false);
+    });
+
     it('makes a request to the specified path if defined', function() {
       var path = MagicLamp.path = '/normal_lamp';
       stub(subject, 'xhrRequest', { responseText: '{}' });
