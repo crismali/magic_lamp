@@ -112,8 +112,8 @@ beforeEach(function() {
   MagicLamp.load("orders/form");
 });
 ```
-which will put the `orders/form` partial in a div with a class of `magic-lamp`. Then you
-can go nuts testing your JavaScript against your actual template. If you'd like to only make
+which will put the `orders/form` partial in a div with a class of `magic-lamp` (this all happens synchronously).
+Then you can go nuts testing your JavaScript against your actual template. If you'd like to only make
 one request for your templates, simply call [`MagicLamp.preload();`](#preload) in your `spec_helper.js` to
 populate Magic Lamp's cache.
 
@@ -245,6 +245,8 @@ container if present so you never end up with duplicate fixture containers or en
 dom elements from previous loads. It will hit the network only on the first request for a given
 fixture. If you never want `load` to hit the network, call `MagicLamp.preload()` before your specs.
 
+The call to get your template is completely synchronous.
+
 Example:
 ```js
   beforeEach(function() {
@@ -255,6 +257,8 @@ Example:
 Call `MagicLamp.preload` to load all of your templates into MagicLamp's cache. This means you'll
 only hit the network once, so the rest of your specs will be quicker and you can go wild stubbing the
 network.
+
+The call to get your templates is completely synchronous.
 
 Example:
 ```js
