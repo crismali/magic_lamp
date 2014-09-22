@@ -48,7 +48,7 @@ Then drop this:
 ```js
 //= require magic_lamp
 ```
-at the top of your `spec_helper.js` (assuming your using [Teaspoon](https://github.com/modeset/teaspoon) or another JavaScript spec runner for Rails that
+at the top of your `spec_helper.js` (assuming you're using [Teaspoon](https://github.com/modeset/teaspoon) or another JavaScript spec runner for Rails that
 allows for the use of Sprockets directives).
 
 Now you've got the basic setup.
