@@ -14,7 +14,12 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require "fantaskspec"
+MAIN_OBJECT = self
+
 RSpec.configure do |config|
+  config.infer_rake_task_specs_from_file_location!
+
   config.before(:each) do
     MagicLamp.registered_fixtures = {}
     MagicLamp.configuration = MagicLamp::Configuration.new

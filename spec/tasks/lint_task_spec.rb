@@ -1,17 +1,11 @@
 require "rails_helper"
 
-describe "Lint task" do
-  let(:task) { Rake::Task["magic_lamp:lint"] }
+describe "magic_lamp:lint" do
+  it { is_expected.to depend_on(:environment) }
 
   it "generates all fixtures" do
     expect(MagicLamp).to receive(:generate_all_fixtures)
-    dummy = double(puts: nil)
-    task_proc = task.actions.first
-    dummy.instance_eval(&task_proc)
-  end
-
-  it "depends on the environment task" do
-    prereqs = task.all_prerequisite_tasks
-    expect(prereqs).to include(Rake::Task["environment"])
+    allow(MAIN_OBJECT).to receive(:puts).and_return(:puts)
+    subject.execute
   end
 end
