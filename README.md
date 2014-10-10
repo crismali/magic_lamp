@@ -78,8 +78,7 @@ MagicLamp.configure do |config|
   end
 end
 ```
-in a file called `magic_lamp_config.rb` which you can place anywhere in your `spec` or `test` directories. You could
- configure Magic Lamp in your `teaspoon_env.rb` file as well.
+in a file called `magic_lamp_config.rb` which you can place anywhere in your `spec` or `test` directories.
 
 This way you can take advantage of `after_create` callbacks for your fixture setup without polluting
 your database every time you run your JavaScript specs.
