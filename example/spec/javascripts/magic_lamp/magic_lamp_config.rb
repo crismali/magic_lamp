@@ -1,5 +1,11 @@
 require "database_cleaner"
 
+module AuthenticationStub
+  def current_user
+    @current_user ||= User.create! email: "bar@example.com", password: "password"
+  end
+end
+
 MagicLamp.configure do |config|
 
   DatabaseCleaner.strategy = :transaction

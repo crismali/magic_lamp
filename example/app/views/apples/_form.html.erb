@@ -1,0 +1,17 @@
+<%= form_for(@apple) do |f| %>
+  <% if @apple.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@apple.errors.count, "error") %> prohibited this apple from being saved:</h2>
+
+      <ul>
+      <% @apple.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

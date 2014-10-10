@@ -9,3 +9,8 @@ gem "jquery-rails"
 gem "teaspoon", "0.8.0"
 gem "magic_lamp", "1.0.0"
 gem "database_cleaner"
+gem "devise"
+
+gem "pry"
+gem "pry-nav"
+gem "pry-doc"

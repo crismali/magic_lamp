@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :apples
+
+  devise_for :users
   resources :orders
   mount MagicLamp::Genie, at: "/magic_lamp" if defined?(MagicLamp)
   # The priority is based upon order of creation: first created -> highest priority.
