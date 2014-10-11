@@ -106,7 +106,7 @@ describe MagicLamp do
             subject.register_fixture { render :foo }
           end
 
-          context "1 hash argument" do
+          context "1 hash argument to render" do
             it "raises an error if it can't figure out a default name" do
               expect do
                 subject.register_fixture(controller: ::ApplicationController) { render collection: [1, 2, 3] }
