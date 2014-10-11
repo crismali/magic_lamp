@@ -154,7 +154,7 @@ describe MagicLamp do
     it "does not raise an error if there's no config" do
       allow(Dir).to receive(:[]).and_return([])
       expect(subject).to_not receive(:registered_fixtures)
-      subject.load_config
+      expect { subject.load_config }.to_not raise_error
     end
   end
 
@@ -181,7 +181,6 @@ describe MagicLamp do
   end
 
   describe "#registered?" do
-
     it "returns true if the fixture is registered" do
       subject.registered_fixtures["foo"] = :something
       expect(subject.registered?("foo")).to eq(true)
