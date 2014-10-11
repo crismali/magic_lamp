@@ -53,7 +53,7 @@ describe MagicLamp do
 
     it "caches the controller class and block" do
       subject.register_fixture(controller: controller_class, name: fixture_name, &block)
-      expect(subject.registered_fixtures[fixture_name]).to eq([controller_class, block])
+      expect(subject.registered_fixtures[fixture_name]).to eq(controller: controller_class, render_block: block)
     end
 
     it "raises an error without a block" do
@@ -76,7 +76,7 @@ describe MagicLamp do
 
       it "uses ApplicationController as the default controller" do
         subject.register_fixture { render :index }
-        expect(at_index.first).to eq(::ApplicationController)
+        expect(at_index[:controller]).to eq(::ApplicationController)
       end
 
       context "fixture name" do
@@ -92,13 +92,13 @@ describe MagicLamp do
             render_block = proc { render :index, foo: :bar }
             subject.register_fixture(controller: ::ApplicationController, &render_block)
 
-            expect(at_index).to eq([::ApplicationController, render_block])
+            expect(at_index).to eq(controller: ::ApplicationController, render_block: render_block)
           end
 
           it "uses the only argument when it isn't a hash" do
             render_block = proc { render :index }
             subject.register_fixture(controller: ::ApplicationController, &render_block)
-            expect(at_index).to eq([::ApplicationController, render_block])
+            expect(at_index).to eq(controller: ::ApplicationController, render_block: render_block)
           end
 
           it "passes its configuration object to the render catcher" do
@@ -116,13 +116,13 @@ describe MagicLamp do
             it "uses the name at the template key" do
               render_block = proc { render template: :index }
               subject.register_fixture(controller: ::ApplicationController, &render_block)
-              expect(at_index).to eq([::ApplicationController, render_block])
+              expect(at_index).to eq(controller: ::ApplicationController, render_block: render_block)
             end
 
             it "uses the name at the partial key" do
               render_block = proc { render partial: :index }
               subject.register_fixture(controller: ::ApplicationController, &render_block)
-              expect(at_index).to eq([::ApplicationController, render_block])
+              expect(at_index).to eq(controller: ::ApplicationController, render_block: render_block)
             end
           end
         end
@@ -131,14 +131,14 @@ describe MagicLamp do
           it "prepends the controller's name to the fixture_name" do
             render_block = proc { render partial: :index }
             subject.register_fixture(controller: OrdersController, &render_block)
-            expect(subject.registered_fixtures["orders/index"]).to eq([OrdersController, render_block])
+            expect(subject.registered_fixtures["orders/index"]).to eq(controller: OrdersController, render_block: render_block)
           end
 
           it "does not prepend the controller's name when it is already the beginning of the string" do
             render_block = proc { render partial: "orders/order" }
             subject.register_fixture(controller: OrdersController, &render_block)
             expect(subject.registered_fixtures["orders/orders/order"]).to be_nil
-            expect(subject.registered_fixtures["orders/order"]).to eq([OrdersController, render_block])
+            expect(subject.registered_fixtures["orders/order"]).to eq(controller: OrdersController, render_block: render_block)
           end
         end
       end
@@ -161,7 +161,7 @@ describe MagicLamp do
   describe "#load_lamp_files" do
     it "loads all lamp files" do
       subject.load_lamp_files
-      expect(subject.registered_fixtures["orders/foo"]).to be_an(Array)
+      expect(subject.registered_fixtures["orders/foo"]).to be_a(Hash)
     end
 
     it "blows out registered_fixtures on each call" do
@@ -196,7 +196,7 @@ describe MagicLamp do
     let(:block) { proc { render :foo } }
 
     before do
-      subject.registered_fixtures["foo_test"] = [OrdersController, block]
+      subject.registered_fixtures["foo_test"] = { controller: OrdersController, render_block: block }
     end
 
     it "returns the template" do
@@ -210,7 +210,7 @@ describe MagicLamp do
     end
 
     it "passes its configuration object to the render catcher" do
-      subject.registered_fixtures["foo"] = []
+      subject.registered_fixtures["foo"] = {}
       dummy = double(generate_template: :generate_template)
       expect(MagicLamp::FixtureCreator).to receive(:new).with(subject.configuration).and_return(dummy)
       subject.generate_fixture("foo")

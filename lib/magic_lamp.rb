@@ -37,16 +37,19 @@ module MagicLamp
       Rails.root.join(directory_path)
     end
 
-    def register_fixture(options = {}, &block)
+    def register_fixture(options = {}, &render_block)
       controller_class = options.fetch(:controller, ::ApplicationController)
-      raise_missing_block_error(block, __method__)
-      fixture_name = fixture_name_or_raise(options[:name], controller_class, block)
+      raise_missing_block_error(render_block, __method__)
+      fixture_name = fixture_name_or_raise(options[:name], controller_class, render_block)
 
       if registered?(fixture_name)
         raise AlreadyRegisteredFixtureError, "a fixture called '#{fixture_name}' has already been registered"
       end
 
-      registered_fixtures[fixture_name] = [controller_class, block]
+      registered_fixtures[fixture_name] = {
+        controller: controller_class,
+        render_block: render_block
+      }
     end
 
     alias_method :register, :register_fixture
@@ -78,7 +81,7 @@ module MagicLamp
       unless registered?(fixture_name)
         raise UnregisteredFixtureError, "'#{fixture_name}' is not a registered fixture"
       end
-      controller_class, block = registered_fixtures[fixture_name]
+      controller_class, block = registered_fixtures[fixture_name].values_at(:controller, :render_block)
       FixtureCreator.new(configuration).generate_template(controller_class, &block)
     end
 
