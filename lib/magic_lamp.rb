@@ -41,6 +41,7 @@ module MagicLamp
       raise_missing_block_error(render_block, __method__)
 
       controller_class = options[:controller] ||= ::ApplicationController
+      options[:extend] = []
       options[:render_block] = render_block
       fixture_name = fixture_name_or_raise(options.delete(:name), controller_class, render_block)
 
