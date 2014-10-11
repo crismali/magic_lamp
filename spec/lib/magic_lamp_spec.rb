@@ -10,6 +10,8 @@ describe MagicLamp do
   end
 
   context "aliases" do
+    it { is_expected.to alias_the_method(:register_fixture).to(:register) }
+    it { is_expected.to alias_the_method(:register_fixture).to(:fixture) }
     it { is_expected.to alias_the_method(:register_fixture).to(:rub) }
     it { is_expected.to alias_the_method(:register_fixture).to(:wish) }
   end

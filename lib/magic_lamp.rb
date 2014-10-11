@@ -49,6 +49,8 @@ module MagicLamp
       registered_fixtures[fixture_name] = [controller_class, block]
     end
 
+    alias_method :register, :register_fixture
+    alias_method :fixture, :register_fixture
     alias_method :rub, :register_fixture
     alias_method :wish, :register_fixture
 
