@@ -6,8 +6,7 @@ describe MagicLamp::RenderCatcher do
   it { is_expected.to be_kind_of(MagicLamp::Callbacks) }
 
   context "attr_accessor" do
-    it { is_expected.to respond_to :render_argument }
-    it { is_expected.to respond_to :render_argument= }
+    it { is_expected.to attr_accessorize :render_argument }
   end
 
   describe "#render" do

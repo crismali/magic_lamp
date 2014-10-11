@@ -2,14 +2,9 @@ require "rails_helper"
 
 describe MagicLamp::Configuration do
   context "attr_accessor" do
-    it { is_expected.to respond_to :before_each_proc }
-    it { is_expected.to respond_to :before_each_proc= }
-
-    it { is_expected.to respond_to :after_each_proc }
-    it { is_expected.to respond_to :after_each_proc= }
-
-    it { is_expected.to respond_to :infer_names }
-    it { is_expected.to respond_to :infer_names= }
+    it { is_expected.to attr_accessorize :before_each_proc }
+    it { is_expected.to attr_accessorize :after_each_proc }
+    it { is_expected.to attr_accessorize :infer_names }
   end
 
   describe "#initialize" do

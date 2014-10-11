@@ -29,6 +29,12 @@ RSpec::Matchers.define :alias_the_method do |method_name|
   end
 end
 
+RSpec::Matchers.define :attr_accessorize do |attribute_name|
+  match do |actual|
+    actual.respond_to?(attribute_name) && actual.respond_to?("#{attribute_name}=")
+  end
+end
+
 RSpec.configure do |config|
   config.infer_rake_task_specs_from_file_location!
 

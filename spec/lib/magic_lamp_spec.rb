@@ -2,11 +2,8 @@ require "rails_helper"
 
 describe MagicLamp do
   context "attr_accessor" do
-    it { is_expected.to respond_to :registered_fixtures }
-    it { is_expected.to respond_to :registered_fixtures= }
-
-    it { is_expected.to respond_to :configuration }
-    it { is_expected.to respond_to :configuration= }
+    it { is_expected.to attr_accessorize(:registered_fixtures) }
+    it { is_expected.to attr_accessorize(:configuration) }
   end
 
   context "aliases" do

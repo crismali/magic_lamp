@@ -8,8 +8,7 @@ describe MagicLamp::Callbacks do
   subject { DummyObject.new(MagicLamp::Configuration.new) }
 
   context "attr_accessor" do
-    it { is_expected.to respond_to(:configuration) }
-    it { is_expected.to respond_to(:configuration=) }
+    it { is_expected.to attr_accessorize(:configuration) }
   end
 
   describe "#initialize" do

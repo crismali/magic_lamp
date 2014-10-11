@@ -6,10 +6,7 @@ describe MagicLamp::FixtureCreator do
   it { is_expected.to be_kind_of(MagicLamp::Callbacks) }
 
   context "attr_accessor" do
-    context "render_arguments" do
-      it { is_expected.to respond_to :render_arguments }
-      it { is_expected.to respond_to :render_arguments= }
-    end
+    it { is_expected.to attr_accessorize :render_arguments }
   end
 
   describe "#generate_template" do
