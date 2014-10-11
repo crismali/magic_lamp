@@ -47,12 +47,14 @@ describe MagicLamp do
     let(:fixture_name) { "foo" }
     let(:controller_class) { "doesn't matter here" }
     let(:block) { proc { "so?" } }
+    let(:extensions) { [1, 2, 3] }
 
-    it "caches the controller class and block" do
-      subject.register_fixture(controller: controller_class, name: fixture_name, &block)
+    it "caches the controller class, block, and extensions" do
+      subject.register_fixture(controller: controller_class, name: fixture_name, extend: extensions, &block)
       at_fixture_name = subject.registered_fixtures[fixture_name]
       expect(at_fixture_name[:controller]).to eq(controller_class)
       expect(at_fixture_name[:render_block]).to eq(block)
+      expect(at_fixture_name[:extend]).to eq(extensions)
     end
 
     it "raises an error without a block" do
