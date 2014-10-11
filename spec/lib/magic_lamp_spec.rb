@@ -85,6 +85,16 @@ describe MagicLamp do
           subject.register_fixture { render :index }
           expect(at_index[:extend]).to eq([])
         end
+
+        it "wraps a bare object in an array" do
+          subject.register_fixture(extend: "foo") { render :index }
+          expect(at_index[:extend]).to eq(["foo"])
+        end
+
+        it "does not double wrap an array" do
+          subject.register_fixture(extend: ["foo"]) { render :index }
+          expect(at_index[:extend]).to eq(["foo"])
+        end
       end
 
       context "fixture name" do
