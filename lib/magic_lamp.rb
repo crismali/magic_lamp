@@ -40,10 +40,10 @@ module MagicLamp
     def register_fixture(options = {}, &render_block)
       raise_missing_block_error(render_block, __method__)
 
-      controller_class = options[:controller] ||= ::ApplicationController
+      options[:controller] ||= ::ApplicationController
       options[:extend] ||= []
       options[:render_block] = render_block
-      fixture_name = fixture_name_or_raise(options.delete(:name), controller_class, render_block)
+      fixture_name = fixture_name_or_raise(options.delete(:name), options[:controller], render_block)
 
       if registered?(fixture_name)
         raise AlreadyRegisteredFixtureError, "a fixture called '#{fixture_name}' has already been registered"
