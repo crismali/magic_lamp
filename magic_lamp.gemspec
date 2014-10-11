@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "fantaskspec"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-nav"
+  s.add_development_dependency "pry-doc"
   s.add_development_dependency "bundler", "~> 1.6"
   s.add_development_dependency "database_cleaner"
 end
