@@ -62,7 +62,7 @@ describe MagicLamp do
       end.to raise_error(MagicLamp::ArgumentError, /register_fixture requires a block/)
     end
 
-    context "don't infer names" do
+    context "without name inference" do
       it "raises an error without a specified name" do
         subject.configuration.infer_names = false
         expect do
