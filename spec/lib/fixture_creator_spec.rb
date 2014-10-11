@@ -11,7 +11,7 @@ describe MagicLamp::FixtureCreator do
 
   describe "#generate_template" do
     let(:rendered) do
-      subject.generate_template(OrdersController) do
+      subject.generate_template(OrdersController, []) do
         render :foo
       end
     end
@@ -29,7 +29,7 @@ describe MagicLamp::FixtureCreator do
       expect(subject).to receive(:execute_before_each_callback).ordered
       expect(dummy).to receive(:render).ordered
       expect(subject).to receive(:execute_after_each_callback).ordered
-      subject.generate_template(OrdersController) do
+      subject.generate_template(OrdersController, []) do
         dummy.render
         render :foo
       end
@@ -38,11 +38,21 @@ describe MagicLamp::FixtureCreator do
 
   describe "#new_controller" do
     it "returns an instance of the passed controller class" do
-      expect(subject.new_controller(OrdersController) {}).to be_a(OrdersController)
+      expect(subject.new_controller(OrdersController, []) {}).to be_a(OrdersController)
     end
 
     context "contoller" do
-      let(:controller) { subject.new_controller(OrdersController) { params[:foo] = "bar" } }
+      module Foo
+        def foo_module_method
+        end
+      end
+
+      module Bar
+        def bar_module_method
+        end
+      end
+
+      let(:controller) { subject.new_controller(OrdersController, [Foo, Bar]) { params[:foo] = "bar" } }
 
       it "can have render_to_string called on it without blowing up" do
         expect do
@@ -52,6 +62,11 @@ describe MagicLamp::FixtureCreator do
 
       it "has had its state set by the given block" do
         expect(controller.params[:foo]).to eq("bar")
+      end
+
+      it "has been extended with the extensions" do
+        expect(controller).to respond_to(:foo_module_method)
+        expect(controller).to respond_to(:bar_module_method)
       end
 
       context "stubbed controller#render" do

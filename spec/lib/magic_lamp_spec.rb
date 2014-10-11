@@ -207,13 +207,19 @@ describe MagicLamp do
 
   describe "#generate_fixture" do
     let(:block) { proc { render :foo } }
+    let(:fixture_name) { "foo_test" }
+    let(:extensions) { 3.times.map { Module.new } }
 
     before do
-      subject.registered_fixtures["foo_test"] = { controller: OrdersController, render_block: block }
+      subject.registered_fixtures[fixture_name] = {
+        controller: OrdersController,
+        render_block: block,
+        extend: extensions
+      }
     end
 
     it "returns the template" do
-      expect(subject.generate_fixture("foo_test")).to eq("foo\n")
+      expect(subject.generate_fixture(fixture_name)).to eq("foo\n")
     end
 
     it "raises an error when told to generate a template that is not registered" do
@@ -222,11 +228,21 @@ describe MagicLamp do
       end.to raise_error(MagicLamp::UnregisteredFixtureError, /is not a registered fixture/)
     end
 
-    it "passes its configuration object to the render catcher" do
-      subject.registered_fixtures["foo"] = {}
+    it "passes its configuration object to the fixture creator" do
       dummy = double(generate_template: :generate_template)
       expect(MagicLamp::FixtureCreator).to receive(:new).with(subject.configuration).and_return(dummy)
-      subject.generate_fixture("foo")
+      subject.generate_fixture(fixture_name)
+    end
+
+    it "passes the controller, extensions, and block to the fixture creator's generate_template method" do
+      dummy = double
+      allow(MagicLamp::FixtureCreator).to receive(:new).and_return(dummy)
+      expect(dummy).to receive(:generate_template) do |controller, extend_args, &passed_block|
+        expect(controller).to eq(OrdersController)
+        expect(extend_args).to eq(extensions)
+        expect(passed_block).to eq(block)
+      end
+      subject.generate_fixture(fixture_name)
     end
   end
 

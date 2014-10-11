@@ -81,8 +81,8 @@ module MagicLamp
       unless registered?(fixture_name)
         raise UnregisteredFixtureError, "'#{fixture_name}' is not a registered fixture"
       end
-      controller_class, block = registered_fixtures[fixture_name].values_at(:controller, :render_block)
-      FixtureCreator.new(configuration).generate_template(controller_class, &block)
+      controller_class, block, extensions = registered_fixtures[fixture_name].values_at(:controller, :render_block, :extend)
+      FixtureCreator.new(configuration).generate_template(controller_class, extensions, &block)
     end
 
     def generate_all_fixtures

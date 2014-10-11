@@ -4,17 +4,18 @@ module MagicLamp
 
     attr_accessor :render_arguments
 
-    def generate_template(controller_class, &block)
+    def generate_template(controller_class, extensions, &block)
       execute_before_each_callback
-      controller = new_controller(controller_class, &block)
+      controller = new_controller(controller_class, extensions, &block)
       munged_arguments = munge_arguments(render_arguments)
       rendered = controller.render_to_string(*munged_arguments)
       execute_after_each_callback
       rendered
     end
 
-    def new_controller(controller_class, &block)
+    def new_controller(controller_class, extensions, &block)
       controller = controller_class.new
+      extensions.each { |extension| controller.extend(extension) }
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
       controller.instance_eval(&block)
