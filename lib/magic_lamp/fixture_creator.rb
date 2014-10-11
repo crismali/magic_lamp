@@ -15,7 +15,10 @@ module MagicLamp
 
     def new_controller(controller_class, extensions, &block)
       controller = controller_class.new
-      extensions.each { |extension| controller.extend(extension) }
+      extensions.each do |extension|
+        controller.extend(extension)
+        controller.view_context.class.include(extension)
+      end
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
       controller.instance_eval(&block)

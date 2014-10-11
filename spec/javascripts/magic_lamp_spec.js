@@ -210,6 +210,11 @@ describe('MagicLamp', function() {
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
     });
 
+    it('can load fixtures with extensions', function() {
+      subject.load('orders/needs_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\n');
+    });
+
     it('can load fixtures with specified names and controllers', function() {
       subject.load('super_specified')
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');

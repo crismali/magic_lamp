@@ -65,8 +65,17 @@ describe MagicLamp::FixtureCreator do
       end
 
       it "has been extended with the extensions" do
+        expect(controller.class.ancestors).to_not include(Foo)
+        expect(controller.class.ancestors).to_not include(Bar)
         expect(controller).to respond_to(:foo_module_method)
         expect(controller).to respond_to(:bar_module_method)
+      end
+
+      context "view_context" do
+        it "has the extensions mixed into it" do
+          expect(controller.view_context.class.ancestors).to include(Foo)
+          expect(controller.view_context.class.ancestors).to include(Bar)
+        end
       end
 
       context "stubbed controller#render" do

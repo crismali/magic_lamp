@@ -121,7 +121,7 @@ describe('Genie', function() {
   describe('#preload', function() {
     it('requests all of the fixtures and puts them in the cache', function() {
       subject.preload();
-      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form', 'custom_name', 'super_specified']);
+      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form', 'custom_name', 'super_specified', 'orders/needs_extending']);
     });
 
     it('sets cacheOnly to true', function() {
