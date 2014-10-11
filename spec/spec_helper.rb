@@ -17,6 +17,16 @@
 require "fantaskspec"
 MAIN_OBJECT = self
 
+RSpec::Matchers.define :alias_the_method do |method_name|
+  match do |actual|
+    actual.method(method_name) == actual.method(@other_method_name)
+  end
+
+  chain :to do |other_method_name|
+    @other_method_name = other_method_name
+  end
+end
+
 RSpec.configure do |config|
   config.infer_rake_task_specs_from_file_location!
 

@@ -10,15 +10,8 @@ describe MagicLamp do
   end
 
   context "aliases" do
-    let(:register_fixture) { subject.method(:register_fixture) }
-
-    it "rub is the same as register_fixture" do
-      expect(subject.method(:rub)).to eq(register_fixture)
-    end
-
-    it "wish is the same as register_fixture" do
-      expect(subject.method(:wish)).to eq(register_fixture)
-    end
+    it { is_expected.to alias_the_method(:register_fixture).to(:rub) }
+    it { is_expected.to alias_the_method(:register_fixture).to(:wish) }
   end
 
   describe "#configure" do
