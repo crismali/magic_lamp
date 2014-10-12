@@ -12,6 +12,28 @@ describe MagicLamp do
     end
   end
 
+  describe "#define" do
+    let(:block) { proc { "foo" } }
+    let(:options) { { foo: :bar } }
+
+    it "creates a new defaults manager and yields it to the block" do
+      suspect = nil
+      subject.define(options) do |block_arg|
+        suspect = block_arg
+      end
+      expect(suspect).to be_a(MagicLamp::DefaultsManager)
+      expect(suspect.configuration).to eq(subject.configuration)
+      expect(suspect.defaults).to eq(options)
+      expect(suspect.parent).to be_nil
+    end
+
+    it "raises an error if it's not given a block" do
+      expect do
+        subject.define
+      end.to raise_error(MagicLamp::ArgumentError, /define requires a block/)
+    end
+  end
+
   describe "#configure" do
     it "yields a configuration object to the block" do
       subject.configure do |config|
