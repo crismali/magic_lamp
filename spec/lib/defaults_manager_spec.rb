@@ -139,6 +139,12 @@ describe MagicLamp::DefaultsManager do
         end
         subject.register_fixture(given_options, &block)
       end
+
+      it "does not require options to be passed in" do
+        expect do
+          subject.register_fixture { render :foo }
+        end.to_not raise_error
+      end
     end
   end
 end

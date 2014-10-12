@@ -12,7 +12,9 @@ module AuthStub
   end
 end
 
-MagicLamp.fixture(extend: AuthStub) do
-  current_user_name # called here to make sure we can call it here
-  render "orders/needs_extending"
+MagicLamp.define(extend: AuthStub) do |genie|
+  genie.fixture do
+    current_user_name # called here to make sure we can call it here
+    render "orders/needs_extending"
+  end
 end

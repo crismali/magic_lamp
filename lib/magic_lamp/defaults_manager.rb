@@ -34,7 +34,7 @@ module MagicLamp
       block.call(new_manager)
     end
 
-    def register_fixture(options, &block)
+    def register_fixture(options = {}, &block)
       merged_options = merge_with_defaults(options)
       MagicLamp.register_fixture(merged_options, &block)
     end
