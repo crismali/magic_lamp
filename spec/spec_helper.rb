@@ -20,7 +20,9 @@ MAIN_OBJECT = self
 RSpec::Matchers.define :alias_the_method do |method_name|
   match do |actual|
     if actual.respond_to?(method_name) && actual.respond_to?(@other_method_name)
-      actual.method(method_name) == actual.method(@other_method_name)
+      aliased_method = actual.method(@other_method_name)
+      original_method = actual.method(method_name)
+      aliased_method.original_name == original_method.name
     end
   end
 
