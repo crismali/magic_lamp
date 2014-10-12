@@ -126,15 +126,15 @@ describe MagicLamp do
           end.to raise_error(MagicLamp::AlreadyRegisteredFixtureError, "a fixture called 'index' has already been registered")
         end
 
-        context "ApplicationController" do
+        context "with ApplicationController" do
           let(:index) { "index" }
 
-          it "uses the first argument to render when given 2" do
+          it "is the first argument to render when given 2" do
             subject.register_fixture(controller: ::ApplicationController) { render :index, foo: :bar }
             expect(subject.registered_fixtures).to have_key(index)
           end
 
-          it "uses the only argument when it isn't a hash" do
+          it "is the only argument when it isn't a hash" do
             subject.register_fixture(controller: ::ApplicationController) { render :index }
             expect(subject.registered_fixtures).to have_key(index)
           end
@@ -144,27 +144,27 @@ describe MagicLamp do
             subject.register_fixture { render :foo }
           end
 
-          context "1 hash argument to render" do
+          context "and 1 hash argument to render" do
             it "raises an error if it can't figure out a default name" do
               expect do
                 subject.register_fixture(controller: ::ApplicationController) { render collection: [1, 2, 3] }
               end.to raise_error(MagicLamp::AmbiguousFixtureNameError, /Unable to infer fixture name/)
             end
 
-            it "uses the name at the template key" do
+            it "is the name at the template key" do
               subject.register_fixture(controller: ::ApplicationController) { render template: :index }
               expect(subject.registered_fixtures).to have_key(index)
             end
 
-            it "uses the name at the partial key" do
+            it "is the name at the partial key" do
               subject.register_fixture(controller: ::ApplicationController) { render partial: :partial }
               expect(subject.registered_fixtures).to have_key("partial")
             end
           end
         end
 
-        context "other controller" do
-          it "prepends the controller's name to the fixture_name" do
+        context "with another controller" do
+          it "namespaces the fixture name with the controller's name" do
             subject.register_fixture(controller: OrdersController) { render partial: :index }
             expect(subject.registered_fixtures).to_not have_key("index")
             expect(subject.registered_fixtures).to have_key("orders/index")
