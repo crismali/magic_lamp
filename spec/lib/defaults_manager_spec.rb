@@ -114,4 +114,25 @@ describe MagicLamp::DefaultsManager do
       end.to raise_error(MagicLamp::ArgumentError, "`define` requires a block")
     end
   end
+
+  describe "#register_fixture" do
+    context "calling MagicLamp.register_fixture" do
+      let(:configuration) { MagicLamp::Configuration.new }
+      let(:block) { proc { "foo" } }
+      let(:given_options) { { this: :is_there } }
+      let(:parent_defaults) { { parent: :defaults, this: :is_ignored } }
+      let(:subject_defaults) { { subject: :defaults, this: :is_not_there_either } }
+      let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults) }
+      subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
+      let(:expected_options) { { this: :is_there, subject: :defaults, parent: :defaults } }
+
+      it "passes the block and the given options (merged with defaults) through" do
+        expect(MagicLamp).to receive(:register_fixture) do |options, &passed_block|
+          expect(options).to eq(expected_options)
+          expect(passed_block).to eq(block)
+        end
+        subject.register_fixture(given_options, &block)
+      end
+    end
+  end
 end
