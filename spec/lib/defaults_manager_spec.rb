@@ -107,5 +107,11 @@ describe MagicLamp::DefaultsManager do
       expect(suspect.configuration).to eq(subject.configuration)
       expect(suspect.parent).to eq(subject)
     end
+
+    it "raises an error if called without a block" do
+      expect do
+        subject.define(foo: :bar)
+      end.to raise_error(MagicLamp::ArgumentError, "`define` requires a block")
+    end
   end
 end

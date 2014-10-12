@@ -29,6 +29,7 @@ module MagicLamp
     end
 
     def define(new_defaults, &block)
+      raise ArgumentError, "`#{__method__}` requires a block" if block.nil?
       new_manager = self.class.new(configuration, new_defaults, self)
       block.call(new_manager)
     end
