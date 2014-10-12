@@ -76,7 +76,7 @@
       if (this.xhrStatus(xhr) === 400) {
         this.handleError(xhr.responseText);
       } else if (this.xhrStatus(xhr) === 500) {
-        this.handleError('Something went wrong while generating the fixture, please check the server log or run `rake magic_lamp:lint` for more information');
+        this.handleError('Something went wrong, please check the server log or run `rake magic_lamp:lint` for more information');
       }
       return xhr;
     },
