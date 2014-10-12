@@ -75,23 +75,25 @@ describe MagicLamp::DefaultsManager do
   end
 
   describe "#merge_with_defaults" do
-    let(:global_defaults) { { global: :defaults } }
-    let(:grandparent_defaults) { { grandparent: :defaults, that: :is_ignored } }
-    let(:parent_defaults) { { parent: :defaults, this: :is_ignored } }
-    let(:subject_defaults) { { subject: :defaults, this: :is_there } }
+    let(:global_defaults) { { global: :defaults, namespace: :global } }
+    let(:grandparent_defaults) { { grandparent: :defaults, that: :is_ignored, namespace: "" } }
+    let(:parent_defaults) { { parent: :defaults, this: :is_ignored, controller: OrdersController } }
+    let(:subject_defaults) { { subject: :defaults, this: :is_there, namespace: :subject } }
     let(:configuration) { MagicLamp::Configuration.new.tap { |config| config.global_defaults = global_defaults } }
     let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, grandparent_defaults) }
     let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults, grandparent) }
     subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
-    let(:actual) { subject.merge_with_defaults(that: :is_there) }
+    let(:actual) { subject.merge_with_defaults(that: :is_there, namespace: :passed, controller: OrdersController) }
     let(:expected_defaults) do
       {
+        controller: OrdersController,
         global: :defaults,
         grandparent: :defaults,
         parent: :defaults,
         subject: :defaults,
         this: :is_there,
-        that: :is_there
+        that: :is_there,
+        namespace: "global/orders/subject/passed"
       }
     end
 

@@ -23,11 +23,14 @@ module MagicLamp
 
     def merge_with_defaults(settings)
       all_defaults(settings).each_with_object({}) do |defaults, merged_defaults_hash|
+        defaults_namespace = defaults[:namespace] || defaults[:controller].try(:controller_name)
+        namespace = [merged_defaults_hash[:namespace], defaults_namespace].select(&:present?).join(FORWARD_SLASH)
         merged_defaults_hash.merge!(defaults)
+        merged_defaults_hash[:namespace] = namespace if namespace.present?
       end
     end
 
-    def define(new_defaults, &block)
+    def define(new_defaults = {}, &block)
       raise ArgumentError, "`#{__method__}` requires a block" if block.nil?
       new_manager = self.class.new(configuration, new_defaults, self)
       block.call(new_manager)

@@ -18,3 +18,17 @@ MagicLamp.define(extend: AuthStub) do |genie|
     render "orders/needs_extending"
   end
 end
+
+MagicLamp.define(controller: OrdersController) do |genie|
+  genie.define(namespace: :errors) do |errors_genie|
+    errors_genie.define do |nested_errors_genie|
+      nested_errors_genie.define(namespace: "foos") do |foos_genie|
+        foos_genie.define do |deeply_nested_genie|
+          deeply_nested_genie.fixture(controller: OrdersController, namespace: :bar, name: :baz) do
+            render :foo
+          end
+        end
+      end
+    end
+  end
+end
