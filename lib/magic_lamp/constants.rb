@@ -1,5 +1,6 @@
 module MagicLamp
   APPLICATION = "application"
+  FORWARD_SLASH = "/"
   LAMP = "_lamp"
   REGISTER_FIXTURE_ALIASES = [:register, :fixture, :rub, :wish]
   SPEC = "spec"

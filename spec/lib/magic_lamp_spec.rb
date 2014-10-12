@@ -66,7 +66,7 @@ describe MagicLamp do
 
   describe "#register_fixture" do
     let(:fixture_name) { "foo" }
-    let(:controller_class) { "doesn't matter here" }
+    let(:controller_class) { ::ApplicationController }
     let(:block) { proc { "so?" } }
     let(:extensions) { [1, 2, 3] }
 
@@ -161,19 +161,53 @@ describe MagicLamp do
               expect(subject.registered_fixtures).to have_key("partial")
             end
           end
+
+          context "namespacing" do
+            it "prepends the namespace to the front of the fixture name when inferred" do
+              subject.register_fixture(controller: ::ApplicationController, namespace: "foo") do
+                render :bar
+              end
+              expect(subject.registered_fixtures).to have_key("foo/bar")
+            end
+
+            it "prepends the namespace to the front of the fixture name when specified" do
+              subject.register_fixture(controller: ::ApplicationController, namespace: "foo", name: "baz") do
+                render :bar
+              end
+              expect(subject.registered_fixtures).to have_key("foo/baz")
+            end
+          end
         end
 
         context "with another controller" do
-          it "namespaces the fixture name with the controller's name" do
-            subject.register_fixture(controller: OrdersController) { render partial: :index }
-            expect(subject.registered_fixtures).to_not have_key("index")
-            expect(subject.registered_fixtures).to have_key("orders/index")
-          end
+          context "namespacing" do
+            context "unspecified namespace" do
+              it "namespaces the fixture name with the controller's name" do
+                subject.register_fixture(controller: OrdersController) { render partial: :index }
+                expect(subject.registered_fixtures).to_not have_key("index")
+                expect(subject.registered_fixtures).to have_key("orders/index")
+              end
 
-          it "does not prepend the controller's name when it is already the beginning of the string" do
-            subject.register_fixture(controller: OrdersController) { render partial: "orders/order" }
-            expect(subject.registered_fixtures).to_not have_key("orders/orders/order")
-            expect(subject.registered_fixtures).to have_key("orders/order")
+              it "does not prepend the controller's name when it is already the beginning of the string" do
+                subject.register_fixture(controller: OrdersController) { render partial: "orders/order" }
+                expect(subject.registered_fixtures).to_not have_key("orders/orders/order")
+                expect(subject.registered_fixtures).to have_key("orders/order")
+              end
+            end
+
+            context "specified namespace" do
+              it "does not use the controller's name as a namespace" do
+                subject.register_fixture(controller: OrdersController, namespace: "foo") { render partial: :index }
+                expect(subject.registered_fixtures).to_not have_key("orders/index")
+                expect(subject.registered_fixtures).to have_key("foo/index")
+              end
+
+              it "does not prepend the namespace when the fixture name starts with the string" do
+                subject.register_fixture(controller: OrdersController, namespace: "foo") { render partial: "foo/order" }
+                expect(subject.registered_fixtures).to_not have_key("foo/foo/order")
+                expect(subject.registered_fixtures).to have_key("foo/order")
+              end
+            end
           end
         end
       end

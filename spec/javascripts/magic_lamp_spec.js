@@ -216,7 +216,7 @@ describe('MagicLamp', function() {
     });
 
     it('can load fixtures with specified names and controllers', function() {
-      subject.load('super_specified')
+      subject.load('orders/super_specified')
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
     });
   });

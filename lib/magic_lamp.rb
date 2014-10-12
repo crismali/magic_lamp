@@ -24,9 +24,10 @@ module MagicLamp
       raise_missing_block_error(render_block, __method__)
 
       options[:controller] ||= ::ApplicationController
+      options[:namespace] ||= options[:controller].controller_name
       options[:extend] = Array(options[:extend])
       options[:render_block] = render_block
-      fixture_name = fixture_name_or_raise(options.delete(:name), options[:controller], render_block)
+      fixture_name = namespaced_fixture_name_or_raise(options)
 
       if registered?(fixture_name)
         raise AlreadyRegisteredFixtureError, "a fixture called '#{fixture_name}' has already been registered"
@@ -82,6 +83,27 @@ module MagicLamp
 
     private
 
+    def namespaced_fixture_name_or_raise(options)
+      fixture_name = options.delete(:name)
+      controller_class, render_block = options.values_at(:controller, :render_block)
+      fixture_name = fixture_name_or_raise(fixture_name, controller_class, render_block)
+      namespace_fixture_name(fixture_name, options[:namespace])
+    end
+
+    def namespace_fixture_name(fixture_name, namespace)
+      if should_namespace?(fixture_name, namespace)
+        [namespace, fixture_name].join(FORWARD_SLASH)
+      else
+        fixture_name
+      end
+    end
+
+    def should_namespace?(fixture_name, namespace)
+      namespace_regex = Regexp.new("\\A#{namespace}")
+      match = fixture_name.match(namespace_regex)
+      namespace.present? && namespace != APPLICATION && !match
+    end
+
     def fixture_name_or_raise(fixture_name, controller_class, block)
       if fixture_name.nil? && configuration.infer_names
         default_fixture_name(controller_class, block)
@@ -112,7 +134,6 @@ module MagicLamp
       if fixture_name.blank?
         raise AmbiguousFixtureNameError, "Unable to infer fixture name"
       end
-      fixture_name = prepend_controller_name(fixture_name, controller_class)
       fixture_name
     end
 
@@ -127,20 +148,6 @@ module MagicLamp
       else
         render_arg
       end
-    end
-
-    def prepend_controller_name(fixture_name, controller_class)
-      controller_name = controller_class.controller_name
-      if starts_with_controller_name?(fixture_name, controller_name)
-        fixture_name
-      else
-        "#{controller_name}/#{fixture_name}"
-      end
-    end
-
-    def starts_with_controller_name?(fixture_name, controller_name)
-      controller_name_regex = Regexp.new("\\A#{controller_name}")
-      fixture_name.match(controller_name_regex) || controller_name == APPLICATION
     end
 
     def directory_path
