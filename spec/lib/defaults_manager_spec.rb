@@ -75,9 +75,11 @@ describe MagicLamp::DefaultsManager do
   end
 
   describe "#merge_with_defaults" do
+    let(:extension) { Module.new }
+    let(:other_extension) { Module.new }
     let(:global_defaults) { { global: :defaults, namespace: :global } }
-    let(:grandparent_defaults) { { grandparent: :defaults, that: :is_ignored, namespace: "" } }
-    let(:parent_defaults) { { parent: :defaults, this: :is_ignored, controller: OrdersController } }
+    let(:grandparent_defaults) { { grandparent: :defaults, that: :is_ignored, namespace: "", extend: [extension] } }
+    let(:parent_defaults) { { parent: :defaults, this: :is_ignored, controller: OrdersController, extend: other_extension } }
     let(:subject_defaults) { { subject: :defaults, this: :is_there, namespace: :subject } }
     let(:configuration) { MagicLamp::Configuration.new.tap { |config| config.global_defaults = global_defaults } }
     let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, grandparent_defaults) }
@@ -93,7 +95,8 @@ describe MagicLamp::DefaultsManager do
         subject: :defaults,
         this: :is_there,
         that: :is_there,
-        namespace: "global/orders/subject/passed"
+        namespace: "global/orders/subject/passed",
+        extend: [extension, other_extension]
       }
     end
 
@@ -133,7 +136,7 @@ describe MagicLamp::DefaultsManager do
       let(:subject_defaults) { { subject: :defaults, this: :is_not_there_either } }
       let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults) }
       subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
-      let(:expected_options) { { this: :is_there, subject: :defaults, parent: :defaults } }
+      let(:expected_options) { { this: :is_there, subject: :defaults, parent: :defaults, extend: [] } }
 
       it "passes the block and the given options (merged with defaults) through" do
         expect(MagicLamp).to receive(:register_fixture) do |options, &passed_block|
