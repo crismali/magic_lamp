@@ -3,6 +3,7 @@ require "rake"
 require "magic_lamp/callbacks"
 
 require "magic_lamp/configuration"
+require "magic_lamp/defaults_manager"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 require "magic_lamp/engine"
