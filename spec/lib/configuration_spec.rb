@@ -5,11 +5,16 @@ describe MagicLamp::Configuration do
     it { is_expected.to attr_accessorize :before_each_proc }
     it { is_expected.to attr_accessorize :after_each_proc }
     it { is_expected.to attr_accessorize :infer_names }
+    it { is_expected.to attr_accessorize :global_defaults }
   end
 
   describe "#initialize" do
     it "infers names by default" do
       expect(subject.infer_names).to eq(true)
+    end
+
+    it "has an empty hash for global defaults" do
+      expect(subject.global_defaults).to eq({})
     end
   end
 

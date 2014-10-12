@@ -1,9 +1,10 @@
 module MagicLamp
   class Configuration
-    attr_accessor :after_each_proc, :before_each_proc, :infer_names
+    attr_accessor :after_each_proc, :before_each_proc, :infer_names, :global_defaults
 
     def initialize
       self.infer_names = true
+      self.global_defaults = {}
     end
 
     def before_each(&block)
