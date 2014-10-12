@@ -63,11 +63,12 @@ describe MagicLamp::DefaultsManager do
     let(:configuration) { MagicLamp::Configuration.new.tap { |config| config.global_defaults = global_defaults } }
     let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, grandparent_defaults) }
     let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults, grandparent) }
+    let(:passed_in_defaults) { { passed: :in } }
     subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
-    let(:actual) { subject.all_defaults }
-    let(:expected_defaults) { [global_defaults, grandparent_defaults, parent_defaults, subject_defaults] }
+    let(:actual) { subject.all_defaults(passed_in_defaults) }
+    let(:expected_defaults) { [global_defaults, grandparent_defaults, parent_defaults, subject_defaults, passed_in_defaults] }
 
-    it "returns the global defaults, all parent defaults, and the manager's defaults" do
+    it "returns the global defaults, all parent defaults, the manager's defaults, and the passed in defaults" do
       expect(actual).to match_array(expected_defaults)
       expect(actual).to eq(expected_defaults)
     end

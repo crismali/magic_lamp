@@ -17,15 +17,14 @@ module MagicLamp
       end
     end
 
-    def all_defaults
-      [configuration.global_defaults, *branch.map(&:defaults)]
+    def all_defaults(settings)
+      [configuration.global_defaults, *branch.map(&:defaults), settings]
     end
 
     def merge_with_defaults(settings)
-      merged_defaults = all_defaults.each_with_object({}) do |defaults, merged_defaults_hash|
+      all_defaults(settings).each_with_object({}) do |defaults, merged_defaults_hash|
         merged_defaults_hash.merge!(defaults)
       end
-      merged_defaults.merge(settings)
     end
 
     def define(new_defaults, &block)
