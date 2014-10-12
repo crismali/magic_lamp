@@ -1,40 +1,18 @@
 require "rake"
 
+require "magic_lamp/engine"
+require "magic_lamp/constants"
 require "magic_lamp/callbacks"
-
-module MagicLamp
-  REGISTER_FIXTURE_ALIASES = [:register, :fixture, :rub, :wish]
-end
 
 require "magic_lamp/configuration"
 require "magic_lamp/defaults_manager"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
-require "magic_lamp/engine"
 
 require "tasks/lint_task"
 require "tasks/fixture_names_task"
 
 module MagicLamp
-  APPLICATION = "application"
-  LAMP = "_lamp"
-  SPEC = "spec"
-  STARS = "**"
-  TEST = "test"
-  Genie = Engine
-
-  class AmbiguousFixtureNameError < StandardError
-  end
-
-  class UnregisteredFixtureError < StandardError
-  end
-
-  class AlreadyRegisteredFixtureError < StandardError
-  end
-
-  class ArgumentError < StandardError
-  end
-
   class << self
     attr_accessor :registered_fixtures, :configuration
 
