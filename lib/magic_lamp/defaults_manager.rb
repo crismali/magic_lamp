@@ -16,5 +16,9 @@ module MagicLamp
         branch([ancestor, *defaults_managers])
       end
     end
+
+    def all_defaults
+      [configuration.global_defaults, *branch.map(&:defaults)]
+    end
   end
 end
