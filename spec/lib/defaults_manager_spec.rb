@@ -9,6 +9,12 @@ describe MagicLamp::DefaultsManager do
     it { is_expected.to attr_accessorize(:defaults) }
   end
 
+  context "aliases" do
+    MagicLamp::REGISTER_FIXTURE_ALIASES.each do |method_name|
+      it { is_expected.to alias_the_method(:register_fixture).to(method_name) }
+    end
+  end
+
   describe "#initialize" do
     let(:configuration) { double }
     let(:defaults) { double }

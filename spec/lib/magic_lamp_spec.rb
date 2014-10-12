@@ -7,10 +7,9 @@ describe MagicLamp do
   end
 
   context "aliases" do
-    it { is_expected.to alias_the_method(:register_fixture).to(:register) }
-    it { is_expected.to alias_the_method(:register_fixture).to(:fixture) }
-    it { is_expected.to alias_the_method(:register_fixture).to(:rub) }
-    it { is_expected.to alias_the_method(:register_fixture).to(:wish) }
+    MagicLamp::REGISTER_FIXTURE_ALIASES.each do |method_name|
+      it { is_expected.to alias_the_method(:register_fixture).to(method_name) }
+    end
   end
 
   describe "#configure" do

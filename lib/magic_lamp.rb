@@ -2,6 +2,10 @@ require "rake"
 
 require "magic_lamp/callbacks"
 
+module MagicLamp
+  REGISTER_FIXTURE_ALIASES = [:register, :fixture, :rub, :wish]
+end
+
 require "magic_lamp/configuration"
 require "magic_lamp/defaults_manager"
 require "magic_lamp/fixture_creator"
@@ -53,10 +57,9 @@ module MagicLamp
       registered_fixtures[fixture_name] = options
     end
 
-    alias_method :register, :register_fixture
-    alias_method :fixture, :register_fixture
-    alias_method :rub, :register_fixture
-    alias_method :wish, :register_fixture
+    REGISTER_FIXTURE_ALIASES.each do |method_name|
+      alias_method method_name, :register_fixture
+    end
 
     def configure(&block)
       raise_missing_block_error(block, __method__)

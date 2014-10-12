@@ -38,5 +38,9 @@ module MagicLamp
       merged_options = merge_with_defaults(options)
       MagicLamp.register_fixture(merged_options, &block)
     end
+
+    REGISTER_FIXTURE_ALIASES.each do |method_name|
+      alias_method method_name, :register_fixture
+    end
   end
 end
