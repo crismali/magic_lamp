@@ -120,6 +120,10 @@ describe MagicLamp::DefaultsManager do
       expect(suspect.parent).to eq(subject)
     end
 
+    it "does not require a defaults hash argument" do
+      expect { subject.define {} }.to_not raise_error
+    end
+
     it "raises an error if called without a block" do
       expect do
         subject.define(foo: :bar)
