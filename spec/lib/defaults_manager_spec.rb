@@ -66,4 +66,29 @@ describe MagicLamp::DefaultsManager do
       expect(actual).to eq(expected_defaults)
     end
   end
+
+  describe "#merged_defaults" do
+    let(:global_defaults) { { global: :defaults } }
+    let(:grandparent_defaults) { { grandparent: :defaults } }
+    let(:parent_defaults) { { parent: :defaults, this: :is_ignored } }
+    let(:subject_defaults) { { subject: :defaults, this: :is_there } }
+    let(:configuration) { MagicLamp::Configuration.new.tap { |config| config.global_defaults = global_defaults } }
+    let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, grandparent_defaults) }
+    let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults, grandparent) }
+    subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
+    let(:actual) { subject.merged_defaults }
+    let(:expected_defaults) do
+      {
+        global: :defaults,
+        grandparent: :defaults,
+        parent: :defaults,
+        subject: :defaults,
+        this: :is_there
+      }
+    end
+
+    it "merges all of the branch's defaults into one hash where the children take precedence" do
+      expect(actual).to eq(expected_defaults)
+    end
+  end
 end
