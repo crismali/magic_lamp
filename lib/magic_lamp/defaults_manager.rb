@@ -26,5 +26,10 @@ module MagicLamp
         merged_defaults_hash.merge!(defaults)
       end
     end
+
+    def define(new_defaults, &block)
+      new_manager = self.class.new(configuration, new_defaults, self)
+      block.call(new_manager)
+    end
   end
 end
