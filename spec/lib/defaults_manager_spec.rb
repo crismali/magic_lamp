@@ -33,4 +33,19 @@ describe MagicLamp::DefaultsManager do
       expect(subject.parent).to eq(parent)
     end
   end
+
+  describe "#branch" do
+    let(:configuration) { MagicLamp::Configuration.new }
+    let(:great_grandparent) { MagicLamp::DefaultsManager.new(configuration, {}) }
+    let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, {}, great_grandparent) }
+    let(:parent) { MagicLamp::DefaultsManager.new(configuration, {}, grandparent) }
+    subject { MagicLamp::DefaultsManager.new(configuration, {}, parent) }
+    let(:actual) { subject.branch }
+    let(:branch) { [great_grandparent, grandparent, parent, subject] }
+
+    it "returns all of the manager's parents and itself in hierarchical order" do
+      expect(actual).to match_array(branch)
+      expect(actual).to eq(branch)
+    end
+  end
 end
