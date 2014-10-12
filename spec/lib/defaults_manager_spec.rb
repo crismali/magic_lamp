@@ -67,23 +67,24 @@ describe MagicLamp::DefaultsManager do
     end
   end
 
-  describe "#merged_defaults" do
+  describe "#merge_with_defaults" do
     let(:global_defaults) { { global: :defaults } }
-    let(:grandparent_defaults) { { grandparent: :defaults } }
+    let(:grandparent_defaults) { { grandparent: :defaults, that: :is_ignored } }
     let(:parent_defaults) { { parent: :defaults, this: :is_ignored } }
     let(:subject_defaults) { { subject: :defaults, this: :is_there } }
     let(:configuration) { MagicLamp::Configuration.new.tap { |config| config.global_defaults = global_defaults } }
     let(:grandparent) { MagicLamp::DefaultsManager.new(configuration, grandparent_defaults) }
     let(:parent) { MagicLamp::DefaultsManager.new(configuration, parent_defaults, grandparent) }
     subject { MagicLamp::DefaultsManager.new(configuration, subject_defaults, parent) }
-    let(:actual) { subject.merged_defaults }
+    let(:actual) { subject.merge_with_defaults(that: :is_there) }
     let(:expected_defaults) do
       {
         global: :defaults,
         grandparent: :defaults,
         parent: :defaults,
         subject: :defaults,
-        this: :is_there
+        this: :is_there,
+        that: :is_there
       }
     end
 

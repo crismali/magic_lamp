@@ -21,10 +21,11 @@ module MagicLamp
       [configuration.global_defaults, *branch.map(&:defaults)]
     end
 
-    def merged_defaults
-      all_defaults.each_with_object({}) do |defaults, merged_defaults_hash|
+    def merge_with_defaults(settings)
+      merged_defaults = all_defaults.each_with_object({}) do |defaults, merged_defaults_hash|
         merged_defaults_hash.merge!(defaults)
       end
+      merged_defaults.merge(settings)
     end
 
     def define(new_defaults, &block)
