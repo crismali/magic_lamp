@@ -22,13 +22,12 @@ module MagicLamp
     end
 
     def merge_with_defaults(settings)
-      all_defaults(settings).each_with_object({}) do |defaults, merged_defaults_hash|
-        defaults_namespace = defaults[:namespace] || defaults[:controller].try(:controller_name)
-        extensions = Array(merged_defaults_hash[:extend]) + Array(defaults[:extend])
-        namespace = [merged_defaults_hash[:namespace], defaults_namespace].select(&:present?).join(FORWARD_SLASH)
-        merged_defaults_hash.merge!(defaults)
-        merged_defaults_hash[:namespace] = namespace if namespace.present?
-        merged_defaults_hash[:extend] = extensions
+      all_defaults(settings).each_with_object({}) do |defaults_hash, merged_defaults_hash|
+        merged_namespaces = merge_namespaces(merged_defaults_hash, defaults_hash)
+        all_extensions = combine_extensions(merged_defaults_hash, defaults_hash)
+        merged_defaults_hash.merge!(defaults_hash)
+        merged_defaults_hash[:namespace] = merged_namespaces if merged_namespaces.present?
+        merged_defaults_hash[:extend] = all_extensions
       end
     end
 
@@ -45,6 +44,17 @@ module MagicLamp
 
     REGISTER_FIXTURE_ALIASES.each do |method_name|
       alias_method method_name, :register_fixture
+    end
+
+    private
+
+    def merge_namespaces(merged_defaults_hash, defaults_hash)
+      defaults_namespace = defaults_hash[:namespace] || defaults_hash[:controller].try(:controller_name)
+      [merged_defaults_hash[:namespace], defaults_namespace].select(&:present?).join(FORWARD_SLASH)
+    end
+
+    def combine_extensions(merged_defaults_hash, defaults_hash)
+      Array(merged_defaults_hash[:extend]) + Array(defaults_hash[:extend])
     end
   end
 end
