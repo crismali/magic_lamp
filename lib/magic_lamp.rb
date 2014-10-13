@@ -91,17 +91,22 @@ module MagicLamp
     end
 
     def namespace_fixture_name(fixture_name, namespace)
-      if should_namespace?(fixture_name, namespace)
-        [namespace, fixture_name].join(FORWARD_SLASH)
-      else
-        fixture_name
+      namespace_without_application = strip_application(namespace)
+      full_name = compose_full_name(namespace_without_application, fixture_name)
+
+      full_name.split(FORWARD_SLASH).each do |namespace_piece|
+        namespace_piece_doubled = [namespace_piece, namespace_piece].join(FORWARD_SLASH)
+        full_name.gsub!(namespace_piece_doubled, namespace_piece)
       end
+      full_name
     end
 
-    def should_namespace?(fixture_name, namespace)
-      namespace_regex = Regexp.new("\\A#{namespace}")
-      match = fixture_name.match(namespace_regex)
-      namespace.present? && namespace != APPLICATION && !match
+    def strip_application(namespace)
+      namespace.gsub(APPLICATION_MATCHER, EMPTY_STRING)
+    end
+
+    def compose_full_name(namespace, fixture_name)
+      [namespace, fixture_name].select(&:present?).join(FORWARD_SLASH)
     end
 
     def fixture_name_or_raise(fixture_name, controller_class, block)

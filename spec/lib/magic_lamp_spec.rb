@@ -126,6 +126,20 @@ describe MagicLamp do
           end.to raise_error(MagicLamp::AlreadyRegisteredFixtureError, "a fixture called 'index' has already been registered")
         end
 
+        context "namespacing" do
+          it "removes 'application'" do
+            subject.register_fixture(namespace: "application/orders/application/foos") { render :foo }
+            expect(subject.registered_fixtures).to_not have_key("application/orders/application/foos/foo")
+            expect(subject.registered_fixtures).to have_key("orders/foos/foo")
+          end
+
+          it "prevents double namespacing" do
+            subject.register_fixture(namespace: "orders/orders/foos/orders/orders/bars") { render :foo }
+            expect(subject.registered_fixtures).to_not have_key("orders/orders/foos/orders/orders/bars/foo")
+            expect(subject.registered_fixtures).to have_key("orders/foos/orders/bars/foo")
+          end
+        end
+
         context "with ApplicationController" do
           let(:index) { "index" }
 

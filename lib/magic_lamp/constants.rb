@@ -1,5 +1,7 @@
 module MagicLamp
   APPLICATION = "application"
+  APPLICATION_MATCHER = Regexp.compile("(\/#{APPLICATION}|#{APPLICATION}\/|#{APPLICATION})")
+  EMPTY_STRING = ""
   FORWARD_SLASH = "/"
   LAMP = "_lamp"
   REGISTER_FIXTURE_ALIASES = [:register, :fixture, :rub, :wish]
