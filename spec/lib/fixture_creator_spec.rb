@@ -73,8 +73,10 @@ describe MagicLamp::FixtureCreator do
 
       context "view_context" do
         it "has the extensions mixed into it" do
-          expect(controller.view_context.class.ancestors).to include(Foo)
-          expect(controller.view_context.class.ancestors).to include(Bar)
+          expect(controller.view_context.class.ancestors).to_not include(Foo)
+          expect(controller.view_context.class.ancestors).to_not include(Bar)
+          expect(controller.view_context).to respond_to(:foo_module_method)
+          expect(controller.view_context).to respond_to(:bar_module_method)
         end
       end
 

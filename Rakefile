@@ -27,7 +27,7 @@ namespace :spec do
   desc "Run both test suites"
   task :all do
     Rake::Task["spec"].invoke
-    Rake::Task["teaspoon"].invoke
+    Rake::Task["app:teaspoon"].invoke
   end
 end
 

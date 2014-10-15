@@ -54,7 +54,8 @@ module MagicLamp
     end
 
     def combine_extensions(merged_defaults_hash, defaults_hash)
-      Array(merged_defaults_hash[:extend]) + Array(defaults_hash[:extend])
+      all_extensions = Array(merged_defaults_hash[:extend]) + Array(defaults_hash[:extend])
+      all_extensions.reverse.uniq.reverse
     end
   end
 end

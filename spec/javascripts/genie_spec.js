@@ -128,7 +128,9 @@ describe('Genie', function() {
         'custom_name',
         'orders/super_specified',
         'orders/needs_extending',
-        'orders/errors/foos/bar/baz'
+        'orders/errors/foos/bar/baz',
+        'arbitrary/orders/other_admin_extending',
+        'arbitrary/orders/admin_extending'
       ]);
     });
 

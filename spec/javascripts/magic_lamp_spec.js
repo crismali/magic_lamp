@@ -212,12 +212,20 @@ describe('MagicLamp', function() {
 
     it('can load fixtures with extensions', function() {
       subject.load('orders/needs_extending');
-      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\n');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\n');
     });
 
     it('can load fixtures with specified names and controllers', function() {
       subject.load('orders/super_specified')
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+    });
+
+    it('can load fixtures deeply nested in define blocks', function() {
+      subject.load('arbitrary/orders/other_admin_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPeterson\n');
+
+      subject.load('arbitrary/orders/admin_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\n');
     });
   });
 });

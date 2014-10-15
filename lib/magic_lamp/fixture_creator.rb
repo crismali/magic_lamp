@@ -15,10 +15,8 @@ module MagicLamp
 
     def new_controller(controller_class, extensions, &block)
       controller = controller_class.new
-      extensions.each do |extension|
-        controller.extend(extension)
-        controller.view_context.class.include(extension)
-      end
+      redefine_view_context(controller, extensions)
+      extensions.each { |extension| controller.extend(extension) }
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
       controller.instance_eval(&block)
@@ -39,6 +37,14 @@ module MagicLamp
     end
 
     private
+
+    def redefine_view_context(controller, extensions)
+      controller.singleton_class.send(:define_method, :view_context) do |*args|
+        view_context = super(*args)
+        extensions.each { |extension| view_context.extend(extension) }
+        view_context
+      end
+    end
 
     def redefine_render(controller)
       fixture_creator = self
