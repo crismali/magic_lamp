@@ -49,7 +49,6 @@ MagicLamp.define do |genie|
   end
 end
 
-
 MagicLamp.define(controller: OrdersController) do |genie|
   genie.define(namespace: :errors) do |errors_genie|
     errors_genie.define do |nested_errors_genie|
