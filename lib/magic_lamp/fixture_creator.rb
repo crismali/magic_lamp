@@ -39,8 +39,8 @@ module MagicLamp
     private
 
     def redefine_view_context(controller, extensions)
-      controller.singleton_class.send(:define_method, :view_context) do |*args|
-        view_context = super(*args)
+      controller.singleton_class.send(:define_method, :view_context) do |*args, &block|
+        view_context = super(*args, &block)
         extensions.each { |extension| view_context.extend(extension) }
         view_context
       end
