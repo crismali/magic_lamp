@@ -49,7 +49,8 @@ module MagicLamp
     def define(options = {}, &block)
       raise_missing_block_error(block, __method__)
       defaults_manager = DefaultsManager.new(configuration, options)
-      block.call(defaults_manager)
+      defaults_manager.instance_eval(&block)
+      defaults_manager
     end
 
     def registered?(fixture_name)

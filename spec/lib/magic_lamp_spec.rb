@@ -16,12 +16,12 @@ describe MagicLamp do
     let(:block) { proc { "foo" } }
     let(:options) { { foo: :bar } }
 
-    it "creates a new defaults manager and yields it to the block" do
-      suspect = nil
-      subject.define(options) do |block_arg|
-        suspect = block_arg
+    it "creates a new defaults manager and evaluates the block in its context" do
+      suspect = subject.define(options) do |block_arg|
+        @foo = "foo"
       end
       expect(suspect).to be_a(MagicLamp::DefaultsManager)
+      expect(suspect.instance_variable_get(:@foo)).to eq("foo")
       expect(suspect.configuration).to eq(subject.configuration)
       expect(suspect.defaults).to eq(options)
       expect(suspect.parent).to be_nil

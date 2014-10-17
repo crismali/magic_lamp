@@ -108,13 +108,13 @@ describe MagicLamp::DefaultsManager do
   describe "#define" do
     let(:new_defaults) { { very_new: :defaults } }
 
-    it "creates a new defaults manager, passes it to the block" do
-      suspect = nil
-      subject.define(new_defaults) do |block_suspect|
-        suspect = block_suspect
+    it "creates a new defaults manager and evaluates the block in its context" do
+      suspect = subject.define(new_defaults) do
+        @foo = "foo"
       end
       expect(suspect).to be_a(MagicLamp::DefaultsManager)
       expect(suspect).to_not eq(subject)
+      expect(suspect.instance_variable_get(:@foo)).to eq("foo")
       expect(suspect.defaults).to eq(new_defaults)
       expect(suspect.configuration).to eq(subject.configuration)
       expect(suspect.parent).to eq(subject)
