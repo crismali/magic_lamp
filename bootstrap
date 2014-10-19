@@ -11,7 +11,7 @@ Dir.chdir("spec/dummy") do
 
   puts "Setting up dot env"
   dot_env_path = File.join(Dir.pwd, ".env")
-  FileUtils.rm(dot_env_path)
+  FileUtils.rm(dot_env_path) if File.exist?(dot_env_path)
   File.open(dot_env_path, "w") do |f|
     f.write(%(TEASPOON_ENV="#{teaspoon_env_path}"))
   end
