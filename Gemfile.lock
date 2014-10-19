@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    magic_lamp (1.0.0)
-      rails (>= 3.2)
+    magic_lamp (1.1.0)
+      rails (>= 4.0)
       rake
 
 GEM

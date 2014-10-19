@@ -1,3 +1,3 @@
 module MagicLamp
-  VERSION = "1.0.0"
+  VERSION = File.read(File.join(File.expand_path("../../..", __FILE__), "VERSION"))
 end

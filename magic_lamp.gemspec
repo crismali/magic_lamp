@@ -12,10 +12,10 @@ Gem::Specification.new do |s|
   s.description = "MagicLamp provides an easy way to get your Rails templates into your JavaScript specs."
   s.license     = "Apache"
 
-  s.files = Dir["{app,config,lib}/**/*", "LICENSE", "README.md"]
+  s.files = Dir["{app,config,lib}/**/*", "VERSION", "LICENSE", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", ">= 3.2"
+  s.add_dependency "rails", ">= 4.0"
   s.add_dependency "rake"
 
   s.add_development_dependency "sqlite3"
