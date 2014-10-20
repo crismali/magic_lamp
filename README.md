@@ -455,7 +455,7 @@ MagicLamp.polish => clean
 
 Contributing
 ------------
-1. Fork it
+1. [Fork it](https://github.com/crismali/magic_lamp/fork)
 2. Clone it locally
 3. Run the `./bootstrap` script
 4. Run the specs with `rake`
