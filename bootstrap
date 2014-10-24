@@ -3,9 +3,18 @@ require "fileutils"
 
 system "bundle install"
 
+teaspoon_env_path = File.join(Dir.pwd, "spec", "teaspoon_env.rb")
+
 Dir.chdir("spec/dummy") do
   puts "Creating and migrating dummy app's database..."
   system "bundle exec rake db:create db:migrate"
+
+  puts "Setting up dot env"
+  dot_env_path = File.join(Dir.pwd, ".env")
+  FileUtils.rm(dot_env_path) if File.exist?(dot_env_path)
+  File.open(dot_env_path, "w") do |f|
+    f.write(%(TEASPOON_ENV="#{teaspoon_env_path}"))
+  end
 end
 
 puts "Copying over `db` directory..."

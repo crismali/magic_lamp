@@ -1,19 +1,22 @@
 module MagicLamp
   class FixtureCreator
-    attr_accessor :render_arguments, :namespace
+    include Callbacks
 
-    def initialize
-      self.namespace = MagicLamp
-    end
+    attr_accessor :render_arguments
 
-    def generate_template(controller_class, &block)
-      controller = new_controller(controller_class, &block)
+    def generate_template(controller_class, extensions, &block)
+      execute_before_each_callback
+      controller = new_controller(controller_class, extensions, &block)
       munged_arguments = munge_arguments(render_arguments)
-      controller.render_to_string(*munged_arguments)
+      rendered = controller.render_to_string(*munged_arguments)
+      execute_after_each_callback
+      rendered
     end
 
-    def new_controller(controller_class, &block)
+    def new_controller(controller_class, extensions, &block)
       controller = controller_class.new
+      redefine_view_context(controller, extensions)
+      extensions.each { |extension| controller.extend(extension) }
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
       controller.instance_eval(&block)
@@ -34,6 +37,14 @@ module MagicLamp
     end
 
     private
+
+    def redefine_view_context(controller, extensions)
+      controller.singleton_class.send(:define_method, :view_context) do |*args, &block|
+        view_context = super(*args, &block)
+        extensions.each { |extension| view_context.extend(extension) }
+        view_context
+      end
+    end
 
     def redefine_render(controller)
       fixture_creator = self

@@ -22,6 +22,26 @@ describe('MagicLamp', function() {
     });
   });
 
+  describe('#fixtureNames', function() {
+    beforeEach(function() {
+      subject.initialize();
+      stub(subject.genie, 'fixtureNames', true);
+      subject.fixtureNames();
+    });
+
+    afterEach(function() {
+      delete subject.genie;
+    });
+
+    it('passes through to its genie instance', function() {
+      expect(subject.genie.fixtureNames).to.have.been.calledOnce;
+    });
+
+    it('returns the genie instance\'s return value', function() {
+      expect(subject.fixtureNames()).to.equal(true);
+    });
+  });
+
   describe('#globalize', function() {
     beforeEach(function() {
       subject.globalize();
@@ -130,47 +150,50 @@ describe('MagicLamp', function() {
     });
 
     afterEach(function() {
+      subject.clean();
       delete subject.genie;
     });
 
     it('can load the foo template and clean up', function() {
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.load('orders/foo');
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
     it('can preload the templates and clean up', function() {
       subject.preload();
-      expect(testFixtureContainer()).to.equal(null);
-      subject.load('orders/foo');
+      expect(testFixtureContainer()).to.be.undefined;
+      _(2).times(function() { subject.load('orders/foo'); });
+      expect(document.getElementsByClassName('magic-lamp').length).to.equal(1);
       expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.load('orders/bar');
       expect(testFixtureContainer().innerHTML).to.equal('bar\n');
-      subject.clean();
-      expect(testFixtureContainer()).to.equal(null);
+      _(3).times(function() { subject.clean(); });
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
-    it('can specify the id used for the fixture container', function() {
-      var newId = subject.id = 'the-eye';
+    it('can specify the class used for the fixture container', function() {
+      var newClass = subject.class = 'the-eye';
       subject.load('orders/foo');
-      expect(testFixtureContainer()).to.equal(null);
-      expect(document.getElementById(newId)).to.exist;
-      expect(document.getElementById(newId).innerHTML).to.equal('foo\n');
+      expect(testFixtureContainer()).to.be.undefined;
+      expect(findByClassName(newClass)).to.exist;
+      expect(findByClassName(newClass).innerHTML).to.equal('foo\n');
       subject.clean();
-      expect(document.getElementById(newId)).to.not.exist;
-      delete subject.id;
+      expect(findByClassName(newClass)).to.not.exist;
+      delete subject.class;
     });
 
     it('throws an error when it cannot find the template', function() {
       expect(function() {
         subject.load('not/gonna/happen');
       }).to.throw(/'not\/gonna\/happen' is not a registered fixture$/);
-
-      expect(testFixtureContainer()).to.equal(null);
+      _(3).times(function() { subject.clean(); });
+      subject.clean();
+      expect(testFixtureContainer()).to.be.undefined;
     });
 
     it('throws an error when it cannot find the preloaded template', function() {
@@ -178,8 +201,31 @@ describe('MagicLamp', function() {
       expect(function() {
         subject.load('still/not/gonna/happen');
       }).to.throw();
+      _(3).times(function() { subject.clean(); });
+      expect(testFixtureContainer()).to.be.undefined;
+    });
 
-      expect(testFixtureContainer()).to.equal(null);
+    it('can load fixtures with specified names', function() {
+      subject.load('custom_name');
+      expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+    });
+
+    it('can load fixtures with extensions', function() {
+      subject.load('orders/needs_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\n');
+    });
+
+    it('can load fixtures with specified names and controllers', function() {
+      subject.load('orders/super_specified')
+      expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+    });
+
+    it('can load fixtures deeply nested in define blocks', function() {
+      subject.load('arbitrary/orders/other_admin_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPeterson\n');
+
+      subject.load('arbitrary/orders/admin_extending');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\n');
     });
   });
 });

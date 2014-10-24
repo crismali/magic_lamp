@@ -14,7 +14,37 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require "fantaskspec"
+MAIN_OBJECT = self
+
+RSpec::Matchers.define :alias_the_method do |method_name|
+  match do |actual|
+    if actual.respond_to?(method_name) && actual.respond_to?(@other_method_name)
+      aliased_method = actual.method(@other_method_name)
+      original_method = actual.method(method_name)
+      aliased_method.original_name == original_method.name
+    end
+  end
+
+  chain :to do |other_method_name|
+    @other_method_name = other_method_name
+  end
+end
+
+RSpec::Matchers.define :attr_accessorize do |attribute_name|
+  match do |actual|
+    actual.respond_to?(attribute_name) && actual.respond_to?("#{attribute_name}=")
+  end
+end
+
 RSpec.configure do |config|
+  config.infer_rake_task_specs_from_file_location!
+
+  config.before(:each) do
+    MagicLamp.registered_fixtures = {}
+    MagicLamp.configuration = MagicLamp::Configuration.new
+  end
+
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
 
@@ -60,6 +90,7 @@ RSpec.configure do |config|
     # For more details, see:
     #   - http://myronmars.to/n/dev-blog/2012/06/rspecs-new-expectation-syntax
     expectations.syntax = :expect
+    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
   # rspec-mocks config goes here. You can use an alternate test double

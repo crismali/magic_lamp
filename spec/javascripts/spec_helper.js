@@ -37,10 +37,11 @@
 // You can require your own javascript files here. By default this will include everything in application, however you
 // may get better load performance if you require the specific files that are being used in the spec that tests them.
 //= require magic_lamp/application
+//= require support/underscore-1.6
 //= require support/chai
+//= require support/chai-fuzzy
 //= require support/sinon
 //= require support/sinon-chai
-//= require support/underscore-1.6
 window.expect = chai.expect;
 
 var spies;
@@ -65,12 +66,12 @@ function stub(object, method, retVal) {
   return stubObj;
 }
 
-function findById(id) {
-  return document.getElementById(id);
+function findByClassName(className) {
+  return document.getElementsByClassName(className)[0];
 }
 
 function testFixtureContainer() {
-  return findById('magic-lamp');
+  return findByClassName('magic-lamp');
 }
 
 function removeNode(node) {

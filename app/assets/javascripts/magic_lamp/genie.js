@@ -9,11 +9,12 @@
   Genie.prototype = {
 
     load: function(path) {
+      this.removeFixtureContainer();
       var fixture = this.cache[path];
       this.createFixtureContainer();
 
       if (!fixture && this.cacheOnly) {
-        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Such a bummer.');
+        throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Call `MagicLamp.fixtureNames()` to see what is registered.');
       } else if (!fixture) {
         var xhr = this.xhrRequest(getPath() + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
@@ -24,15 +25,30 @@
     },
 
     preload: function() {
-      this.cacheOnly = true;
       var xhr = this.xhrRequest(getPath());
       var json = JSON.parse(xhr.responseText);
       this.cache = json;
+      this.cacheOnly = true;
+    },
+
+    fixtureNames: function() {
+      var names = [];
+      for (fixtureName in this.cache) {
+        if (this.cache.hasOwnProperty(fixtureName)) {
+          names.push(fixtureName);
+        }
+      }
+      var sortedNames = names.sort();
+      for (var i = 0; i < sortedNames.length; i++) {
+        console.log(sortedNames[i]);
+      };
+
+      return sortedNames;
     },
 
     createFixtureContainer: function() {
       var div = document.createElement('div');
-      div.setAttribute('id', this.namespace.id || 'magic-lamp');
+      div.setAttribute('class', this.namespace.class || 'magic-lamp');
       this.fixtureContainer = div;
     },
 
@@ -57,10 +73,16 @@
       xhr.open('GET', path, false);
       xhr.send();
 
-      if (xhr.status !== 200) {
+      if (this.xhrStatus(xhr) === 400) {
         this.handleError(xhr.responseText);
+      } else if (this.xhrStatus(xhr) === 500) {
+        this.handleError('Something went wrong, please check the server log or run `rake magic_lamp:lint` for more information');
       }
       return xhr;
+    },
+
+    xhrStatus: function(xhr) {
+      return xhr.status;
     }
   };
 
@@ -71,7 +93,8 @@
   }
 
   function remove(node) {
-    node.parentNode.removeChild(node);
+    var parentNode = node.parentNode;
+    parentNode && parentNode.removeChild(node);
   }
 
   function newXhr() {

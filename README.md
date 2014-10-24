@@ -1,30 +1,44 @@
-MagicLamp
+Magic Lamp
 =========
 ![](https://github.com/devmynd/magic_lamp/blob/master/magic_lamp.gif)
 
 MagicLamp makes sure that your JavaScript tests break when you change a template your code depends on.
+=======
+Magic Lamp helps you get your Rails templates into your JavaScript tests. This means that way your JavaScript tests break
+if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
+All you have to do is set up your data just like you would in a controller.
+
+It's not required that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript test runner, but you should.
+
+Table of Contents
+-----------------
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Where the files go](#where-the-files-go)
+4. [Tasks](#tasks)
+5. [Ruby API](#ruby-api)
+6. [JavaScript API](#javascript-api)
+7. [Errors](#errors)
+8. [Sweet Aliases](#sweet-aliases)
+9. [Contributing](#contributing)
 
 Installation
 ------------
 
-Add this line to your application's Gemfile:
-
-    gem "magic_lamp"
-
+Add this line to your application's `Gemfile`:
+```ruby
+  gem "magic_lamp"
+```
 And then execute:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself with:
 
     $ gem install magic_lamp
-    
-Setup
------
 
-### Rails side
-
-Fixtures are defined in files with the extension: `_lamp.rb`. You can place them anywhere in your `spec` or `test` directory, but `spec/javascript/fixtures/` is a good place to put them. You'll also need to mount MagicLamp in your `config/routes.rb` like so:
+Then paste `mount MagicLamp::Genie, at: "/magic_lamp" if defined?(MagicLamp)` into your `config/routes.rb`
+like so:
 ```ruby
 Rails.application.routes.draw do
   # ...
@@ -32,117 +46,406 @@ Rails.application.routes.draw do
   # ...
 end
 ```
+This mounts the Magic Lamp engine in your app.
 
-### JavaScript side
+Then drop this:
+```js
+//= require magic_lamp
+```
+at the top of your `spec_helper.js` (assuming you're using [Teaspoon](https://github.com/modeset/teaspoon) or another JavaScript spec runner for Rails that allows the use of Sprockets directives).
 
-You can use any rails JavaScript spec runner that runs your application's server. If you're using [Teaspoon](https://github.com/modeset/teaspoon), simply add `//= require magic_lamp` to your `spec_helper.js`.
+(I highly recommend that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript spec runner.)
 
-### Example
-Here's an [example app](https://github.com/crismali/magic_lamp/tree/master/example).
+Now you've got the basic setup.
 
-Usage
+In case you need it, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
+
+### With Database Cleaner
+
+You don't need [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) to use this gem, but this is probably the setup most people want.
+
+First make sure you have Database Cleaner installed, then you'll want to do something like this:
+```ruby
+require "database_cleaner"
+
+MagicLamp.configure do |config|
+
+  DatabaseCleaner.strategy = :transaction
+
+  config.before_each do
+    DatabaseCleaner.start
+  end
+
+  config.after_each do
+    DatabaseCleaner.clean
+  end
+end
+```
+in a file called `magic_lamp_config.rb` which you can place anywhere in your `spec` or `test` directories.
+
+This way you can take advantage of `after_create` callbacks for your fixture setup without polluting
+your database every time you run your JavaScript specs.
+
+Basic Usage
+-----------
+Magic Lamp will load all files in your `spec` or `test` directory that end with `_lamp.rb` (your app's
+"lamp files). I'd recommend starting with a single `magic_lamp.rb` file and breaking it into smaller
+files once it gets unwieldy (one for each controller would be a good approach).
+
+In your lamp files you just call [`MagicLamp.fixture`](#fixture) like so:
+```ruby
+MagicLamp.fixture do
+  @order = Order.new
+  render partial: "orders/form"
+end
+```
+Inside the block you pass to `fixture` you're in the scope of a controller so you
+can set up any instance variables your templates depend on. In this case we're
+using the default controller which is your `ApplicationController`. We're also
+using the default name for the fixture which is whatever `render` receives to
+identify the template (ie the symbol or string argument to `render` or
+whatever is at the `:template` or `:partial` key in the argument hash).
+
+`render` here also works normally except that it won't render the layout by default.
+
+Then in your JavaScript you can call [`load`](#load):
+```js
+beforeEach(function() {
+  MagicLamp.load("orders/form");
+});
+```
+which will put the `orders/form` partial in a div with a class of `magic-lamp` (this all happens synchronously).
+Then you can go nuts testing your JavaScript against your actual template. If you'd like to only make
+one request for your templates, simply call [`MagicLamp.preload();`](#preload) in your `spec_helper.js` to
+populate Magic Lamp's cache.
+
+### A few more examples
+Here we're specifying which controller should render the template via the arguments hash
+to `fixture`. This gives us access to helper methods in the `fixture` block
+and in the template. It also means we don't need a fully qualified path to the rendered template
+or partial.
+
+Since we didn't specify the name of our fixture and we're not using the `ApplicationController`
+to render the template the fixture will be named "orders/order".
+
+We're also taking advantage of `render`'s `:collection` option.
+```ruby
+MagicLamp.fixture(controller: OrdersController) do
+  orders = 3.times.map { Order.new }
+  render partial: "order", collection: orders
+end
+```
+
+Here we're specifying a name with the `:name` option that's passed to `fixture`.
+This way we can load the fixture in our JavaScript with `MagicLamp.load("custom/name")` instead
+of the default `MagicLamp.load("orders/foo")`. Custom names for fixtures must be url safe strings. We're also extending the controller and its view with the `AuthStub` module to stub some methods that we don't want executing in our fixtures.
+```ruby
+MagicLamp.fixture(name: "custom/name", extend: AuthStub) do
+  render "orders/foo"
+end
+```
+
+Here we're specifying both a controller and custom name. We're also setting the `params[:foo]`
+mostly to demonstrate that we have access to all of the usual controller methods.
+```ruby
+MagicLamp.fixture(controller: OrdersController, name: "other_custom_name") do
+  params[:foo] = "test"
+  render :foo
+end
+```
+If you're interested, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
+
+### Drying up your fixtures
+If you have several fixtures that depend on the same setup (same controller, extensions, etc), you can use the `define` method to dry things up:
+
+```ruby
+MagicLamp.define(controller: OrdersController, extend: AuthStub) do
+  fixture do # orders/new
+    @order = Order.new
+    render :new
+  end
+
+  fixture(name: "customized_new") do # orders/customized_new
+    session[:custom_user_info] = "likes movies"
+    @order = Order.new
+    render :new
+  end
+
+  fixture do # orders/form
+    @order = Order.new
+    render partial: :form
+  end
+
+  define(namespace: "errors", extend: DeadBeatUserStub)
+    fixture(name: "form_without_price") do # orders/errors/form_without_price
+      @order = Order.new
+      @order.errors.add(:price, "can't be blank")
+      render partial: :form
+    end
+
+    fixture do # orders/errors/form
+      @order = Order.new
+      @order.errors.add(:address, "can't be blank")
+      render partial: :form
+    end
+  end
+end
+```
+
+Where the files go
+------------------------
+### Config File
+Magic Lamp first loads the `magic_lamp_config.rb` file. It can be anywhere in your `spec` or `test`
+directory but it's not required.
+### Lamp files
+Magic Lamp will load any files in your `spec` or `test` directory that end with `_lamp.rb`.
+
+Tasks
 -----
+### fixture_names
+Call `rake magic_lamp:fixture_names` to see a list of all of your app's fixture names.
+### lint
+Call `rake magic_lamp:lint` to see if there are any errors when registering or rendering your fixtures.
 
-A fixture can be registered like so: 
+Ruby API
+--------
+### fixture
+(also aliased to `register_fixture` and `register`)
+
+It requires a block that invokes `render` which is invoked in the context of a controller.
+It also takes an optional hash of arguments. The arguments hash recognizes:
+* `:controller`
+  * specifies any controller class that you'd like to have render the template or partial.
+  * if specified it removes the need to pass fully qualified paths to templates to `render`
+  * the controller's name becomes the default `namespace`, ie `OrdersController` provides a default namespace of `orders` resulting in a template named `orders/foo`
+* `:name`
+  * whatever you'd like name the fixture.
+  * Specifying this option also prevents the block from being executed twice which could be a performance win. See [configure](#configure) for more.
+* `:extend`
+  * takes a module or an array of modules
+  * extends the controller and view context (via Ruby's `extend`)
+Also note that only symbol keys are recognized.
+
+`fixture` will also execute any callbacks you've specified. See [configure](#configure) for more.
+
+Example:
 ```ruby
-MagicLamp.register_fixture(OrdersController) do
+MagicLamp.fixture(name: "foo", controller: OrdersController) do
   @order = Order.new
-  render :new
+  render partial: :form
 end
 ```
 
-Then, to load this rendered template in your JavaScript specs, you do this:
+### define
+Allows you scope groups of fixtures with defaults and can be nested arbitrarily. It takes an optional hash and a required block. The hash accepts the following options:
+* `:controller`
+  * specifies any controller class that you'd like to have render the template or partial.
+  * if specified it removes the need to pass fully qualified paths to templates to `render`
+  * the controller's name becomes the default `namespace` if no namespace is provided, ie `OrdersController` provides a default namespace of `orders` resulting in a template named `orders/foo`
+* `:name`
+  * whatever you'd like name the fixture.
+  * Specifying this option also prevents the block from being executed twice which could be a performance win. See [configure](#configure) for more.
+* `:extend`
+  * takes a module or an array of modules
+  * extends the controller and view context (via Ruby's `extend`)
+* `:namespace`
+  * namespaces all fixtures defined within it
+  * overrides the default controller namespace if passed
+Also note that only symbol keys are recognized.
 
+Inside of the block you can nest more calls to `define` and create fixtures
+via the `fixture` method or one of its aliases.
+
+Example:
+```ruby
+module DefinesFoo
+  def foo
+    "foo!"
+  end
+end
+
+module AlsoDefinesFoo
+  def foo
+    "also foo!"
+  end
+end
+
+MagicLamp.define(controller: OrdersController, extend: DefinesFoo) do
+
+  fixture do # orders/edit
+    foo #=> "foo!"
+    @order = Order.create!
+    render :edit
+  end
+
+  fixture do # orders/new
+    foo #=> "foo!"
+    @order = Order.new
+    render :new
+  end
+
+  define(namespace: "errors", extend: AlsoDefinesFoo) do
+
+    fixture do # orders/errors/edit
+      foo #=> "also foo!"
+      @order = Order.create!
+      @order.errors.add(:price, "Can't be negative")
+      render :edit
+    end
+
+    fixture(extend: DefinesFoo) do # orders/errors/new
+      foo #=> "foo!"
+      @order = Order.new
+      @order.errors.add(:price, "Can't be negative")
+      render :new
+    end
+  end
+end
+```
+
+### configure
+It requires a block to which it yields the configuration object. Here you can set:
+* `before_each`
+  * takes a block
+  * defaults to `nil`
+  * called before each block you pass to `fixture` is executed
+  * note: if you call it a second time with a second block, only the second block will be executed
+* `after_each`
+  * takes a block
+  * defaults to `nil`
+  * called after each block you pass to `fixture` is executed
+  * note: if you call it a second time with a second block, only the second block will be executed
+* `global_defaults`
+  * can be set to a hash of default options that every fixture generated will inherit from. Options passed to `define` and `fixture` take precedence.
+  * accepts all of the keys `define` accepts
+* `infer_names`
+  * defaults to `true`
+  * if set to true, Magic Lamp will try to infer the name of the fixture when not provided with a name parameter.
+  * if set to false, the name parameter becomes required for `MagicLamp.fixture` (this can be done to improve performance or force your team to be more explicit)
+
+Example:
+
+```ruby
+module AuthStub
+  def current_user
+    @current_user ||= User.create!(
+      email: "foo@example.com",
+      password: "password"
+    )
+  end
+end
+
+MagicLamp.configure do |config|
+
+  # if you want to require the name parameter for the `fixture` method
+  config.infer_names = false
+
+  config.global_defaults = { extend: AuthStub }
+
+  config.before_each do
+    puts "I appear before the block passed to `fixture` executes!"
+  end
+
+  config.after_each do
+    puts "I appear after the block passed to `fixture` executes!"
+  end
+end
+```
+
+JavaScript API
+--------------
+### clean
+Calling `MagicLamp.clean()` will remove the Magic Lamp fixture container from the page.
+
+If you don't want any dom elements from a fixture hanging around between specs, throw it
+in a global `afterEach` block. Calling it with nothing to clean won't result in an error.
+
+Example:
 ```js
-MagicLamp.load('orders/new');
+  afterEach(function() {
+    MagicLamp.clean();
+  });
 ```
+### load
+Call `MagicLamp.load` to load a fixture. It requires the name of the fixture and the fixture
+will be loaded into a `div` with a class of `magic-lamp`. It will destroy the previous fixture
+container if present so you never end up with duplicate fixture containers or end up with
+dom elements from previous loads. It will hit the network only on the first request for a given
+fixture. If you never want `load` to hit the network, call `MagicLamp.preload()` before your specs.
 
-This will load the `"orders/new"` template into a `div` with an id of `magic-lamp` in your spec environment.
+The call to get your template is completely synchronous.
 
-### MagicLamp#register_fixture
-
-`MagicLamp#register_fixture` requires a block. This block is scoped to the given controller instance, which provides access to private and public methods. Any instance variables defined in the block will also be available to the template.
-
-If a controller is not passed to `register_fixture`, `ApplicationController` will be set as the scope for the block. Here's a more explicit version of the example above:
-	
-```ruby
-MagicLamp.register_fixture(ApplicationController) do
-  @orders = [Order.new, Order.new, Order.new]
-  render "orders/new"
-end
-``` 
-In this example, the template will be registered as `"orders/index"`. The default name for a fixture is the controller's name followed by the template (unless it's the `ApplicationController`). If you have name collisions (or if you just want a more informative fixture name), simply specify the name as the second argument to `register_fixture`.
-
-```ruby
-MagicLamp.register_fixture(ApplicationController, "orders/new/with/errors") do
-  @order = Order.new
-  @errors = true
-  render :new
-end
-```
-
-Note: Only name your fixtures with characters that are the same in the url bar of a browser as they are everywhere else.
-
-Also note: blocks using the default name will be executed twice (that's part of the magic required to get sweet defaults). If you don't want that to happen, just name your fixture.
-
-### controller#render
-
-Everything in the block you pass to `register_fixture` is scoped to an instance of the specified controller or the `ApplicationController`. `render` behaves normally for the most part. The only magic here is to set the `layout` option to default to `false`. Aside from that though, it's normal:
-
-```ruby
-MagicLamp.register_fixture(OrdersController) do
-  render partial: "order",
-    locals: { foo: "bar" },
-    collection: [Order.new, Order.new, Order.new]
-    # etc.
-end
-```
-
-### MagicLamp JS
-
-To load all your fixtures in one ajax call (which is handy if you intend to stub network calls in subsequent tests), simply call:
-
+Example:
 ```js
+  beforeEach(function() {
+    MagicLamp.load("orders/foo");
+  });
+```
+### preload
+Call `MagicLamp.preload` to load all of your templates into MagicLamp's cache. This means you'll
+only hit the network once, so the rest of your specs will be quicker and you can go wild stubbing the
+network.
+
+The call to get your templates is completely synchronous.
+
+Example:
+```js
+// Probably should be in your `spec_helper.js`
 MagicLamp.preload();
 ```
+### fixtureNames
+`MagicLamp.fixtureNames()` will return an array of all of the fixture names available in the cache
+(which is all of them if you've called [`preload`](#preload)). It will also `console.log` them out.
 
-To simply load one specific fixture call:
-
+Example
 ```js
-MagicLamp.load('fixture/name');
+MagicLamp.preload();
+MagicLamp.fixtureNames(); // => ['orders/foo', 'orders/bar', 'orders/baz']
+// logs 'orders/foo'
+// logs 'orders/bar'
+// logs 'orders/baz'
 ```
 
-To clear out the fixture element after a test run call:
+### globalize
+`MagicLamp.globalize()` will put `MagicLamp.clean` and `MagicLamp.load` onto `window` for convenience.
 
-```js
-MagicLamp.clean();
-```
-
-If you wish to call the `MagicLamp` methods directly on the window call:
-
+Example:
 ```js
 MagicLamp.globalize();
+
+describe("Foo", function() {
+  beforeEach(function() {
+    load("orders/foo");
+  });
+
+  afterEach(function() {
+    clean();
+  });
+
+  // ...
+});
 ```
+Errors
+------
+If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
+error. Errors will also appear in your server log (if you're running the in-browser specs).
 
-This allows you to call `load` and `clean` directly on `window`
+To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks)
+which will attempt to render all of your templates. If there are any errors they'll show up there in a
+somewhat less noisy environment.
 
-To specify the id `MagicLamp` uses for it's fixture element simply set `MagicLamp.id`:
+If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
+without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
 
-```js
-MagicLamp.id = "my-sweet-fixtures";
-```
-
-### Errors
-
-If there are any errors rendering your templates, `MagicLamp` will log them to the server log and throw an error in JavaScript. If the error in the JavaScript doesn't make the source of the problem clear, please check the server log. If that doesn't help, open up a `rails console` and enter `MagicLamp.load_lamp_files` and see if there are any errors. If not, try calling `MagicLamp.generate_all_fixtures` and seeing if the error shows up then.
-
-### Sweet aliases
-
-#### Ruby
+Sweet aliases
+-------------
+### Ruby
 
 ```ruby
-MagicLamp.rub => register_fixture
-MagicLamp.wish => register_fixture
+MagicLamp.register_fixture => fixture
+MagicLamp.register => fixture
+MagicLamp.rub => fixture
+MagicLamp.wish => fixture
 ```
 
 ### JavaScript
@@ -154,9 +457,9 @@ MagicLamp.wishForMoreWishes => preload
 MagicLamp.polish => clean
 ```
 
-## Contributing
-
-1. Fork it
+Contributing
+------------
+1. [Fork it](https://github.com/crismali/magic_lamp/fork)
 2. Clone it locally
 3. Run the `./bootstrap` script
 4. Run the specs with `rake`
@@ -164,4 +467,3 @@ MagicLamp.polish => clean
 6. Commit your changes (`git commit -am 'Add some feature'`)
 7. Push to the branch (`git push origin my-new-feature`)
 8. Create new Pull Request
-st

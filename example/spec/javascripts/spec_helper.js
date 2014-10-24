@@ -40,3 +40,8 @@
 //= require support/chai
 //= require magic_lamp
 window.expect = chai.expect;
+MagicLamp.preload();
+
+afterEach(function() {
+  MagicLamp.clean();
+});

@@ -28,6 +28,26 @@ describe('Genie', function() {
     });
   });
 
+  describe('#fixtureNames', function() {
+    beforeEach(function() {
+      stub(console, 'log', true);
+      subject.cache = { foo: 'template', bar: 'other template' };
+    });
+
+    it('returns all of the fixtures named in the cache', function() {
+      expect(subject.fixtureNames()).to.be.like(['bar', 'foo']);
+      console.log.restore();
+    });
+
+    it('logs all of the fixture names in the cache', function() {
+      subject.fixtureNames();
+      expect(console.log).to.have.been.calledWith('bar');
+      expect(console.log).to.have.been.calledWith('foo');
+      expect(console.log.args).to.be.like([['bar'], ['foo']]);
+      console.log.restore();
+    });
+  });
+
   describe('#load', function() {
     var path;
     beforeEach(function() {
@@ -36,6 +56,13 @@ describe('Genie', function() {
 
     afterEach(function() {
       removeNode(subject.fixtureContainer);
+    });
+
+    it('does not double append fixture containers', function() {
+      subject.cache[path] = 'some template';
+      subject.cacheOnly = true;
+      _(2).times(function() { subject.load(path); });
+      expect(document.getElementsByClassName('magic-lamp').length).to.equal(1);
     });
 
     describe('cacheOnly false', function() {
@@ -47,11 +74,10 @@ describe('Genie', function() {
       });
 
       it('appends the fixture container with the fixture to the dom', function() {
-        expect(testFixtureContainer()).to.equal(null);
+        expect(testFixtureContainer()).to.be.undefined;
         subject.load(path);
         expect(testFixtureContainer().innerHTML).to.equal('foo\n');
       });
-
 
       describe('cached', function() {
         beforeEach(function() {
@@ -65,7 +91,7 @@ describe('Genie', function() {
         });
 
         it('appends the fixture container to the dom with the cached fixture', function() {
-          expect(testFixtureContainer()).to.equal(null);
+          expect(testFixtureContainer()).to.be.undefined;
           subject.load(path);
           expect(testFixtureContainer().innerHTML).to.equal('howdy');
         });
@@ -87,7 +113,7 @@ describe('Genie', function() {
       it('throws an error if the fixture is not in the cache', function() {
         expect(function() {
           subject.load(path);
-        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Such a bummer./);
+        }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Call `MagicLamp.fixtureNames\(\)` to see what is registered./);
       });
     });
   });
@@ -95,12 +121,28 @@ describe('Genie', function() {
   describe('#preload', function() {
     it('requests all of the fixtures and puts them in the cache', function() {
       subject.preload();
-      expect(subject.cache).to.have.keys(['orders/foo', 'orders/bar', 'orders/form']);
+      expect(subject.cache).to.have.keys([
+        'orders/foo',
+        'orders/bar',
+        'orders/form',
+        'custom_name',
+        'orders/super_specified',
+        'orders/needs_extending',
+        'orders/errors/foos/bar/baz',
+        'arbitrary/orders/other_admin_extending',
+        'arbitrary/orders/admin_extending'
+      ]);
     });
 
     it('sets cacheOnly to true', function() {
       subject.preload();
       expect(subject.cacheOnly).to.equal(true);
+    });
+
+    it('does not set cacheOnly to true if the request fails', function() {
+      subject.xhrRequest = function() { throw new Error(); }
+      expect(function() { subject.preload(); }).to.throw();
+      expect(subject.cacheOnly).to.equal(false);
     });
 
     it('makes a request to the specified path if defined', function() {
@@ -115,17 +157,17 @@ describe('Genie', function() {
   });
 
   describe('#createFixtureContainer', function() {
-    it('creates a div with an id of "magic-lamp" and caches it', function() {
+    it('creates a div with a class of "magic-lamp" and caches it', function() {
       subject.createFixtureContainer();
       expect(subject.fixtureContainer.tagName).to.equal('DIV');
-      expect(subject.fixtureContainer.id).to.equal('magic-lamp');
+      expect(subject.fixtureContainer.className).to.equal('magic-lamp');
     });
 
-    it('creates a div with an id of MagicLamp.id if present', function() {
-      var id = MagicLamp.id = 'footastic';
+    it('creates a div with a class of MagicLamp.class if present', function() {
+      var specifiedClass = MagicLamp.class = 'footastic';
       subject.createFixtureContainer();
-      delete MagicLamp.id;
-      expect(subject.fixtureContainer.id).to.equal(id);
+      delete MagicLamp.class;
+      expect(subject.fixtureContainer.className).to.equal(specifiedClass);
     });
   });
 
@@ -139,7 +181,7 @@ describe('Genie', function() {
     });
 
     it('appends the fixtureContainer to the body', function() {
-      expect(testFixtureContainer()).to.equal(null);
+      expect(testFixtureContainer()).to.be.undefined;
       subject.appendFixtureContainer();
       expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
     });
@@ -153,9 +195,20 @@ describe('Genie', function() {
     describe('without the fixture container', function() {
       it('logs a message saying that this is a weird thing to do', function() {
         expect(function() {
-          subject.removeFixtureContainer();
-          subject.removeFixtureContainer();
+          _(3).times(function() { subject.removeFixtureContainer(); });
         }).to.not.throw()
+      });
+    });
+
+    describe('with the fixture container created', function() {
+      beforeEach(function() {
+        subject.createFixtureContainer();
+      });
+
+      it('removes the fixture container from the genie instance', function() {
+        expect(subject.fixtureContainer).to.be.defined;
+        subject.removeFixtureContainer();
+        expect(subject.fixtureContainer).to.be.undefined;
       });
     });
 
@@ -168,7 +221,7 @@ describe('Genie', function() {
       it('removes the fixture container from the dom', function() {
         expect(testFixtureContainer()).to.equal(subject.fixtureContainer);
         subject.removeFixtureContainer();
-        expect(testFixtureContainer()).to.equal(null);
+        expect(testFixtureContainer()).to.be.undefined;
         expect(subject.fixtureContainer).to.be.undefined;
       });
 
@@ -202,7 +255,6 @@ describe('Genie', function() {
 
       expect(xhrProto.open).to.have.been.calledWith('GET', path, false);
       expect(xhrProto.send).to.have.been.calledOnce;
-
     });
 
     it('returns the xhr object', function() {
@@ -212,11 +264,26 @@ describe('Genie', function() {
       expect(result.constructor).to.equal(XMLHttpRequest);
     });
 
-    it('calls handleError if the status is not 200', function() {
+    it('calls handleError with the response text if the status was 400', function() {
       stub(subject, 'handleError', true);
       var path = '/magic_lamp/foo/bar';
       var xhr = subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledWith(xhr.responseText);
+    });
+
+    it('calls handleError with the default error message if the status was 500', function() {
+      stub(subject, 'handleError', true);
+      stub(subject, 'xhrStatus', 500);
+      var path = '/magic_lamp/foo/bar';
+      var xhr = subject.xhrRequest(path);
+      expect(subject.handleError).to.have.been.calledWith('Something went wrong, please check the server log or run `rake magic_lamp:lint` for more information');
+    });
+  });
+
+  describe('#xhrStatus', function() {
+    it('returns the status of the xhr', function() {
+      var status = 200;
+      expect(subject.xhrStatus({ status: status })).to.equal(status);
     });
   });
 });
