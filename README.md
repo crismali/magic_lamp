@@ -1,5 +1,6 @@
 MagicLamp
 =========
+![](https://github.com/devmynd/magic_lamp/blob/master/magic_lamp.gif)
 
 MagicLamp makes sure that your JavaScript tests break when you change a template your code depends on.
 
