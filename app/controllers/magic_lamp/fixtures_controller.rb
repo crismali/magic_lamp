@@ -1,11 +1,11 @@
 module MagicLamp
   class FixturesController < MagicLamp::ApplicationController
     ERRORS = [
-      "MagicLamp::ArgumentError",
-      "MagicLamp::AlreadyRegisteredFixtureError",
-      "MagicLamp::AmbiguousFixtureNameError",
-      "MagicLamp::UnregisteredFixtureError"
-    ]
+      MagicLamp::ArgumentError,
+      MagicLamp::AlreadyRegisteredFixtureError,
+      MagicLamp::AmbiguousFixtureNameError,
+      MagicLamp::UnregisteredFixtureError
+    ].map(&:name)
 
     rescue_from(*ERRORS) do |exception, message = exception.message|
       error_message_with_bactrace = parse_error(exception, message)
@@ -14,22 +14,18 @@ module MagicLamp
     end
 
     def show
-      namespace.load_lamp_files
-      render text: namespace.generate_fixture(params[:name])
+      MagicLamp.load_lamp_files
+      render text: MagicLamp.generate_fixture(params[:name])
     end
 
     def index
-      render json: namespace.generate_all_fixtures
+      render json: MagicLamp.generate_all_fixtures
     end
 
     private
 
     def parse_error(exception, message)
       ([message] + exception.backtrace).join("\n\s\s\s\s")
-    end
-
-    def namespace
-      MagicLamp
     end
   end
 end
