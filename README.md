@@ -1,5 +1,9 @@
 Magic Lamp
 =========
+![](https://github.com/devmynd/magic_lamp/blob/master/magic_lamp.gif)
+
+MagicLamp makes sure that your JavaScript tests break when you change a template your code depends on.
+=======
 Magic Lamp helps you get your Rails templates into your JavaScript tests. This means that way your JavaScript tests break
 if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
 All you have to do is set up your data just like you would in a controller.
