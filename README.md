@@ -82,6 +82,10 @@ in a file called `magic_lamp_config.rb` which you can place anywhere in your `sp
 This way you can take advantage of `after_create` callbacks for your fixture setup without polluting
 your database every time you run your JavaScript specs.
 
+### With FactoryGirl
+
+You don't need FactoryGirl to use Magic Lamp, but if you want to use it in your fixtures make sure you call `FactoryGirl.reload` in your `magic_lamp_config.rb`.
+
 Basic Usage
 -----------
 Magic Lamp will load all files in your `spec` or `test` directory that end with `_lamp.rb` (your app's
@@ -432,6 +436,9 @@ somewhat less noisy environment.
 
 If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
 without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
+
+If you're using FactoryGirl and start getting errors that look like this:
+`ActiveRecord::AssociationTypeMismatch Foo(#10504340) expected, got Foo(#6163240)`, then you'll want to add `FactoryGirl.reload` to your `magic_lamp_config.rb`.
 
 Sweet aliases
 -------------
