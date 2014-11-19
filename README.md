@@ -203,9 +203,9 @@ Magic Lamp will load any files in your `spec` or `test` directory that end with 
 Tasks
 -----
 ### fixture_names
-Call `rake magic_lamp:fixture_names` to see a list of all of your app's fixture names.
+Call `rake magic_lamp:fixture_names` (or `rake mlfn`) to see a list of all of your app's fixture names.
 ### lint
-Call `rake magic_lamp:lint` to see if there are any errors when registering or rendering your fixtures.
+Call `rake magic_lamp:lint` (or `rake mll`) to see if there are any errors when registering or rendering your fixtures.
 
 Ruby API
 --------
@@ -430,7 +430,7 @@ Errors
 If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
 error. Errors will also appear in your server log (if you're running the in-browser specs).
 
-To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks)
+To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks) (or `rake mll`)
 which will attempt to render all of your templates. If there are any errors they'll show up there in a
 somewhat less noisy environment.
 
