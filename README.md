@@ -460,6 +460,12 @@ MagicLamp.wishForMoreWishes => preload
 MagicLamp.polish => clean
 ```
 
+### Rake Tasks
+```
+rake mlfn => rake magic_lamp:fixture_names
+rake mll => rake magic_lamp:lint
+```
+
 Contributing
 ------------
 1. [Fork it](https://github.com/crismali/magic_lamp/fork)
