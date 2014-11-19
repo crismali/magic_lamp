@@ -6,3 +6,6 @@ namespace :magic_lamp do
     puts "Lookin' good!\n\n\n"
   end
 end
+
+desc "Generates all Magic Lamp fixtures for debugging (alias for `magic_lamp:lint`)"
+task mll: "magic_lamp:lint"

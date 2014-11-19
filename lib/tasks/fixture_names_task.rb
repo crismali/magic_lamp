@@ -5,3 +5,6 @@ namespace :magic_lamp do
     puts MagicLamp.registered_fixtures.keys.sort
   end
 end
+
+desc "Displays all Magic Lamp fixture names (alias for `magic_lamp:fixture_names`)"
+task mlfn: "magic_lamp:fixture_names"

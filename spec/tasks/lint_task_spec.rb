@@ -9,3 +9,9 @@ describe "magic_lamp:lint" do
     subject.execute
   end
 end
+
+describe "mll" do
+  it "is an alias for magic_lamp:lint" do
+    expect(subject).to depend_on("magic_lamp:lint")
+  end
+end

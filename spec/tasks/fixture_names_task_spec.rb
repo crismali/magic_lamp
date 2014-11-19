@@ -13,3 +13,9 @@ describe "magic_lamp:fixture_names" do
     subject.execute
   end
 end
+
+describe "mlfn" do
+  it "is an alias for magic_lamp:fixture_names" do
+    expect(subject).to depend_on("magic_lamp:fixture_names")
+  end
+end
