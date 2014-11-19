@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    magic_lamp (1.1.1)
+    magic_lamp (1.2.0)
       rails (>= 4.0)
       rake
 
@@ -52,10 +52,10 @@ GEM
     hike (1.2.3)
     i18n (0.6.11)
     json (1.8.1)
-    mail (2.6.1)
+    mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.1)
+    mime-types (2.4.3)
     minitest (5.4.2)
     multi_json (1.10.1)
     pry (0.10.1)
@@ -113,7 +113,7 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0)
     slop (3.6.0)
-    sprockets (2.12.2)
+    sprockets (2.12.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
