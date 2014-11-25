@@ -10,8 +10,13 @@
 
     load: function(path) {
       this.removeFixtureContainer();
-      var fixture = this.cache[path];
       this.createFixtureContainer();
+      this.fixtureContainer.innerHTML = this.retrieveFixture(path);
+      this.appendFixtureContainer();
+    },
+
+    retrieveFixture: function(path) {
+      var fixture = this.cache[path];
 
       if (!fixture && this.cacheOnly) {
         throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Call `MagicLamp.fixtureNames()` to see what is registered.');
@@ -19,9 +24,7 @@
         var xhr = this.xhrRequest(getPath() + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
       }
-
-      this.fixtureContainer.innerHTML = fixture;
-      this.appendFixtureContainer();
+      return fixture;
     },
 
     preload: function() {

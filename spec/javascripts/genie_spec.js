@@ -50,8 +50,10 @@ describe('Genie', function() {
 
   describe('#load', function() {
     var path;
+    var fixtureContent;
     beforeEach(function() {
       path = 'orders/foo';
+      fixtureContent = 'foo\n';
     });
 
     afterEach(function() {
@@ -59,41 +61,54 @@ describe('Genie', function() {
     });
 
     it('does not double append fixture containers', function() {
-      subject.cache[path] = 'some template';
+      subject.cache[path] = fixtureContent;
       subject.cacheOnly = true;
       _(2).times(function() { subject.load(path); });
       expect(document.getElementsByClassName('magic-lamp').length).to.equal(1);
     });
 
+    it('appends the fixture container with the fixture to the dom', function() {
+      spyOn(subject, 'retrieveFixture');
+      expect(testFixtureContainer()).to.be.undefined;
+      subject.load(path);
+      expect(subject.retrieveFixture).to.have.been.calledWith(path);
+      expect(testFixtureContainer().innerHTML).to.equal(fixtureContent);
+    });
+  });
+
+  describe('#retrieveFixture', function() {
+    var path;
+    var fixtureContent;
+    beforeEach(function() {
+      path = 'orders/foo';
+      fixtureContent = 'foo\n';
+    });
+
     describe('cacheOnly false', function() {
       it('requests the fixture and adds it to the cache', function() {
         spyOn(subject, 'xhrRequest');
-        subject.load(path);
+        subject.retrieveFixture(path);
         expect(subject.xhrRequest).to.have.been.calledOnce;
-        expect(subject.cache[path]).to.equal('foo\n');
+        expect(subject.cache[path]).to.equal(fixtureContent);
       });
 
-      it('appends the fixture container with the fixture to the dom', function() {
-        expect(testFixtureContainer()).to.be.undefined;
-        subject.load(path);
-        expect(testFixtureContainer().innerHTML).to.equal('foo\n');
+      it('returns the fixture', function() {
+        expect(subject.retrieveFixture(path)).to.equal(fixtureContent);
       });
 
       describe('cached', function() {
         beforeEach(function() {
-          subject.cache[path] = 'howdy';
+          fixtureContent = subject.cache[path] = 'howdy';
         });
 
         it('does not make a request', function() {
           spyOn(subject, 'xhrRequest');
-          subject.load(path);
+          subject.retrieveFixture(path);
           expect(subject.xhrRequest).to.not.have.been.calledOnce;
         });
 
-        it('appends the fixture container to the dom with the cached fixture', function() {
-          expect(testFixtureContainer()).to.be.undefined;
-          subject.load(path);
-          expect(testFixtureContainer().innerHTML).to.equal('howdy');
+        it('returns the fixture', function() {
+          expect(subject.retrieveFixture(path)).to.equal(fixtureContent);
         });
       });
     });
@@ -105,14 +120,19 @@ describe('Genie', function() {
 
       it('does not make a request', function() {
         spyOn(subject, 'xhrRequest');
-        subject.cache[path] = 'howdy';
-        subject.load(path);
+        subject.cache[path] = fixtureContent;
+        subject.retrieveFixture(path);
         expect(subject.xhrRequest).to.not.have.been.calledOnce;
+      });
+
+      it('returns the fixture', function() {
+        subject.cache[path] = fixtureContent;
+        expect(subject.retrieveFixture(path)).to.equal(fixtureContent);
       });
 
       it('throws an error if the fixture is not in the cache', function() {
         expect(function() {
-          subject.load(path);
+          subject.retrieveFixture(path);
         }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Call `MagicLamp.fixtureNames\(\)` to see what is registered./);
       });
     });
@@ -231,7 +251,6 @@ describe('Genie', function() {
         expect(subject.fixtureContainer).to.be.undefined;
       });
     });
-
   });
 
   describe('#handleError', function() {
