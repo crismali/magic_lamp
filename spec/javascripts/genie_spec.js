@@ -74,6 +74,15 @@ describe('Genie', function() {
       expect(subject.retrieveFixture).to.have.been.calledWith(path);
       expect(testFixtureContainer().innerHTML).to.equal(fixtureContent);
     });
+
+    describe('multiple fixtures requested', function() {
+      it('appends the fixture container with all of the fixtures to the dom', function() {
+        expect(testFixtureContainer()).to.be.undefined;
+        subject.load(path, path, path, path);
+        var largeFixtureContent = fixtureContent + fixtureContent + fixtureContent + fixtureContent;
+        expect(testFixtureContainer().innerHTML).to.equal(largeFixtureContent);
+      });
+    });
   });
 
   describe('#retrieveFixture', function() {

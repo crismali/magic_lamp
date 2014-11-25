@@ -8,10 +8,17 @@
 
   Genie.prototype = {
 
-    load: function(path) {
+    load: function() {
       this.removeFixtureContainer();
       this.createFixtureContainer();
-      this.fixtureContainer.innerHTML = this.retrieveFixture(path);
+      var fixture = '';
+      var context = this;
+
+      each(arguments, function(path) {
+        fixture += context.retrieveFixture(path);
+      });
+
+      this.fixtureContainer.innerHTML = fixture;
       this.appendFixtureContainer();
     },
 
@@ -42,9 +49,9 @@
         }
       }
       var sortedNames = names.sort();
-      for (var i = 0; i < sortedNames.length; i++) {
-        console.log(sortedNames[i]);
-      };
+      each(sortedNames, function(name) {
+        console.log(name);
+      });
 
       return sortedNames;
     },
@@ -98,6 +105,12 @@
   function remove(node) {
     var parentNode = node.parentNode;
     parentNode && parentNode.removeChild(node);
+  }
+
+  function each(collection, callback) {
+    for (var i = 0; i < collection.length; i++) {
+      callback(collection[i]);
+    };
   }
 
   function newXhr() {
