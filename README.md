@@ -119,6 +119,33 @@ Then you can go nuts testing your JavaScript against your actual template. If yo
 one request for your templates, simply call [`MagicLamp.preload();`](#preload) in your `spec_helper.js` to
 populate Magic Lamp's cache.
 
+### Loading multiple templates
+
+Just pass more fixture names to `MagicLamp.load` and it will load them all. For example:
+```js
+  beforeEach(function() {
+    MagicLamp.load("orders/sidebar", "orders/form");
+  });
+```
+
+with a sidebar template/partial that looks like this:
+```html
+  <div class="sidebar content">Links!</div>
+```
+
+and a form template/partial that looks like this:
+```html
+  <div class="form content">Inputs!</div>
+```
+
+will yield:
+```html
+  <div class="magic-lamp">
+    <div class="sidebar content">Links!</div>
+    <div class="form content">Inputs!</div>
+  </div>
+```
+
 ### A few more examples
 Here we're specifying which controller should render the template via the arguments hash
 to `fixture`. This gives us access to helper methods in the `fixture` block
@@ -367,11 +394,10 @@ Example:
   });
 ```
 ### load
-Call `MagicLamp.load` to load a fixture. It requires the name of the fixture and the fixture
-will be loaded into a `div` with a class of `magic-lamp`. It will destroy the previous fixture
-container if present so you never end up with duplicate fixture containers or end up with
-dom elements from previous loads. It will hit the network only on the first request for a given
-fixture. If you never want `load` to hit the network, call `MagicLamp.preload()` before your specs.
+Call `MagicLamp.load` to load a fixture. It requires the name of the fixture and which will be loaded into a `div` with a class of `magic-lamp`. It will destroy the previous fixture container if present so you never end up with duplicate fixture containers or end up with dom elements from previous loads. It will hit the network only on the first request for a given
+fixture. If you never want `load` to hit the network, call [`MagicLamp.preload()`](#preload) before your specs.
+
+You can load multiple fixtures into the dom at the same time by simply passing more arguments to `load`. 
 
 The call to get your template is completely synchronous.
 
@@ -379,6 +405,12 @@ Example:
 ```js
   beforeEach(function() {
     MagicLamp.load("orders/foo");
+  });
+
+  // or if you wanted multiple fixtures...
+
+  beforeEach(function() {
+    MagicLamp.load("orders/foo", "orders/bar", "orders/foo", "orders/baz");
   });
 ```
 ### preload
