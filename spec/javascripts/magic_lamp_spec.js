@@ -227,5 +227,10 @@ describe('MagicLamp', function() {
       subject.load('arbitrary/orders/admin_extending');
       expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\n');
     });
+
+    it('can load multiple fixtures', function() {
+      subject.load('arbitrary/orders/admin_extending', 'orders/foo');
+      expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\nfoo\n');
+    });
   });
 });
