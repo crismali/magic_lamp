@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/crismali/magic_lamp"
   s.summary     = "Makes sure your JavaScript tests break when if your templates change."
   s.description = "MagicLamp provides an easy way to get your Rails templates into your JavaScript specs."
-  s.license     = "Apache"
+  s.license     = "Apache 2.0"
 
   s.files = Dir["{app,config,lib}/**/*", "VERSION", "LICENSE", "README.md"]
   s.test_files = Dir["spec/**/*"]
