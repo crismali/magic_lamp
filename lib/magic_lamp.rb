@@ -16,10 +16,6 @@ module MagicLamp
   class << self
     attr_accessor :registered_fixtures, :configuration
 
-    def path
-      Rails.root.join(directory_path)
-    end
-
     def register_fixture(options = {}, &render_block)
       raise_missing_block_error(render_block, __method__)
 
@@ -156,8 +152,8 @@ module MagicLamp
       end
     end
 
-    def directory_path
-      Dir.exist?(Rails.root.join(SPEC)) ? SPEC : TEST
+    def path
+      Rails.root.join("{spec,test}")
     end
 
     def load_all(files)

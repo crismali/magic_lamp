@@ -229,8 +229,9 @@ describe MagicLamp do
   end
 
   describe "#load_config" do
-    it "loads the magic lamp config file" do
-      expect(subject).to receive(:registered_fixtures)
+    it "loads the magic lamp config file from the spec and test directories" do
+      expect(subject).to receive(:registered?).with("spec")
+      expect(subject).to receive(:registered?).with("test")
       subject.load_config
     end
 
@@ -242,9 +243,14 @@ describe MagicLamp do
   end
 
   describe "#load_lamp_files" do
-    it "loads all lamp files" do
+    it "loads all lamp files from the spec directory" do
       subject.load_lamp_files
       expect(subject.registered_fixtures["orders/foo"]).to be_a(Hash)
+    end
+
+    it "loads all lamp files from the test directory" do
+      subject.load_lamp_files
+      expect(subject.registered_fixtures["from_test_directory"]).to be_a(Hash)
     end
 
     it "blows out registered_fixtures on each call" do
@@ -325,25 +331,6 @@ describe MagicLamp do
       expect(foo_fixture).to eq("foo\n")
       expect(bar_fixture).to eq("bar\n")
       expect(form_fixture).to match(/<div class="actions"/)
-    end
-  end
-
-  describe "#path" do
-    context "spec directory" do
-      let(:spec_path) { Rails.root.join("spec") }
-
-      it "returns a default path starting from spec" do
-        expect(subject.path).to eq(spec_path)
-      end
-    end
-
-    context "no spec directory" do
-      let(:test_path) { Rails.root.join("test") }
-
-      it "returns a default path starting from test" do
-        allow(Dir).to receive(:exist?).and_return(false)
-        expect(subject.path).to eq(test_path)
-      end
     end
   end
 end

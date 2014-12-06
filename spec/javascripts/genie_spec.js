@@ -151,6 +151,7 @@ describe('Genie', function() {
     it('requests all of the fixtures and puts them in the cache', function() {
       subject.preload();
       expect(subject.cache).to.have.keys([
+        'from_test_directory',
         'orders/foo',
         'orders/bar',
         'orders/form',

@@ -1,1 +1,1 @@
-MagicLamp.registered_fixtures
+MagicLamp.registered?("spec")
