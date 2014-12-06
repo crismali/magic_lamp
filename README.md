@@ -1,5 +1,7 @@
 Magic Lamp
 =========
+[![Gem Version](https://badge.fury.io/rb/magic_lamp.svg)](http://badge.fury.io/rb/magic_lamp)
+
 Magic Lamp helps you get your Rails templates into your JavaScript tests. This means that way your JavaScript tests break
 if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
 All you have to do is set up your data just like you would in a controller.
@@ -200,20 +202,20 @@ MagicLamp.define(controller: OrdersController, extend: AuthStub) do
 
   fixture do # orders/form
     @order = Order.new
-    render partial: :form
+    render partial: "form"
   end
 
   define(namespace: "errors", extend: DeadBeatUserStub)
     fixture(name: "form_without_price") do # orders/errors/form_without_price
       @order = Order.new
       @order.errors.add(:price, "can't be blank")
-      render partial: :form
+      render partial: "form"
     end
 
     fixture do # orders/errors/form
       @order = Order.new
       @order.errors.add(:address, "can't be blank")
-      render partial: :form
+      render partial: "form"
     end
   end
 end
@@ -259,7 +261,7 @@ Example:
 ```ruby
 MagicLamp.fixture(name: "foo", controller: OrdersController) do
   @order = Order.new
-  render partial: :form
+  render partial: "form"
 end
 ```
 
