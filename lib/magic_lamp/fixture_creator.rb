@@ -7,8 +7,7 @@ module MagicLamp
     def generate_template(controller_class, extensions, &block)
       execute_before_each_callback
       controller = new_controller(controller_class, extensions, &block)
-      munged_arguments = munge_arguments(render_arguments)
-      rendered = controller.render_to_string(*munged_arguments)
+      rendered = fetch_rendered(controller, block)
       execute_after_each_callback
       rendered
     end
@@ -19,7 +18,6 @@ module MagicLamp
       extensions.each { |extension| controller.extend(extension) }
       controller.request = ActionDispatch::TestRequest.new
       redefine_render(controller)
-      controller.instance_eval(&block)
       controller
     end
 
@@ -37,6 +35,16 @@ module MagicLamp
     end
 
     private
+
+    def fetch_rendered(controller, block)
+      value = controller.instance_eval(&block)
+      if render_arguments
+        munged_arguments = munge_arguments(render_arguments)
+        controller.render_to_string(*munged_arguments)
+      else
+        value.is_a?(String) ? value : value.to_json
+      end
+    end
 
     def redefine_view_context(controller, extensions)
       controller.singleton_class.send(:define_method, :view_context) do |*args, &block|

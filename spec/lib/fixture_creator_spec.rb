@@ -10,28 +10,56 @@ describe MagicLamp::FixtureCreator do
   end
 
   describe "#generate_template" do
-    let(:rendered) do
-      subject.generate_template(OrdersController, []) do
-        render :foo
+    context "render called" do
+      let(:rendered) do
+        subject.generate_template(OrdersController, []) do
+          render :foo
+        end
+      end
+
+      it "returns the template as a string" do
+        expect(rendered).to eq("foo\n")
+      end
+
+      it "does not render the layout by default" do
+        expect(rendered).to_not match(/The layout/)
+      end
+
+      it "executes the callbacks around generation of the template" do
+        dummy = double
+        expect(subject).to receive(:execute_before_each_callback).ordered
+        expect(dummy).to receive(:render).ordered
+        expect(subject).to receive(:execute_after_each_callback).ordered
+        subject.generate_template(OrdersController, []) do
+          dummy.render
+          render :foo
+        end
       end
     end
 
-    it "returns the template as a string" do
-      expect(rendered).to eq("foo\n")
-    end
+    context "render not called" do
+      context "render block returns a string" do
+        let(:rendered) do
+          subject.generate_template(OrdersController, []) do
+            { foo: "bar" }.to_json
+          end
+        end
 
-    it "does not render the layout by default" do
-      expect(rendered).to_not match(/The layout/)
-    end
+        it "returns the string" do
+          expect(rendered).to eq({ foo: "bar" }.to_json)
+        end
+      end
 
-    it "executes the callbacks around generation of the template" do
-      dummy = double
-      expect(subject).to receive(:execute_before_each_callback).ordered
-      expect(dummy).to receive(:render).ordered
-      expect(subject).to receive(:execute_after_each_callback).ordered
-      subject.generate_template(OrdersController, []) do
-        dummy.render
-        render :foo
+      context "render block returns someting else" do
+        let(:rendered) do
+          subject.generate_template(OrdersController, []) do
+            { foo: "bar" }
+          end
+        end
+
+        it "returns the #to_json representation of the object" do
+          expect(rendered).to eq({ foo: "bar" }.to_json)
+        end
       end
     end
   end
@@ -58,10 +86,6 @@ describe MagicLamp::FixtureCreator do
         expect do
           controller.render_to_string :foo
         end.to_not raise_error
-      end
-
-      it "has had its state set by the given block" do
-        expect(controller.params[:foo]).to eq("bar")
       end
 
       it "has been extended with the extensions" do
