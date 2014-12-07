@@ -41,8 +41,10 @@ module MagicLamp
       if render_arguments
         munged_arguments = munge_arguments(render_arguments)
         controller.render_to_string(*munged_arguments)
+      elsif value.is_a?(String)
+        value
       else
-        value.is_a?(String) ? value : value.to_json
+        value.to_json
       end
     end
 
