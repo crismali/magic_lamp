@@ -22,6 +22,14 @@ var MagicLamp = {
     this.genie.load.apply(this.genie, arguments);
   },
 
+  loadRaw: function() {
+    this.genie.retrieveFixture.apply(this.genie, arguments);
+  },
+
+  loadJSON: function(fixtureName) {
+    return JSON.parse(this.loadRaw(fixtureName));
+  },
+
   preload: function() {
     this.genie.preload.apply(this.genie, arguments);
   },

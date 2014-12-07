@@ -90,6 +90,41 @@ describe('MagicLamp', function() {
     });
   });
 
+  describe('#loadRaw', function() {
+    beforeEach(function() {
+      subject.initialize();
+      stub(subject.genie, 'retrieveFixture');
+      subject.loadRaw('foo');
+    });
+
+    afterEach(function() {
+      delete subject.genie;
+    });
+
+    it('calls through to its genie\'s #retrieveFixture', function() {
+      expect(subject.genie.retrieveFixture).to.have.been.calledWith('foo');
+    });
+  });
+
+  describe('#loadJSON', function() {
+    var json;
+
+    beforeEach(function() {
+      json = { foo: 'bar' };
+      subject.initialize();
+      stub(subject, 'loadRaw', JSON.stringify(json));
+    });
+
+    afterEach(function() {
+      delete subject.genie;
+    });
+
+    it('returns the parsed JSON from the fixture', function() {
+      expect(subject.loadJSON('foo')).to.be.like(json);
+      expect(subject.loadRaw).to.have.been.calledWith('foo');
+    });
+  });
+
   describe('#preload', function() {
     beforeEach(function() {
       subject.initialize();

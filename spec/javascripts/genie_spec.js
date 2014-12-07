@@ -152,6 +152,8 @@ describe('Genie', function() {
       subject.preload();
       expect(subject.cache).to.have.keys([
         'from_test_directory',
+        'hash_to_jsoned',
+        'just_some_string',
         'orders/foo',
         'orders/bar',
         'orders/form',
