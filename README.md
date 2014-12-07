@@ -448,9 +448,9 @@ Example:
   });
 ```
 ### loadJSON
-Returns the `JSON.parse`d version of the fixture. It's a convenience method for `JSON.parse(MagicLamp.loadRaw('some_json_fixture'));`. Look [here](loading-json-fixtures-and-arbitrary-strings) for more.
+Returns the `JSON.parse`d version of the fixture. It's a convenience method for `JSON.parse(MagicLamp.loadRaw('some_json_fixture'));`. Look [here](#loading-json-fixtures-and-arbitrary-strings) for more.
 ### loadRaw
-Returns the template, partial, JSON, or string as a raw string. Look [here](loading-json-fixtures-and-arbitrary-strings) for more.
+Returns the template, partial, JSON, or string as a raw string. Look [here](#loading-json-fixtures-and-arbitrary-strings) for more.
 ### preload
 Call `MagicLamp.preload` to load all of your templates into MagicLamp's cache. This means you'll
 only hit the network once, so the rest of your specs will be quicker and you can go wild stubbing the
