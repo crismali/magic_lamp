@@ -148,6 +148,36 @@ will yield:
   </div>
 ```
 
+### Loading JSON fixtures and arbitrary strings
+If you pass a block to `fixture` that does not invoke `render`, Magic Lamp will assume that you want the `to_json` representation of the return value of the block as your fixture (Magic Lamp will call this for you). If the return value is already a string, then Magic Lamp will return that string as is. In your JavaScript `MagicLamp.loadJSON` will return the `JSON.parse`d string while `MagicLamp.loadRaw` will return the string as is (you can also use `loadRaw` get the string version of a template rendered with `render` without Magic Lamp appending it to the DOM. `loadJSON` also won't interact with the DOM).
+
+When sending down JSON or arbitrary strings, you must provide the fixture with a name since inferring one is impossible. 
+
+It's also good to remember that in the fixture block that even though the controller isn't rendering anything for us, the block is still scoped to the given controller which gives us access to any controller methods we might want to use to massage our data structures.
+
+For example: 
+
+```ruby
+MagicLamp.define(controller: OrdersController) do
+  fixture(name: "some_json") do
+    OrderSerializer.new(Order.new(price: 55))
+  end
+
+  fixture(name: "some_arbitrary_string") do
+    some_method_on_the_controller_that_returns_a_string("Just some string")
+  end
+end
+```
+
+Then in your JavaScript:
+
+```js
+beforeEach(function() {
+  var jsonObject = MagicLamp.loadJSON("orders/some_json");
+  var someString = MagicLamp.loadRaw("orders/some_arbitrary_string");
+});
+```
+
 ### A few more examples
 Here we're specifying which controller should render the template via the arguments hash
 to `fixture`. This gives us access to helper methods in the `fixture` block
@@ -205,7 +235,7 @@ MagicLamp.define(controller: OrdersController, extend: AuthStub) do
     render partial: "form"
   end
 
-  define(namespace: "errors", extend: DeadBeatUserStub)
+  define(namespace: "errors", extend: SomeErrorHelpers)
     fixture(name: "form_without_price") do # orders/errors/form_without_price
       @order = Order.new
       @order.errors.add(:price, "can't be blank")
@@ -241,15 +271,17 @@ Ruby API
 ### fixture
 (also aliased to `register_fixture` and `register`)
 
-It requires a block that invokes `render` which is invoked in the context of a controller.
+It requires a block that is invoked in the context of a controller. If render is called, it renders the specified template or partial the way the controller normally would. If `render` is not called in the block then MagicLamp will render the `to_json` representation of the return value of the block unless the return value is already a string. In that case, the string is rendered as is. 
+
 It also takes an optional hash of arguments. The arguments hash recognizes:
 * `:controller`
-  * specifies any controller class that you'd like to have render the template or partial.
+  * specifies any controller class that you'd like to have render the template or partial or have the block scoped to.
   * if specified it removes the need to pass fully qualified paths to templates to `render`
   * the controller's name becomes the default `namespace`, ie `OrdersController` provides a default namespace of `orders` resulting in a template named `orders/foo`
 * `:name`
   * whatever you'd like name the fixture.
   * Specifying this option also prevents the block from being executed twice which could be a performance win. See [configure](#configure) for more.
+  * this is required when you want to send down JSON or arbitrary strings.
 * `:extend`
   * takes a module or an array of modules
   * extends the controller and view context (via Ruby's `extend`)
@@ -415,6 +447,10 @@ Example:
     MagicLamp.load("orders/foo", "orders/bar", "orders/foo", "orders/baz");
   });
 ```
+### loadJSON
+Returns the `JSON.parse`d version of the fixture. It's a convenience method for `JSON.parse(MagicLamp.loadRaw('some_json_fixture'));`. Look [here](loading-json-fixtures-and-arbitrary-strings) for more.
+### loadRaw
+Returns the template, partial, JSON, or string as a raw string. Look [here](loading-json-fixtures-and-arbitrary-strings) for more.
 ### preload
 Call `MagicLamp.preload` to load all of your templates into MagicLamp's cache. This means you'll
 only hit the network once, so the rest of your specs will be quicker and you can go wild stubbing the
