@@ -1,43 +1,43 @@
-var MagicLamp = {
+(function(global) {
+  var MagicLamp = {
+    initialize: function() {
+      this.genie = new this.Genie();
+    },
 
-  initialize: function() {
-    this.genie = new this.Genie();
-  },
+    fixtureNames: function() {
+      return this.genie.fixtureNames();
+    },
 
-  fixtureNames: function() {
-    return this.genie.fixtureNames();
-  },
+    globalize: function() {
+      window.clean = this.clean;
+      window.load = this.load;
+      window.loadJSON = this.loadJSON;
+      window.loadRaw = this.loadRaw;
+    },
 
-  globalize: function() {
-    var context = this;
-    window.load = function(path) {
-      context.load(path);
-    };
-    window.clean = function() {
-      context.clean();
-    };
-  },
+    preload: function() {
+      this.genie.preload.apply(this.genie, arguments);
+    }
+  };
 
-  load: function() {
-    this.genie.load.apply(this.genie, arguments);
-  },
-
-  loadRaw: function() {
-    this.genie.retrieveFixture.apply(this.genie, arguments);
-  },
-
-  loadJSON: function(fixtureName) {
-    return JSON.parse(this.loadRaw(fixtureName));
-  },
-
-  preload: function() {
-    this.genie.preload.apply(this.genie, arguments);
-  },
-
-  clean: function() {
-    this.genie.removeFixtureContainer();
+  MagicLamp.clean = function() {
+    MagicLamp.genie.removeFixtureContainer();
   }
-};
+
+  MagicLamp.load = function() {
+    MagicLamp.genie.load.apply(MagicLamp.genie, arguments);
+  };
+
+  MagicLamp.loadRaw = function() {
+    MagicLamp.genie.retrieveFixture.apply(MagicLamp.genie, arguments);
+  };
+
+  MagicLamp.loadJSON = function(fixtureName) {
+    return JSON.parse(MagicLamp.loadRaw(fixtureName));
+  };
+
+  global.MagicLamp = MagicLamp;
+})(this);
 
 // aliases
 MagicLamp.rub = MagicLamp.load;
