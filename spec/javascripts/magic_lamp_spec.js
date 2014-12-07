@@ -88,11 +88,14 @@ describe('MagicLamp', function() {
   });
 
   describe('#loadRaw', function() {
+    var dummy;
+    var value;
+
     beforeEach(function() {
       subject.initialize();
-      stub(subject.genie, 'retrieveFixture');
-      var dummy = { loadRaw: subject.loadRaw };
-      dummy.loadRaw('foo');
+      value = 'the fixture';
+      stub(subject.genie, 'retrieveFixture', value);
+      dummy = { loadRaw: subject.loadRaw };
     });
 
     afterEach(function() {
@@ -100,6 +103,7 @@ describe('MagicLamp', function() {
     });
 
     it('calls through to its genie\'s #retrieveFixture  (and is bound)', function() {
+      expect(dummy.loadRaw('foo')).to.equal(value);
       expect(subject.genie.retrieveFixture).to.have.been.calledWith('foo');
     });
   });
@@ -267,6 +271,16 @@ describe('MagicLamp', function() {
     it('can load multiple fixtures', function() {
       subject.load('arbitrary/orders/admin_extending', 'orders/foo');
       expect(testFixtureContainer().innerHTML).to.equal('Stevenson\nPaulson\nfoo\n');
+    });
+
+    it('can load JSON', function() {
+      var json = subject.loadJSON('hash_to_jsoned');
+      expect(json).to.be.like({ foo: 'bar' });
+    });
+
+    it('can load strings', function() {
+      var string = subject.loadRaw('just_some_string');
+      expect(string).to.equal("I'm a super awesome string");
     });
   });
 });

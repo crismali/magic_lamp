@@ -29,7 +29,7 @@
   };
 
   MagicLamp.loadRaw = function() {
-    MagicLamp.genie.retrieveFixture.apply(MagicLamp.genie, arguments);
+    return MagicLamp.genie.retrieveFixture.apply(MagicLamp.genie, arguments);
   };
 
   MagicLamp.loadJSON = function(fixtureName) {
