@@ -306,7 +306,15 @@ describe('Genie', function() {
       stub(subject, 'handleError', true);
       stub(subject, 'xhrStatus', 500);
       var path = '/magic_lamp/foo/bar';
-      var xhr = subject.xhrRequest(path);
+      subject.xhrRequest(path);
+      expect(subject.handleError).to.have.been.calledWith('Something went wrong, please check the server log or run `rake magic_lamp:lint` for more information');
+    });
+
+    it('calls handleError with the default error message if the status was 404', function() {
+      stub(subject, 'handleError', true);
+      stub(subject, 'xhrStatus', 404);
+      var path = '/magic_lamp/foo/bar';
+      subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledWith('Something went wrong, please check the server log or run `rake magic_lamp:lint` for more information');
     });
   });
