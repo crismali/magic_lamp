@@ -35,6 +35,30 @@ describe MagicLamp::FixtureCreator do
           render :foo
         end
       end
+
+      context "render json (non string)" do
+        let!(:rendered) do
+          subject.generate_template(OrdersController, []) do
+            render json: { foo: :bar }
+          end
+        end
+
+        it "renders json passed to render" do
+          expect(rendered).to eq({ foo: :bar }.to_json)
+        end
+      end
+
+      context "render json (string)" do
+        let!(:rendered) do
+          subject.generate_template(OrdersController, []) do
+            render json: "woohoo!"
+          end
+        end
+
+        it "renders json passed to render" do
+          expect(rendered).to eq("woohoo!")
+        end
+      end
     end
 
     context "render not called" do

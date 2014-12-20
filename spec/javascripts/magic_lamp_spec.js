@@ -282,5 +282,10 @@ describe('MagicLamp', function() {
       var string = subject.loadRaw('just_some_string');
       expect(string).to.equal("I'm a super awesome string");
     });
+
+    it('can load rendered json', function() {
+      var json = subject.loadJSON('rendered_json');
+      expect(json).to.be.like({ foo: 'baz' })
+    });
   });
 });

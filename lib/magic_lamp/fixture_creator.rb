@@ -38,10 +38,24 @@ module MagicLamp
 
     def fetch_rendered(controller, block)
       value = controller.instance_eval(&block)
-      if render_arguments
+      json_value = fetch_json_value
+      if json_value
+        convert_to_json(json_value)
+      elsif render_arguments
         munged_arguments = munge_arguments(render_arguments)
         controller.render_to_string(*munged_arguments)
-      elsif value.is_a?(String)
+      else
+        convert_to_json(value)
+      end
+    end
+
+    def fetch_json_value
+      render_arg = render_arguments.try(:first)
+      render_arg[:json] if render_arg.try(:key?, :json)
+    end
+
+    def convert_to_json(value)
+      if value.is_a?(String)
         value
       else
         value.to_json
