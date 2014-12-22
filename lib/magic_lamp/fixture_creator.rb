@@ -17,6 +17,7 @@ module MagicLamp
       redefine_view_context(controller, extensions)
       extensions.each { |extension| controller.extend(extension) }
       controller.request = ActionDispatch::TestRequest.new
+      redefine_redirect_to(controller)
       redefine_render(controller)
       controller
     end
@@ -74,6 +75,12 @@ module MagicLamp
       fixture_creator = self
       controller.singleton_class.send(:define_method, :render) do |*args|
         fixture_creator.render_arguments = args
+      end
+    end
+
+    def redefine_redirect_to(controller)
+      controller.singleton_class.send(:define_method, :redirect_to) do |*args|
+        raise AttemptedRedirectError, "called `redirect_to` while creating a fixture, this is probably not what you want to have happen."
       end
     end
   end

@@ -134,6 +134,14 @@ describe MagicLamp::FixtureCreator do
           expect(subject.render_arguments).to eq([:foo, :bar])
         end
       end
+
+      context "stubbed controller#redirect_to" do
+        it "raises an error" do
+          expect do
+            controller.redirect_to "anywhere"
+          end.to raise_error(MagicLamp::AttemptedRedirectError, "called `redirect_to` while creating a fixture, this is probably not what you want to have happen.")
+        end
+      end
     end
   end
 
