@@ -4,7 +4,9 @@ module MagicLamp
       MagicLamp::ArgumentError,
       MagicLamp::AlreadyRegisteredFixtureError,
       MagicLamp::AmbiguousFixtureNameError,
-      MagicLamp::UnregisteredFixtureError
+      MagicLamp::UnregisteredFixtureError,
+      MagicLamp::AttemptedRedirectError,
+      MagicLamp::DoubleRenderError
     ].map(&:name)
 
     rescue_from(*ERRORS) do |exception, message = exception.message|

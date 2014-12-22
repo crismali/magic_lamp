@@ -19,7 +19,7 @@ module MagicLamp
         expect(response.body).to eq("message")
       end
 
-      it "renders a 500" do
+      it "renders a 400" do
         get :show, name: "orders/baz", use_route: :magic_lamp
         expect(response.status).to eq(400)
       end
@@ -46,6 +46,18 @@ module MagicLamp
     context "UnregisteredFixtureError" do
       it_behaves_like "it handles errors" do
         let(:error) { UnregisteredFixtureError }
+      end
+    end
+
+    context "AttemptedRedirectError" do
+      it_behaves_like "it handles errors" do
+        let(:error) { AttemptedRedirectError }
+      end
+    end
+
+    context "DoubleRenderError" do
+      it_behaves_like "it handles errors" do
+        let(:error) { DoubleRenderError }
       end
     end
 
