@@ -24,4 +24,7 @@ module MagicLamp
 
   class AttemptedRedirectError < StandardError
   end
+
+  class DoubleRenderError < StandardError
+  end
 end

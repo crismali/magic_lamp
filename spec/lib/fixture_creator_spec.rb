@@ -133,6 +133,12 @@ describe MagicLamp::FixtureCreator do
           controller.render :foo, :bar
           expect(subject.render_arguments).to eq([:foo, :bar])
         end
+
+        it "raises an error when called twice" do
+          expect do
+            2.times { controller.render :foo, :bar }
+          end.to raise_error(MagicLamp::DoubleRenderError, "called `render` twice, this is probably not what you want to have happen.")
+        end
       end
 
       context "stubbed controller#redirect_to" do

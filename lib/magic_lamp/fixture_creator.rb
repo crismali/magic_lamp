@@ -73,7 +73,12 @@ module MagicLamp
 
     def redefine_render(controller)
       fixture_creator = self
+      already_called = false
       controller.singleton_class.send(:define_method, :render) do |*args|
+        if already_called
+          raise DoubleRenderError, "called `render` twice, this is probably not what you want to have happen."
+        end
+        already_called = true
         fixture_creator.render_arguments = args
       end
     end
