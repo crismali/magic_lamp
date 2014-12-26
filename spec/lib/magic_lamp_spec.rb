@@ -333,4 +333,36 @@ describe MagicLamp do
       expect(form_fixture).to match(/<div class="actions"/)
     end
   end
+
+  describe "#lint_config" do
+    context "no errors" do
+      it "returns an empty hash" do
+        expect(subject.lint_config).to eq({})
+      end
+    end
+
+    context "config file load error" do
+      it "returns a hash with the specified error" do
+        allow(subject).to receive(:load_config) do
+          load Rails.root.join("error_specs", "config_file_load_error.rb")
+        end
+        result = subject.lint_config
+        expect(result).to have_key(:config_file_load)
+        expect(result[:config_file_load]).to match(/RuntimeError: Nope\n\s\s\s\s.+\.rb/)
+      end
+    end
+
+    context "callbacks" do
+      [:before, :after].each do |callback_type|
+        it "returns a hash that with the errored #{callback_type} callback information" do
+          subject.configuration.send("#{callback_type}_each") do
+            raise "Nope"
+          end
+          result = subject.lint_config
+          expect(result).to have_key("#{callback_type}_each".to_sym)
+          expect(result["#{callback_type}_each".to_sym]).to match(/RuntimeError: Nope\n\s\s\s\s.+\.rb/)
+        end
+      end
+    end
+  end
 end

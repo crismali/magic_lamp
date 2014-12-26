@@ -57,6 +57,14 @@ module MagicLamp
       load_all(config_files)
     end
 
+    def lint_config
+      errors = {}
+      add_error_if_error(errors, :config_file_load) { load_config }
+      add_callback_error_if_error(errors, :before_each)
+      add_callback_error_if_error(errors, :after_each)
+      errors
+    end
+
     def load_lamp_files
       self.registered_fixtures = {}
       load_config
@@ -79,6 +87,26 @@ module MagicLamp
     end
 
     private
+
+    def compose_error(error)
+      name = "#{error.class.to_s}: #{error.message}"
+      ([name] + error.backtrace).join("\n\s\s\s\s")
+    end
+
+    def add_error_if_error(error_hash, key, &block)
+      begin
+        block.call
+      rescue => e
+        error_hash[key] = compose_error(e)
+      end
+    end
+
+    def add_callback_error_if_error(error_hash, callback_type)
+      add_error_if_error(error_hash, callback_type) do
+        callback = configuration.send("#{callback_type}_proc")
+        Object.new.instance_eval(&callback) if callback
+      end
+    end
 
     def namespaced_fixture_name_or_raise(options)
       fixture_name = options.delete(:name)
