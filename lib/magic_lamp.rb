@@ -65,6 +65,26 @@ module MagicLamp
       errors
     end
 
+    def lint_fixtures
+      self.registered_fixtures = {}
+      file_errors = {}
+      fixture_errors = {}
+
+      lamp_files.each do |lamp_file|
+        add_error_if_error(file_errors, lamp_file) { load lamp_file }
+      end
+
+      registered_fixtures.each do |fixture_name, fixture_info|
+        begin
+          generate_fixture(fixture_name)
+        rescue => e
+          fixture_errors[fixture_name] = fixture_info.merge(error: compose_error(e))
+        end
+      end
+
+      { files: file_errors, fixtures: fixture_errors }
+    end
+
     def load_lamp_files
       self.registered_fixtures = {}
       load_config

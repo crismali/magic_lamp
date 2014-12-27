@@ -365,4 +365,55 @@ describe MagicLamp do
       end
     end
   end
+
+  describe "#lint_fixtures" do
+    it "clears registered fixtures" do
+      subject.registered_fixtures[:foo] = :bar
+      subject.lint_fixtures
+      expect(subject.registered_fixtures).to_not have_key(:foo)
+    end
+
+    context "no errors" do
+      it "returns an hash with empty hashes" do
+        expect(subject.lint_fixtures).to eq(fixtures: {}, files: {})
+      end
+    end
+
+    context "loading lamp files errors" do
+      it "returns a hash where the keys are file paths (and line number) and the values are the errors" do
+        lamp_file_paths = ["first_errored_lamp_file.rb", "second_errored_lamp_file.rb"].map do |file_name|
+          Rails.root.join("error_specs", file_name).to_s
+        end
+        first_error_file_path, second_error_file_path = lamp_file_paths
+        allow(subject).to receive(:lamp_files).and_return(lamp_file_paths)
+
+        result = subject.lint_fixtures[:files]
+        expect(result).to have_key(first_error_file_path)
+        expect(result).to have_key(second_error_file_path)
+
+        expect(result[first_error_file_path]).to match(/RuntimeError: first file/)
+        expect(result[second_error_file_path]).to match(/RuntimeError: second file/)
+      end
+    end
+
+    context "rendering fixture errors" do
+      it "returns a hash where the fixture names are the keys and the values are what's in registered fixtures" do
+        allow(subject).to receive(:lamp_files).and_return([Rails.root.join("error_specs", "broken_fixtures.rb").to_s])
+        result = subject.lint_fixtures[:fixtures]
+
+        expect(result.keys).to match_array(["foo", "orders/bar"])
+
+        foo_result = result["foo"]
+        bar_result = result["orders/bar"]
+
+        [:render_block, :extend, :controller].each do |key|
+          expect(foo_result[key]).to eq(subject.registered_fixtures["foo"][key])
+          expect(bar_result[key]).to eq(subject.registered_fixtures["orders/bar"][key])
+        end
+
+        expect(foo_result[:error]).to match(/RuntimeError: first fixture/)
+        expect(bar_result[:error]).to match(/RuntimeError: second fixture/)
+      end
+    end
+  end
 end
