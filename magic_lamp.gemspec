@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 4.0"
   s.add_dependency "rake"
+  s.add_dependency "method_source"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "selenium-webdriver"
