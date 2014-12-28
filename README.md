@@ -58,6 +58,9 @@ Now you've got the basic setup.
 
 In case you need it, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
 
+### Debugging
+Visit `/magic_lamp/lint` in your browser to lint your fixtures. You can also run `rake magic_lamp:lint` (or `rake mll` for short) to lint your fixtures from the command line.
+
 ### With Database Cleaner
 
 You don't need [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) to use this gem, but this is probably the setup most people want.
@@ -500,9 +503,7 @@ Errors
 If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
 error. Errors will also appear in your server log (if you're running the in-browser specs).
 
-To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks) (or `rake mll`)
-which will attempt to render all of your templates. If there are any errors they'll show up there in a
-somewhat less noisy environment.
+To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks) (or `rake mll`) or visit `/magic_lamp/lint` in your browser and display any errors in your fixtures.
 
 If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
 without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
