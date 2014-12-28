@@ -34,9 +34,17 @@ describe "magic_lamp:lint:config" do
       expect(output).to match("Linting Magic Lamp configuration")
       expect(output).to match("Configuration looks good")
     end
+
+    it "does not abort" do
+      expect(MAIN_OBJECT).to_not receive(:abort)
+    end
   end
 
   context "errors" do
+    before do
+      allow(MAIN_OBJECT).to receive(:abort)
+    end
+
     it "tells us if the file could be loaded" do
       allow(MagicLamp).to receive(:load_config) do
         load Rails.root.join("error_specs", "config_file_load_error.rb")
@@ -59,12 +67,24 @@ describe "magic_lamp:lint:config" do
         expect(output).to match("RuntimeError: Nope")
       end
     end
+
+    it "aborts the task" do
+      allow(MagicLamp).to receive(:load_config) do
+        load Rails.root.join("error_specs", "config_file_load_error.rb")
+      end
+      expect(MAIN_OBJECT).to receive(:abort)
+      capture_stdout { subject.execute }
+    end
   end
 end
 
 describe "magic_lamp:lint:files" do
   include CatchOutput
   let(:output) { capture_stdout { subject.execute } }
+
+  before do
+    allow(MAIN_OBJECT).to receive(:abort).and_return(:abort)
+  end
 
   it { is_expected.to depend_on(:environment) }
 
@@ -73,13 +93,21 @@ describe "magic_lamp:lint:files" do
       expect(output).to match("Linting lamp files")
       expect(output).to match("Lamp files look good")
     end
+
+    it "does not abort" do
+      expect(MAIN_OBJECT).to_not receive(:abort)
+      capture_stdout { subject.execute }
+    end
   end
 
   context "errors" do
-    it "tells us which files are broken and how" do
-      lamp_file_paths = ["first_errored_lamp_file.rb", "second_errored_lamp_file.rb"].map do |file_name|
+    let!(:lamp_file_paths) do
+      ["first_errored_lamp_file.rb", "second_errored_lamp_file.rb"].map do |file_name|
         Rails.root.join("error_specs", file_name).to_s
       end
+    end
+
+    it "tells us which files are broken and how" do
       first_error_file_path, second_error_file_path = lamp_file_paths
       allow(MagicLamp).to receive(:lamp_files).and_return(lamp_file_paths)
 
@@ -90,6 +118,12 @@ describe "magic_lamp:lint:files" do
       expect(output).to match(second_error_file_path)
       expect(output).to match("RuntimeError: first file")
       expect(output).to match("RuntimeError: second file")
+    end
+
+    it "aborts the task" do
+      allow(MagicLamp).to receive(:lamp_files).and_return(lamp_file_paths)
+      expect(MAIN_OBJECT).to receive(:abort)
+      capture_stdout { subject.execute }
     end
   end
 end
@@ -105,10 +139,16 @@ describe "magic_lamp:lint:fixtures" do
       expect(output).to match("Linting Magic Lamp fixtures")
       expect(output).to match("Fixtures look good")
     end
+
+    it "does not abort" do
+      expect(MAIN_OBJECT).to_not receive(:abort)
+      capture_stdout { subject.execute }
+    end
   end
 
   context "errors" do
     before do
+      allow(MAIN_OBJECT).to receive(:abort).and_return(:abort)
       allow(MagicLamp).to receive(:lamp_files).and_return([Rails.root.join("error_specs", "broken_fixtures.rb").to_s])
     end
 
@@ -140,6 +180,11 @@ describe "magic_lamp:lint:fixtures" do
     it "displays the error" do
       expect(output).to match("RuntimeError: first fixture")
       expect(output).to match("RuntimeError: second fixture")
+    end
+
+    it "aborts the task" do
+      expect(MAIN_OBJECT).to receive(:abort)
+      capture_stdout { subject.execute }
     end
   end
 end

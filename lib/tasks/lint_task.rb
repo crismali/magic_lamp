@@ -21,6 +21,7 @@ namespace :magic_lamp do
             puts "\n#{errors[callback]}"
           end
         end
+        abort
       else
         puts "Configuration looks good!"
       end
@@ -40,6 +41,7 @@ namespace :magic_lamp do
           puts "Error: #{error}"
           puts ""
         end
+        abort
       else
         puts "Lamp files look good!"
       end
@@ -74,6 +76,7 @@ namespace :magic_lamp do
           puts "Error: #{fixture_info[:error]}"
           puts ""
         end
+        abort
       else
         puts "Fixtures look good!"
       end
