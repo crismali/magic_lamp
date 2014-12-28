@@ -27,12 +27,27 @@ namespace :magic_lamp do
             puts "\n#{errors[callback]}"
           end
         end
-
       else
         puts "Configuration looks good!"
       end
     end
 
+    desc "Lints your Magic Lamp lamp files and reports any errors"
+    task files: :environment do
+      puts "Linting lamp files..."
+      errors = MagicLamp.lint_fixtures[:files]
+
+      if errors.present?
+        puts "The following files are broken:"
+
+        errors.each do |path, error|
+          puts path
+          puts "  " + error
+        end
+      else
+        puts "Lamp files look good!"
+      end
+    end
   end
 end
 

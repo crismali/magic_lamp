@@ -111,6 +111,38 @@ describe "magic_lamp:lint:config" do
   end
 end
 
+describe "magic_lamp:lint:files" do
+  include CatchOutput
+  let(:output) { capture_stdout { subject.execute } }
+
+  it { is_expected.to depend_on(:environment) }
+
+  context "no errors" do
+    it "tells us everything is fine" do
+      expect(output).to match("Linting lamp files")
+      expect(output).to match("Lamp files look good")
+    end
+  end
+
+  context "errors" do
+    it "tells us which files are broken and how" do
+      lamp_file_paths = ["first_errored_lamp_file.rb", "second_errored_lamp_file.rb"].map do |file_name|
+        Rails.root.join("error_specs", file_name).to_s
+      end
+      first_error_file_path, second_error_file_path = lamp_file_paths
+      allow(MagicLamp).to receive(:lamp_files).and_return(lamp_file_paths)
+
+      expect(output).to match("Linting lamp files")
+      expect(output).to_not match("Lamp files look good")
+
+      expect(output).to match(first_error_file_path)
+      expect(output).to match(second_error_file_path)
+      expect(output).to match("RuntimeError: first file")
+      expect(output).to match("RuntimeError: second file")
+    end
+  end
+end
+
 describe "mll" do
   it "is an alias for magic_lamp:lint" do
     expect(subject).to depend_on("magic_lamp:lint")
