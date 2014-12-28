@@ -119,12 +119,8 @@ describe "magic_lamp:lint:fixtures" do
     end
 
     it "displays the file the fixture is in" do
-      expect(output).to match(/File: .+\/broken_fixtures.rb/)
-    end
-
-    it "displays the line the fixture starts on" do
-      expect(output).to match(/starts on line: 7/i)
-      expect(output).to match(/starts on line: 13/i)
+      expect(output).to match(/File: .+\/broken_fixtures.rb:7/)
+      expect(output).to match(/File: .+\/broken_fixtures.rb:13/)
     end
 
     it "displays the broken fixture's code" do
@@ -132,6 +128,7 @@ describe "magic_lamp:lint:fixtures" do
     end
 
     it "displays the extensions" do
+      expect(output).to match("Extensions: None")
       expect(output).to match("Extensions: SomeExtension, OtherExtension")
     end
 

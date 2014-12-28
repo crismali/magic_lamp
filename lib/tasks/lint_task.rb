@@ -50,18 +50,27 @@ namespace :magic_lamp do
 
       if errors.present?
         puts "The following fixtures are broken:"
+        puts ""
 
         errors.each do |name, fixture_info|
-          puts "-" * 80
           puts "Name: \"#{name}\""
           render_block = fixture_info[:render_block]
-          puts "File: #{render_block.source_location.first}"
-          puts "Starts on line: #{render_block.source_location.last}"
+          puts "File: #{render_block.source_location.join(":")}"
           puts "Controller: #{fixture_info[:controller]}"
-          puts "Extensions: #{fixture_info[:extend].join(", ")}"
+
+          if fixture_info[:extend].present?
+            extensions = fixture_info[:extend].join(", ")
+          else
+            extensions = "None"
+          end
+
+          puts "Extensions: #{extensions}"
+          puts ""
           puts "Source code:"
           puts render_block.source
-          puts fixture_info[:error]
+          puts ""
+          puts "Error: #{fixture_info[:error]}"
+          puts ""
         end
       else
         puts "Fixtures look good!"
