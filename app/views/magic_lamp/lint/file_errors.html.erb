@@ -1,8 +1,8 @@
-<h1>There was a problem loading your lamp files.</h1>
+<h1 class="problem">There was a problem loading your lamp files.</h1>
 <h2>The following files are broken:</h2>
 <% @file_errors.each do |path, error| %>
-<div>
+<div class="file-error">
   <p>File: <%= path %></p>
-  <p>Error: <%= error %></p>
+  <p class="error">Error: <%= error %></p>
 </div>
 <% end %>

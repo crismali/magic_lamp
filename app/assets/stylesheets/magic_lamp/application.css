@@ -17,6 +17,28 @@
 .container {
   width: 80%;
   margin-left: 10%;
+  font-family: Helvetica;
+}
+
+h1 {
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.problem {
+  border: 3px solid red;
+}
+
+.no-problem {
+  border: 3px solid green;
+}
+
+.before-each {
+  border-bottom: 1px solid black;
+}
+
+.file-error {
+  border-bottom: 1px solid black;
 }
 
 .fixture-info {

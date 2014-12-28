@@ -1,7 +1,10 @@
-<h1>Something when wrong in your callbacks:</h1>
+<h1 class="problem">Something went wrong in your callbacks:</h1>
 
+<% if @config_errors[:before_each] %>
 <h3><span class="inline-code">before_each</span>:</h3>
-<p><%= @config_errors[:before_each] %></p>
-
+<p class="error before-each"><%= @config_errors[:before_each] %></p>
+<% end %>
+<% if @config_errors[:after_each] %>
 <h3><span class="inline-code">after_each</span>:</h3>
-<p><%= @config_errors[:after_each] %></p>
+<p class="error"><%= @config_errors[:after_each] %></p>
+<% end %>
