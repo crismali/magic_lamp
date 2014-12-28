@@ -58,6 +58,7 @@ module MagicLamp
     end
 
     def lint_config
+      self.registered_fixtures = {}
       errors = {}
       add_error_if_error(errors, :config_file_load) { load_config }
       add_callback_error_if_error(errors, :before_each)

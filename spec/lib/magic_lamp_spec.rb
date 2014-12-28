@@ -335,6 +335,12 @@ describe MagicLamp do
   end
 
   describe "#lint_config" do
+    it "sets registered fixtures to an empty hash" do
+      subject.registered_fixtures = { foo: "bar" }
+      subject.lint_config
+      expect(subject.registered_fixtures).to eq({})
+    end
+
     context "no errors" do
       it "returns an empty hash" do
         expect(subject.lint_config).to eq({})

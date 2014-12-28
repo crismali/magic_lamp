@@ -2,15 +2,9 @@ require "method_source"
 
 namespace :magic_lamp do
   desc "Generates all Magic Lamp fixtures and displays errors for debugging"
-  task lint: :environment do
-    file_errors, fixture_errors = MagicLamp.lint_fixtures.values_at(:files, :fixtures)
-    template = File.read("#{File.dirname(__FILE__)}/lint_template.erb")
-    erb_template = ERB.new(template)
-    puts erb_template.result(binding)
-  end
+  task lint: ["magic_lamp:lint:config", "magic_lamp:lint:files", "magic_lamp:lint:fixtures"]
 
   namespace :lint do
-
     desc "Lints your Magic Lamp configuration and reports any errors"
     task config: :environment do
       puts "Linting Magic Lamp configuration..."
