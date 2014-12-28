@@ -33,10 +33,12 @@ namespace :magic_lamp do
 
       if errors.present?
         puts "The following files are broken:"
+        puts ""
 
         errors.each do |path, error|
-          puts path
-          puts "  " + error
+          puts "File: #{path}"
+          puts "Error: #{error}"
+          puts ""
         end
       else
         puts "Lamp files look good!"
