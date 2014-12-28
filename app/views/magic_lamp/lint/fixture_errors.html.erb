@@ -1,0 +1,17 @@
+<h1>There was a problem rendering your fixtures</h1>
+<h2>The following fixtures are broken:</h2>
+
+<% @fixture_errors.each do |name, fixture_info, render_block = fixture_info[:render_block]| %>
+<div class="fixture-info">
+  <p>Name: <%= name %></p>
+  <p>File: <%= render_block.source_location.join(":") %></p>
+  <p>Controller: <%= fixture_info[:controller] %></p>
+  <p>Extensions: <%= fixture_info[:extend].present? ? fixture_info[:extend].join(", ") : "None" %></p>
+  <p>Source Code:
+    <p><% render_block.source.split("\n").each do |line| %>
+      <div style="text-indent: <%= line.match(/\A\s+/).to_s.size %>em;"><%= line %></div>
+    <% end %></p>
+  </p>
+  <p class="error">Error: <%= fixture_info[:error] %></p>
+</div>
+<% end %>

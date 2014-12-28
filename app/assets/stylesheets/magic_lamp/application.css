@@ -13,3 +13,22 @@
  *= require_tree .
  *= require_self
  */
+
+.container {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.fixture-info {
+  border-bottom: 1px solid black;
+}
+
+.error {
+  overflow: hidden;
+  height: 10em;
+}
+
+.error:hover {
+  overflow: visible;
+  height: 100%;
+}
