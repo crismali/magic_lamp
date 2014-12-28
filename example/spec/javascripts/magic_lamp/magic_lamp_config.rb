@@ -7,7 +7,6 @@ module AuthenticationStub
 end
 
 MagicLamp.configure do |config|
-
   DatabaseCleaner.strategy = :transaction
 
   config.before_each do
