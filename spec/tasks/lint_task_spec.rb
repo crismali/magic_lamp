@@ -60,8 +60,8 @@ describe "magic_lamp:lint" do
       subject.execute
 
       expect(outputs).to match(/the following fixtures are broken/i)
-      expect(outputs).to match(/"foo" in .+broken_fixtures.rb on line 1/i)
-      expect(outputs).to match(/"orders\/bar" in .+broken_fixtures.rb on line 7/i)
+      expect(outputs).to match(/"foo" in .+broken_fixtures.rb on line 7/i)
+      expect(outputs).to match(/"orders\/bar" in .+broken_fixtures.rb on line 13/i)
       expect(outputs).to match(/raise "first fixture"/i)
       expect(outputs).to match(/raise "second fixture"/i)
       expect(outputs).to match(/RuntimeError: first fixture/i)
@@ -139,6 +139,59 @@ describe "magic_lamp:lint:files" do
       expect(output).to match(second_error_file_path)
       expect(output).to match("RuntimeError: first file")
       expect(output).to match("RuntimeError: second file")
+    end
+  end
+end
+
+describe "magic_lamp:lint:fixtures" do
+  include CatchOutput
+  let(:output) { capture_stdout { subject.execute } }
+
+  it { is_expected.to depend_on(:environment) }
+
+  context "no errors" do
+    it "lets us know the fixtures are good" do
+      expect(output).to match("Linting Magic Lamp fixtures")
+      expect(output).to match("Fixtures look good")
+    end
+  end
+
+  context "errors" do
+    before do
+      allow(MagicLamp).to receive(:lamp_files).and_return([Rails.root.join("error_specs", "broken_fixtures.rb").to_s])
+    end
+
+    it "tells us which fixtures are broken" do
+      expect(output).to match(/the following fixtures are broken/i)
+      expect(output).to match(/Name: "foo"/)
+      expect(output).to match(/Name: "orders\/bar"/)
+    end
+
+    it "displays the file the fixture is in" do
+      expect(output).to match(/File: .+\/broken_fixtures.rb/)
+    end
+
+    it "displays the line the fixture starts on" do
+      expect(output).to match(/starts on line: 7/i)
+      expect(output).to match(/starts on line: 13/i)
+    end
+
+    it "displays the broken fixture's code" do
+      expect(output).to match("fixture\\(name: ")
+    end
+
+    it "displays the extensions" do
+      expect(output).to match("Extensions: SomeExtension, OtherExtension")
+    end
+
+    it "displays the controller" do
+      expect(output).to match("Controller: ApplicationController")
+      expect(output).to match("Controller: OrdersController")
+    end
+
+    it "displays the error" do
+      expect(output).to match("RuntimeError: first fixture")
+      expect(output).to match("RuntimeError: second fixture")
     end
   end
 end

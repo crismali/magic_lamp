@@ -48,6 +48,31 @@ namespace :magic_lamp do
         puts "Lamp files look good!"
       end
     end
+
+    desc "Lints your Magic Lamp fixtures and reports any errors"
+    task fixtures: :environment do
+      puts "Linting Magic Lamp fixtures..."
+      errors = MagicLamp.lint_fixtures[:fixtures]
+
+      if errors.present?
+        puts "The following fixtures are broken:"
+
+        errors.each do |name, fixture_info|
+          puts "-" * 80
+          puts "Name: \"#{name}\""
+          render_block = fixture_info[:render_block]
+          puts "File: #{render_block.source_location.first}"
+          puts "Starts on line: #{render_block.source_location.last}"
+          puts "Controller: #{fixture_info[:controller]}"
+          puts "Extensions: #{fixture_info[:extend].join(", ")}"
+          puts "Source code:"
+          puts render_block.source
+          puts fixture_info[:error]
+        end
+      else
+        puts "Fixtures look good!"
+      end
+    end
   end
 end
 
