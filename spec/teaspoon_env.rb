@@ -38,7 +38,6 @@ Teaspoon.configure do |config|
   # - with the rake task: rake teaspoon suite=[suite_name]
   # - with the cli: teaspoon --suite=[suite_name]
   config.suite do |suite|
-
     # Specify the framework you would like to use. This allows you to select versions, and will do some basic setup for
     # you -- which you can override with the directives below. This should be specified first, as it can override other
     # directives.
@@ -82,7 +81,6 @@ Teaspoon.configure do |config|
     # Hooks allow you to use `Teaspoon.hook("fixtures")` before, after, or during your spec run. This will make a
     # synchronous Ajax request to the server that will call all of the blocks you've defined for that hook name.
     # suite.hook :fixtures, proc{ }
-
   end
 
   # Example suite. Since we're just filtering to files already within the root test/javascripts, these files will also
@@ -163,7 +161,6 @@ Teaspoon.configure do |config|
   # config.use_coverage = nil
 
   config.coverage do |coverage|
-
     # Which coverage reports Instanbul should generate. Correlates directly to what Istanbul supports.
     #
     # Available: text-summary, text, html, lcov, lcovonly, cobertura, teamcity
@@ -179,7 +176,5 @@ Teaspoon.configure do |config|
     # coverage.functions = nil
     # coverage.branches = nil
     # coverage.lines = nil
-
   end
-
 end

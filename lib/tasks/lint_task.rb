@@ -59,7 +59,7 @@ namespace :magic_lamp do
         errors.each do |name, fixture_info|
           puts "Name: \"#{name}\""
           render_block = fixture_info[:render_block]
-          puts "File: #{render_block.source_location.join(":")}"
+          puts "File: #{render_block.source_location.join(':')}"
           puts "Controller: #{fixture_info[:controller]}"
 
           if fixture_info[:extend].present?

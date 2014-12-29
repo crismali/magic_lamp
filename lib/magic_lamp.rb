@@ -110,16 +110,14 @@ module MagicLamp
     private
 
     def compose_error(error)
-      name = "#{error.class.to_s}: #{error.message}"
+      name = "#{error.class}: #{error.message}"
       ([name] + error.backtrace).join("\n\s\s\s\s")
     end
 
     def add_error_if_error(error_hash, key, &block)
-      begin
-        block.call
-      rescue => e
-        error_hash[key] = compose_error(e)
-      end
+      block.call
+    rescue => e
+      error_hash[key] = compose_error(e)
     end
 
     def add_callback_error_if_error(error_hash, callback_type)

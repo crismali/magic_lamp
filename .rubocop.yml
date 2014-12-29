@@ -5,6 +5,8 @@ AllCops:
   Exclude:
     - db/**/*
     - bin/**/*
+    - spec/dummy/**/*
+    - example/**/*
 
 Lint/SpaceBeforeFirstArg:
   Enabled: false

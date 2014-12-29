@@ -25,12 +25,10 @@ module MagicLamp
 
     def config_errors?
       @config_errors = MagicLamp.lint_config
-      if @config_errors.present?
-        if @config_errors[:config_file_load]
-          render :config_file_load_error
-        else
-          render :callback_errors
-        end
+      if @config_errors.present? && @config_errors[:config_file_load]
+        render :config_file_load_error
+      elsif @config_errors.present?
+        render :callback_errors
       end
       @config_errors.present?
     end

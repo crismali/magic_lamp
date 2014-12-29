@@ -2,14 +2,12 @@ require "rails_helper"
 
 module CatchOutput
   def capture_stdout
-    begin
-      old_stdout = $stdout
-      $stdout = StringIO.new("", "w")
-      yield
-      $stdout.string
-    ensure
-      $stdout = old_stdout
-    end
+    old_stdout = $stdout
+    $stdout = StringIO.new("", "w")
+    yield
+    $stdout.string
+  ensure
+    $stdout = old_stdout
   end
 end
 
