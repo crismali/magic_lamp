@@ -153,7 +153,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.6)
+  bundler (~> 1.7)
   database_cleaner
   dotenv-rails
   fantaskspec
