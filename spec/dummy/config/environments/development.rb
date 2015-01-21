@@ -1,4 +1,11 @@
-Rails.application.configure do
+if Rails::VERSION::STRING.to_f == 4.0
+  application = Dummy::Application
+else
+  application = Rails.application
+end
+
+application.configure do
+  config.secret_key_base = "foo"
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

@@ -1,4 +1,12 @@
-Rails.application.configure do
+if Rails::VERSION::STRING.to_f == 4.0
+  application = Dummy::Application
+else
+  application = Rails.application
+end
+
+application.configure do
+  config.secret_key_base = "foo"
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
@@ -13,7 +21,12 @@ Rails.application.configure do
   config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_assets  = true
+  if Rails::VERSION::STRING.to_f == 4.0
+    config.serve_static_assets = true
+  else
+    config.serve_static_files = true
+  end
+
   config.static_cache_control = 'public, max-age=3600'
 
   # Show full error reports and disable caching.

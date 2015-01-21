@@ -15,10 +15,11 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,lib}/**/*", "VERSION", "LICENSE", "README.md"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", ">= 4.0"
+  s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency "rake"
   s.add_dependency "method_source"
 
+  s.add_development_dependency "appraisal"
   s.add_development_dependency "bundler", "~> 1.7"
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "dotenv-rails"
