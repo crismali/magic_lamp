@@ -10,21 +10,10 @@ module MagicLamp
   TEST = "test"
   Genie = Engine
 
-  class AmbiguousFixtureNameError < StandardError
-  end
-
-  class UnregisteredFixtureError < StandardError
-  end
-
-  class AlreadyRegisteredFixtureError < StandardError
-  end
-
-  class ArgumentError < StandardError
-  end
-
-  class AttemptedRedirectError < StandardError
-  end
-
-  class DoubleRenderError < StandardError
-  end
+  AlreadyRegisteredFixtureError = Class.new(StandardError)
+  AmbiguousFixtureNameError = Class.new(StandardError)
+  ArgumentError = Class.new(StandardError)
+  AttemptedRedirectError = Class.new(StandardError)
+  DoubleRenderError = Class.new(StandardError)
+  UnregisteredFixtureError = Class.new(StandardError)
 end

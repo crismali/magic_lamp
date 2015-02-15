@@ -36,8 +36,7 @@
 
     preload: function() {
       var xhr = this.xhrRequest(getPath());
-      var json = JSON.parse(xhr.responseText);
-      this.cache = json;
+      this.cache = JSON.parse(xhr.responseText);
       this.cacheOnly = true;
     },
 
