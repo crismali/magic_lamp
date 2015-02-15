@@ -238,7 +238,7 @@ MagicLamp.define(controller: OrdersController, extend: AuthStub) do
     render partial: "form"
   end
 
-  define(namespace: "errors", extend: SomeErrorHelpers)
+  define(namespace: "errors", extend: SomeErrorHelpers) do
     fixture(name: "form_without_price") do # orders/errors/form_without_price
       @order = Order.new
       @order.errors.add(:price, "can't be blank")
