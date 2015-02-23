@@ -1,6 +1,8 @@
 language: ruby
 sudo: false
 bundler_args: "--binstubs --without documentation --retry=3"
+before_script:
+   - bundle install
 gemfile:
   - gemfiles/rails4.0.gemfile
   - gemfiles/rails4.1.gemfile
