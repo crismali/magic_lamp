@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
 bundler_args: "--binstubs --without documentation --retry=3"
-script: "bundle exec appraisal rake"
+script: "bundle exec appraisal install; bundle exec appraisal rake"
 rvm:
   - 2.2
   - 2.1
