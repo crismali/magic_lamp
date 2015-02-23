@@ -25,10 +25,7 @@ namespace :spec do
   end
 
   desc "Run both test suites"
-  task :all do
-    Rake::Task["spec"].invoke
-    Rake::Task["teaspoon"].invoke
-  end
+  task all: ["spec", "teaspoon"]
 end
 
 task default: ["spec:all"]
