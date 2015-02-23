@@ -1,7 +1,10 @@
 language: ruby
 sudo: false
 bundler_args: "--binstubs --without documentation --retry=3"
-script: "bundle exec appraisal install; bundle exec appraisal rake"
+gemfile:
+  - gemfiles/rails4.0.gemfile
+  - gemfiles/rails4.1.gemfile
+  - gemfiles/rails4.2.gemfile
 rvm:
   - 2.2
   - 2.1
