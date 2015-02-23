@@ -3,8 +3,7 @@ sudo: false
 bundler_args: "--binstubs --without documentation --retry=3"
 before_script:
    - ./bootstrap
-   - gem install bundler
-   - bundle install
+script: bundle exec rake
 gemfile:
   - gemfiles/rails4.0.gemfile
   - gemfiles/rails4.1.gemfile
