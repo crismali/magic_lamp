@@ -1,7 +1,7 @@
 language: ruby
 sudo: false
-bundler_args: "--binstubs --without documentation --path ../bundle --retry=3 --jobs=3"
-script: "bundle exec appraisal rspec"
+bundler_args: "--binstubs --without documentation --retry=3"
+script: "bundle exec appraisal rake"
 rvm:
   - 2.2
   - 2.1
