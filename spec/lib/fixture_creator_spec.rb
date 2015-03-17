@@ -3,7 +3,7 @@ require "rails_helper"
 describe MagicLamp::FixtureCreator do
   subject { MagicLamp::FixtureCreator.new(MagicLamp::Configuration.new) }
 
-  it { is_expected.to be_kind_of(MagicLamp::Callbacks) }
+  it_behaves_like "it has callbacks"
 
   context "attr_accessor" do
     it { is_expected.to attr_accessorize :render_arguments }

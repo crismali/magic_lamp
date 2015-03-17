@@ -17,6 +17,8 @@
 require "fantaskspec"
 MAIN_OBJECT = self
 
+Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |file| require file }
+
 RSpec::Matchers.define :alias_the_method do |method_name|
   match do |actual|
     if actual.respond_to?(method_name) && actual.respond_to?(@other_method_name)
