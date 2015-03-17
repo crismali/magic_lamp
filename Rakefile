@@ -25,7 +25,7 @@ namespace :spec do
   end
 
   desc "Run both test suites"
-  task all: ["spec", "teaspoon"]
+  task all: %w(spec teaspoon)
 end
 
 task default: ["spec:all"]
