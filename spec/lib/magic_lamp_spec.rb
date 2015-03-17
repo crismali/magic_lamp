@@ -41,14 +41,6 @@ describe MagicLamp do
       end
     end
 
-    it "replaces its configuration object if called again" do
-      subject.configure { |config| config.infer_names = false }
-      first_config = subject.configuration
-      subject.configure { |config| config.infer_names = false }
-      second_config = subject.configuration
-      expect(first_config).to_not eq(second_config)
-    end
-
     it "raises an error without a block" do
       expect do
         subject.configure
@@ -229,6 +221,12 @@ describe MagicLamp do
   end
 
   describe "#load_config" do
+    it "sets configuration to a new configuration object" do
+      old_config = subject.configuration
+      subject.load_config
+      expect(subject.configuration).to_not equal(old_config)
+    end
+
     it "loads the magic lamp config file from the spec and test directories" do
       expect(subject).to receive(:registered?).with("spec")
       expect(subject).to receive(:registered?).with("test")
@@ -359,11 +357,11 @@ describe MagicLamp do
     end
 
     context "callbacks" do
+      let!(:error_proc) { proc { raise "Nope" } }
+
       [:before, :after].each do |callback_type|
         it "returns a hash that with the errored #{callback_type} callback information" do
-          subject.configuration.send("#{callback_type}_each") do
-            raise "Nope"
-          end
+          expect_any_instance_of(MagicLamp::Configuration).to receive("#{callback_type}_each_proc").and_return(error_proc)
           result = subject.lint_config
           expect(result).to have_key("#{callback_type}_each".to_sym)
           expect(result["#{callback_type}_each".to_sym]).to match(/RuntimeError: Nope\n\s\s\s\s.+\.rb/)

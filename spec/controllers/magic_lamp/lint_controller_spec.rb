@@ -31,9 +31,11 @@ module MagicLamp
         end
 
         context "callback errors" do
+          let!(:error_proc) { proc { raise "nope" } }
+
           before do
-            MagicLamp.configuration.before_each { raise "before" }
-            MagicLamp.configuration.after_each { raise "after" }
+            expect_any_instance_of(MagicLamp::Configuration).to receive(:before_each_proc).and_return(error_proc)
+            expect_any_instance_of(MagicLamp::Configuration).to receive(:after_each_proc).and_return(error_proc)
             get :index
           end
 

@@ -39,6 +39,8 @@ describe "magic_lamp:lint:config" do
   end
 
   context "errors" do
+    let!(:error_proc) { proc { raise "Nope" } }
+
     before do
       allow(MAIN_OBJECT).to receive(:abort)
     end
@@ -55,9 +57,7 @@ describe "magic_lamp:lint:config" do
 
     [:before, :after].each do |callback_type|
       it "tells us if the #{callback_type}_each callback is broken" do
-        MagicLamp.configuration.send("#{callback_type}_each") do
-          raise "Nope"
-        end
+        expect_any_instance_of(MagicLamp::Configuration).to receive("#{callback_type}_each_proc").and_return(error_proc)
 
         expect(output).to match("Linting Magic Lamp configuration")
         expect(output).to_not match("Configuration looks good")
