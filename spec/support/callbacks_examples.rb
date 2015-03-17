@@ -32,4 +32,25 @@ shared_examples "it has callbacks" do
       end
     end
   end
+
+  describe "#execute_callbacks_around" do
+    it "raises an error without a block" do
+      expect do
+        subject.execute_callbacks_around
+      end.to raise_error(MagicLamp::ArgumentError, "#{described_class.name}#execute_callbacks_around requires a block")
+    end
+
+    it "calls the callbacks around the block" do
+      def subject.foo; end
+      expect(subject).to receive(:execute_before_each_callback).ordered
+      expect(subject).to receive(:foo).ordered
+      expect(subject).to receive(:execute_after_each_callback).ordered
+      subject.execute_callbacks_around { subject.foo }
+    end
+
+    it "returns the return value of the block" do
+      spy = double
+      expect(subject.execute_callbacks_around { spy }).to eq(spy)
+    end
+  end
 end

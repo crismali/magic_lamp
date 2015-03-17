@@ -17,18 +17,15 @@ describe MagicLamp::RenderCatcher do
   end
 
   describe "#first_render_argument" do
-    let(:block) { proc { render :foo, :bar, :baz } }
-    let(:result) { subject.first_render_argument(&block) }
-
     it "returns the first argument to render given a block" do
+      result = subject.first_render_argument { render :foo, :bar, :baz }
       expect(result).to eq(:foo)
     end
 
     it "executes callbacks around the evaluation of the block" do
-      expect(subject).to receive(:execute_before_each_callback).ordered
-      expect(subject).to receive(:instance_eval).ordered
-      expect(subject).to receive(:execute_after_each_callback).ordered
+      expect(subject).to receive(:execute_callbacks_around).and_call_original
       subject.first_render_argument { render :foo }
+      expect(subject.render_argument).to eq(:foo)
     end
   end
 

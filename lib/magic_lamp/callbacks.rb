@@ -14,6 +14,17 @@ module MagicLamp
       execute_callback(:after)
     end
 
+    def execute_callbacks_around(&block)
+      if block.nil?
+        raise ArgumentError, "#{self.class.name}##{__method__} requires a block"
+      end
+
+      execute_before_each_callback
+      value = block.call
+      execute_after_each_callback
+      value
+    end
+
     private
 
     def execute_callback(type)

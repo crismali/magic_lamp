@@ -26,14 +26,8 @@ describe MagicLamp::FixtureCreator do
       end
 
       it "executes the callbacks around generation of the template" do
-        dummy = double
-        expect(subject).to receive(:execute_before_each_callback).ordered
-        expect(dummy).to receive(:render).ordered
-        expect(subject).to receive(:execute_after_each_callback).ordered
-        subject.generate_template(OrdersController, []) do
-          dummy.render
-          render :foo
-        end
+        expect(subject).to receive(:execute_callbacks_around).and_call_original
+        expect(rendered).to eq("foo\n")
       end
 
       context "render json (non string)" do

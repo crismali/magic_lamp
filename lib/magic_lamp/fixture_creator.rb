@@ -5,11 +5,10 @@ module MagicLamp
     attr_accessor :render_arguments
 
     def generate_template(controller_class, extensions, &block)
-      execute_before_each_callback
-      controller = new_controller(controller_class, extensions, &block)
-      rendered = fetch_rendered(controller, block)
-      execute_after_each_callback
-      rendered
+      execute_callbacks_around do
+        controller = new_controller(controller_class, extensions, &block)
+        fetch_rendered(controller, block)
+      end
     end
 
     def new_controller(controller_class, extensions, &block)
