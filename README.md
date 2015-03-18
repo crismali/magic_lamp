@@ -61,6 +61,15 @@ In case you need it, [here's an example app](https://github.com/crismali/magic_l
 ### Debugging
 Visit `/magic_lamp/lint` in your browser to lint your fixtures. You can also run `rake magic_lamp:lint` (or `rake mll` for short) to lint your fixtures from the command line.
 
+### Loading Helpers
+
+Simply `require` or `load` your helpers in the `magic_lamp_config.rb` file like so:
+
+```ruby
+# in magic_lamp_config.rb
+Dir[Rails.root.join("spec", "support", "magic_lamp_helpers/**/*.rb")].each { |f| require f }
+```
+
 ### With Database Cleaner
 
 You don't need [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) to use this gem, but this is probably the setup most people want.
