@@ -7,7 +7,7 @@ teaspoon_env_path = File.join(Dir.pwd, "spec", "teaspoon_env.rb")
 
 Dir.chdir("spec/dummy") do
   puts "Creating and migrating dummy app's database..."
-  system "bundle exec rake db:create db:migrate"
+  system "bundle exec rake db:create db:migrate db:test:prepare"
 
   puts "Setting up dot env"
   dot_env_path = File.join(Dir.pwd, ".env")
