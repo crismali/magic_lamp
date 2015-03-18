@@ -550,9 +550,10 @@ Contributing
 ------------
 1. [Fork it](https://github.com/crismali/magic_lamp/fork)
 2. Clone it locally
-3. Run the `./bootstrap` script
-4. Run the specs with `rake`
-5. Create your feature branch (`git checkout -b my-new-feature`)
-6. Commit your changes (`git commit -am 'Add some feature'`)
-7. Push to the branch (`git push origin my-new-feature`)
-8. Create new Pull Request
+3. `cd` into the project root
+4. Run the `./bootstrap` script
+5. Run the specs with `appraisal rake`
+6. Create your feature branch (`git checkout -b my-new-feature`)
+7. Commit your changes (`git commit -am 'Add some feature'`)
+8. Push to the branch (`git push origin my-new-feature`)
+9. Create new Pull Request
