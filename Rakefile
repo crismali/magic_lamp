@@ -1,3 +1,4 @@
+require "rubygems"
 begin
   require "bundler/setup"
 rescue LoadError
