@@ -17,7 +17,13 @@ Dir.chdir("spec/dummy") do
   end
 end
 
+puts "Setting up appraisal"
+system "bundle exec appraisal install"
+
 puts "Copying over `db` directory..."
 FileUtils.cp_r("spec/dummy/db/", "./")
+
+puts "Running the tests to be sure"
+system "bundle exec appraisal rake"
 
 puts "#done."
