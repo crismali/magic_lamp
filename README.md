@@ -98,7 +98,7 @@ your database every time you run your JavaScript specs.
 
 ### With FactoryGirl
 
-You don't need FactoryGirl to use Magic Lamp, but if you want to use it in your fixtures make sure you call `FactoryGirl.reload` in your `magic_lamp_config.rb`.
+If you're using FactoryGirl, Magic Lamp will call `FactoryGirl.reload` for you to save you some autoloader pain.
 
 Basic Usage
 -----------
