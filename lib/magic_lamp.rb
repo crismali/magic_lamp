@@ -53,6 +53,7 @@ module MagicLamp
     end
 
     def load_config
+      FactoryGirl.reload if defined?(FactoryGirl)
       self.configuration = Configuration.new
       load_all(config_files)
     end

@@ -238,6 +238,29 @@ describe MagicLamp do
       expect(subject).to_not receive(:registered_fixtures)
       expect { subject.load_config }.to_not raise_error
     end
+
+    context "FactoryGirl is not defined" do
+      before do
+        hide_const "FactoryGirl"
+      end
+
+      it "does not raise an error" do
+        expect { subject.load_config }.to_not raise_error
+      end
+    end
+
+    context "FactoryGirl is defined" do
+      let(:spy) { double }
+
+      before do
+        stub_const "FactoryGirl", spy
+      end
+
+      it "calls reload on FactoryGirl" do
+        expect(spy).to receive(:reload)
+        subject.load_config
+      end
+    end
   end
 
   describe "#load_lamp_files" do
