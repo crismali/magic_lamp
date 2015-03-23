@@ -548,7 +548,7 @@ Contributing
 1. [Fork it](https://github.com/crismali/magic_lamp/fork)
 2. Clone it locally
 3. `cd` into the project root
-4. Run the `./bootstrap` script
+4. `ruby bootstrap`
 5. Run the specs with `appraisal rake`
 6. Create your feature branch (`git checkout -b my-new-feature`)
 7. Commit your changes (`git commit -am 'Add some feature'`)
