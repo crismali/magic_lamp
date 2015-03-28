@@ -13,7 +13,18 @@ Gem::Specification.new do |s|
   s.license     = "Apache 2.0"
 
   s.files = Dir["{app,config,lib}/**/*", "VERSION", "LICENSE", "README.md"]
-  s.test_files = Dir["spec/**/*"]
+  s.test_files = Dir["spec/**/*"].reject do |file_path|
+    [
+      /\.sqlite3\z/,
+      /\.sqlite3-journal\z/,
+      /\.log\z/,
+      /tmp/,
+      /\.sass-cache\z/,
+      /spec\/dummy\/\./
+    ].any? do |ignored_pattern|
+      file_path.match(ignored_pattern)
+    end
+  end
 
   s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency "rake"
