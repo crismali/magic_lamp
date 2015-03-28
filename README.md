@@ -63,11 +63,11 @@ Visit `/magic_lamp/lint` in your browser to lint your fixtures. You can also run
 
 ### Loading Helpers
 
-Simply `require` or `load` your helpers in the `magic_lamp_config.rb` file like so:
+Simply `load` your helpers in the `magic_lamp_config.rb` file like so:
 
 ```ruby
 # in magic_lamp_config.rb
-Dir[Rails.root.join("spec", "support", "magic_lamp_helpers/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec", "support", "magic_lamp_helpers/**/*.rb")].each { |f| load f }
 ```
 
 ### With Database Cleaner
