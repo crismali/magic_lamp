@@ -6,8 +6,6 @@ Magic Lamp helps you get your Rails templates into your JavaScript tests. This m
 if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
 All you have to do is set up your data just like you would in a controller.
 
-It's not required that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript test runner, but you should.
-
 Table of Contents
 -----------------
 1. [Installation](#installation)
