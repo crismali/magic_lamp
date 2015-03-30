@@ -2,7 +2,7 @@ require "rails_helper"
 
 module MagicLamp
   describe LintController do
-    routes { Engine.routes }
+    routes { MagicLamp::Engine.routes }
 
     describe "#index" do
       context "no errors" do

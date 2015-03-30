@@ -1,4 +1,4 @@
-require "rake"
+require "method_source"
 
 require "magic_lamp/engine"
 require "magic_lamp/constants"
@@ -9,8 +9,14 @@ require "magic_lamp/defaults_manager"
 require "magic_lamp/fixture_creator"
 require "magic_lamp/render_catcher"
 
-require "tasks/lint_task"
-require "tasks/fixture_names_task"
+require "tasks/lint"
+require "tasks/fixture_names"
+
+begin
+  require "konacha"
+  require "tasks/konacha"
+rescue LoadError
+end
 
 module MagicLamp
   class << self

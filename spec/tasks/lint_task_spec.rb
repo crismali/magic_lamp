@@ -34,7 +34,7 @@ describe "magic_lamp:lint:config" do
     end
 
     it "does not abort" do
-      expect(MAIN_OBJECT).to_not receive(:abort)
+      expect(MagicLamp::Genie.instance).to_not receive(:abort)
     end
   end
 
@@ -42,7 +42,7 @@ describe "magic_lamp:lint:config" do
     let!(:error_proc) { proc { raise "Nope" } }
 
     before do
-      allow(MAIN_OBJECT).to receive(:abort)
+      allow(MagicLamp::Genie.instance).to receive(:abort)
     end
 
     it "tells us if the file could be loaded" do
@@ -70,7 +70,7 @@ describe "magic_lamp:lint:config" do
       allow(MagicLamp).to receive(:load_config) do
         load Rails.root.join("error_specs", "config_file_load_error.rb")
       end
-      expect(MAIN_OBJECT).to receive(:abort)
+      expect(MagicLamp::Genie.instance).to receive(:abort)
       capture_stdout { subject.execute }
     end
   end
@@ -81,7 +81,7 @@ describe "magic_lamp:lint:files" do
   let(:output) { capture_stdout { subject.execute } }
 
   before do
-    allow(MAIN_OBJECT).to receive(:abort).and_return(:abort)
+    allow(MagicLamp::Genie.instance).to receive(:abort).and_return(:abort)
   end
 
   it { is_expected.to depend_on(:environment) }
@@ -93,7 +93,7 @@ describe "magic_lamp:lint:files" do
     end
 
     it "does not abort" do
-      expect(MAIN_OBJECT).to_not receive(:abort)
+      expect(MagicLamp::Genie.instance).to_not receive(:abort)
       capture_stdout { subject.execute }
     end
   end
@@ -120,7 +120,7 @@ describe "magic_lamp:lint:files" do
 
     it "aborts the task" do
       allow(MagicLamp).to receive(:lamp_files).and_return(lamp_file_paths)
-      expect(MAIN_OBJECT).to receive(:abort)
+      expect(MagicLamp::Genie.instance).to receive(:abort)
       capture_stdout { subject.execute }
     end
   end
@@ -139,14 +139,14 @@ describe "magic_lamp:lint:fixtures" do
     end
 
     it "does not abort" do
-      expect(MAIN_OBJECT).to_not receive(:abort)
+      expect(MagicLamp::Genie.instance).to_not receive(:abort)
       capture_stdout { subject.execute }
     end
   end
 
   context "errors" do
     before do
-      allow(MAIN_OBJECT).to receive(:abort).and_return(:abort)
+      allow(MagicLamp::Genie.instance).to receive(:abort).and_return(:abort)
       allow(MagicLamp).to receive(:lamp_files).and_return([Rails.root.join("error_specs", "broken_fixtures.rb").to_s])
     end
 
@@ -181,7 +181,7 @@ describe "magic_lamp:lint:fixtures" do
     end
 
     it "aborts the task" do
-      expect(MAIN_OBJECT).to receive(:abort)
+      expect(MagicLamp::Genie.instance).to receive(:abort)
       capture_stdout { subject.execute }
     end
   end

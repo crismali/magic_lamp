@@ -15,7 +15,6 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "fantaskspec"
-MAIN_OBJECT = self
 
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |file| require file }
 

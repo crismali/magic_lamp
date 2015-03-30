@@ -44,9 +44,16 @@ GEM
     astrolabe (1.3.0)
       parser (>= 2.2.0.pre.3, < 3.0)
     builder (3.2.2)
+    capybara (2.4.4)
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.0)
+    colorize (0.7.5)
     database_cleaner (1.4.0)
     diff-lcs (1.2.5)
     dotenv (1.0.2)
@@ -60,13 +67,22 @@ GEM
     hike (1.2.3)
     i18n (0.7.0)
     json (1.8.2)
+    konacha (3.3.0)
+      actionpack (>= 3.1, < 5)
+      capybara
+      colorize
+      railties (>= 3.1, < 5)
+      sprockets
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
+    mini_portile (0.6.2)
     minitest (5.5.1)
     multi_json (1.10.1)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
     parser (2.2.0.2)
       ast (>= 1.1, < 3.0)
     polyglot (0.3.5)
@@ -155,6 +171,8 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     websocket (1.2.1)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
     yard (0.8.7.6)
 
 PLATFORMS
@@ -166,6 +184,7 @@ DEPENDENCIES
   database_cleaner
   dotenv-rails
   fantaskspec
+  konacha
   magic_lamp!
   pry
   pry-doc
