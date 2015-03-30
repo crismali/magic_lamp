@@ -25,6 +25,8 @@ MagicLamp::Genie.rake_tasks do
     end
   end
 
+  desc "Run Konacha JavaScript specs interactively with MagicLamp"
   task mlks: "magic_lamp:konacha:serve"
+  desc "Run Konacha JavaScript specs non-interactively with MagicLamp"
   task mlkr: "magic_lamp:konacha:run"
 end
