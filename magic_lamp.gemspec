@@ -35,7 +35,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "dotenv-rails"
   s.add_development_dependency "fantaskspec"
-  s.add_development_dependency "konacha"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-doc"
   s.add_development_dependency "pry-nav"

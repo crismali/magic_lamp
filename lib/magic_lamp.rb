@@ -12,12 +12,6 @@ require "magic_lamp/render_catcher"
 require "tasks/lint"
 require "tasks/fixture_names"
 
-begin
-  require "konacha"
-  require "tasks/konacha"
-rescue LoadError
-end
-
 module MagicLamp
   class << self
     attr_accessor :registered_fixtures, :configuration
