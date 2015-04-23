@@ -17,7 +17,9 @@
 
     preload: function() {
       this.genie.preload.apply(this.genie, arguments);
-    }
+    },
+
+    genericError: 'Something went wrong, please check the server log, run `rake magic_lamp:lint`, or visit `/magic_lamp/lint` for more information'
   };
 
   MagicLamp.clean = function() {
