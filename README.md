@@ -29,12 +29,7 @@ And then execute:
 
     $ bundle install
 
-Or install it yourself with:
-
-    $ gem install magic_lamp
-
-Then paste `mount MagicLamp::Genie, at: "/magic_lamp" if defined?(MagicLamp)` into your `config/routes.rb`
-like so:
+Then paste `mount MagicLamp::Genie, at: "/magic_lamp" if defined?(MagicLamp)` into your `config/routes.rb` like so:
 ```ruby
 Rails.application.routes.draw do
   # ...
@@ -48,13 +43,18 @@ Then drop this:
 ```js
 //= require magic_lamp
 ```
-at the top of your `spec_helper.js` (assuming you're using [Teaspoon](https://github.com/modeset/teaspoon) or another JavaScript spec runner for Rails that allows the use of Sprockets directives).
+at the top of your `spec_helper.js` (assuming you're using JavaScript spec runner for Rails that allows the use of Sprockets directives).
 
-(I highly recommend that you use [Teaspoon](https://github.com/modeset/teaspoon) as your JavaScript spec runner.)
+If your JavaScript doesn't support XHR requests, you can drop this in instead:
+
+```js
+//= require magic_lamp
+//= require magic_lamp/all_fixtures
+```
+
+`//= require magic_lamp/all_fixtures` will load all of your fixtures without making any XHR requests. 
 
 Now you've got the basic setup.
-
-In case you need it, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
 
 ### Debugging
 Visit `/magic_lamp/lint` in your browser to lint your fixtures. You can also run `rake magic_lamp:lint` (or `rake mll` for short) to lint your fixtures from the command line.
