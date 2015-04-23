@@ -68,6 +68,16 @@ Simply `load` your helpers in the `magic_lamp_config.rb` file like so:
 Dir[Rails.root.join("spec", "support", "magic_lamp_helpers/**/*.rb")].each { |f| load f }
 ```
 
+### Supported test runners
+Magic Lamp has been shown to work with:
+
+* [Jasmine Rails](https://github.com/searls/jasmine-rails)
+* [Jasmine](https://github.com/jasmine/jasmine-gem)
+* [Konacha](https://github.com/jfirebaugh/konacha)
+* [Teaspoon](https://github.com/modeset/teaspoon)
+
+It will likely work with any test runner that supports XHR requests or Sprockets directives.
+
 ### With Database Cleaner
 
 You don't need [Database Cleaner](https://github.com/DatabaseCleaner/database_cleaner) to use this gem, but this is probably the setup most people want.
