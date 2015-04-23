@@ -397,6 +397,7 @@ It requires a block to which it yields the configuration object. Here you can se
 Example:
 
 ```ruby
+# spec/support/magic_lamp/helpers/auth_stub.rb
 module AuthStub
   def current_user
     @current_user ||= User.create!(
@@ -406,7 +407,10 @@ module AuthStub
   end
 end
 
+# spec/magic_lamp_config.rb (can be anywhere in /spec)
 MagicLamp.configure do |config|
+
+  Dir[Rails.root.join("spec", "support", "magic_lamp_helpers/**/*.rb")].each { |f| load f }
 
   # if you want to require the name parameter for the `fixture` method
   config.infer_names = false
