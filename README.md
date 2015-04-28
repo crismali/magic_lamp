@@ -453,7 +453,7 @@ Example:
 ```
 ### load
 Call `MagicLamp.load` to load a fixture. It requires the name of the fixture and which will be loaded into a `div` with a class of `magic-lamp`. It will destroy the previous fixture container if present so you never end up with duplicate fixture containers or end up with dom elements from previous loads. It will hit the network only on the first request for a given
-fixture. If you never want `load` to hit the network, call [`MagicLamp.preload()`](#preload) before your specs.
+fixture. If you never want `load` to hit the network, call [`MagicLamp.preload()`](#preload) or use `//= require magic_lamp/all_fixtures` before your specs.
 
 You can load multiple fixtures into the dom at the same time by simply passing more arguments to `load`. 
 
@@ -481,6 +481,8 @@ only hit the network once, so the rest of your specs will be quicker and you can
 network.
 
 The call to get your templates is completely synchronous.
+
+**Note:** this is completely unnecessary if you use `//= require magic_lamp/all_fixtures`
 
 Example:
 ```js
