@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     end
   end
 
-  s.add_dependency "rails", ">= 4.0.0"
+  s.add_dependency "rails", ">= 3.2.0"
   s.add_dependency "rake"
   s.add_dependency "method_source"
 
