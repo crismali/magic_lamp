@@ -30,6 +30,17 @@ describe MagicLamp::FixtureCreator do
         expect(rendered).to eq("foo\n")
       end
 
+      context "form_for with a symbol in the template" do
+        it "renders the form" do
+          expect do
+            subject.generate_template(OrdersController, []) do
+              request.env["action_dispatch.request.path_parameters"] = { action: "index", controller: "orders" }
+              render partial: "symbol_form_for"
+            end
+          end.to_not raise_error
+        end
+      end
+
       context "render json (non string)" do
         let!(:rendered) do
           subject.generate_template(OrdersController, []) do
