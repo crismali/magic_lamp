@@ -34,7 +34,6 @@ describe MagicLamp::FixtureCreator do
         it "renders the form" do
           expect do
             subject.generate_template(OrdersController, []) do
-              request.env["action_dispatch.request.path_parameters"] = { action: "index", controller: "orders" }
               render partial: "symbol_form_for"
             end
           end.to_not raise_error

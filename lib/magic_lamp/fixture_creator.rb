@@ -7,6 +7,7 @@ module MagicLamp
     def generate_template(controller_class, extensions, &block)
       execute_callbacks_around do
         controller = new_controller(controller_class, extensions, &block)
+        controller.request.env["action_dispatch.request.path_parameters"] = { action: "index", controller: controller.controller_name }
         fetch_rendered(controller, block)
       end
     end
