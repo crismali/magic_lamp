@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    magic_lamp (1.6.0)
+    magic_lamp (1.6.1)
       method_source
       rails (>= 4.0.0)
       rake
@@ -63,7 +63,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (2.5)
     minitest (5.4.2)
     multi_json (1.10.1)
     parser (2.2.0.pre.8)
