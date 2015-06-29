@@ -54,6 +54,14 @@ If your JavaScript doesn't support XHR requests, you can drop this in instead:
 
 `//= require magic_lamp/all_fixtures` will load all of your fixtures without making any XHR requests. 
 
+**Note:** when loading your fixtures via Sprockets directives you will likely want to disable Sprockets caching in whatever environment your JavaScript tests are running. You can do so by putting the following in the appropriate environment config file:
+
+```ruby
+config.assets.configure do |env|
+  env.cache = ActiveSupport::Cache.lookup_store(:null_store)
+end
+```
+
 Now you've got the basic setup.
 
 ### Debugging
