@@ -364,4 +364,4 @@ DEPENDENCIES
   rubocop
   selenium-webdriver
   sqlite3
-  teaspoon
+  teaspoon (= 0.8.0)
