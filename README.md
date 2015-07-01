@@ -1,6 +1,7 @@
 Magic Lamp
 =========
 [![Gem Version](https://badge.fury.io/rb/magic_lamp.svg)](http://badge.fury.io/rb/magic_lamp)
+[![Build Status](https://travis-ci.org/crismali/magic_lamp.svg?branch=master)](https://travis-ci.org/crismali/magic_lamp)
 
 Magic Lamp helps you get your Rails templates into your JavaScript tests. This means that way your JavaScript tests break
 if you change your templates _and_ you don't have to create so many fixtures. Plus, it lets you test your views in JavaScript.
