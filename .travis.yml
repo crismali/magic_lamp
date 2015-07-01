@@ -8,7 +8,7 @@ before_install:
   - gem install bundler
 before_script:
   - ./bootstrap
-  - rake -T
+  - bundle exec rake -T
 cache: bundler
 gemfile:
   - gemfiles/rails_4.0.gemfile
