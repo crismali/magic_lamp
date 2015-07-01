@@ -190,7 +190,7 @@ DEPENDENCIES
   pry
   pry-doc
   pry-nav
-  rails (= 4.2.0)
+  rails (~> 4.2.0)
   rspec-rails
   rubocop
   selenium-webdriver
