@@ -241,7 +241,6 @@ MagicLamp.fixture(controller: OrdersController, name: "other_custom_name") do
   render :foo
 end
 ```
-If you're interested, [here's an example app](https://github.com/crismali/magic_lamp/tree/master/example).
 
 ### Drying up your fixtures
 If you have several fixtures that depend on the same setup (same controller, extensions, etc), you can use the `define` method to dry things up:
