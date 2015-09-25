@@ -1,11 +1,9 @@
-<% all_fixtures = MagicLamp.generate_all_fixtures.to_json rescue nil %>
-
-<% if all_fixtures %>
+<% begin %>
 
 MagicLamp.genie.cacheOnly = true;
-MagicLamp.genie.cache = all_fixtures;
+MagicLamp.genie.cache = <%= MagicLamp.generate_all_fixtures.to_json %>
 
-<% else %>
+<% rescue %>
 
 throw new Error(MagicLamp.genericError);
 
