@@ -3,7 +3,7 @@
 <% if all_fixtures %>
 
 MagicLamp.genie.cacheOnly = true;
-MagicLamp.genie.cache = <%= MagicLamp.generate_all_fixtures.to_json %>;
+MagicLamp.genie.cache = all_fixtures;
 
 <% else %>
 
