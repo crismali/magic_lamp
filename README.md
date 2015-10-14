@@ -46,7 +46,7 @@ Then drop this:
 ```
 at the top of your `spec_helper.js` (assuming you're using JavaScript spec runner for Rails that allows the use of Sprockets directives).
 
-If your JavaScript doesn't support XHR requests, you can drop this in instead:
+If your JavaScript test runner doesn't support XHR requests, you can drop this in instead:
 
 ```js
 //= require magic_lamp
