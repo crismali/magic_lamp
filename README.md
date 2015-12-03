@@ -540,6 +540,19 @@ You can debug into your fixture generation code or even the templates themselves
 If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
 without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
 
+When rails is inferring routes for `form_for`, `link_to`, and a few other methods you'll sometimes need to change `request.env["action_dispatch.request.path_parameters"]` by setting `action` and `controller`. When the route is nested with with a parameter in the url like `/orders/:order_id/foos/new` you'll need to add the `:order_id` to it like so:
+
+```ruby
+fixture do
+  request.env["action_dispatch.request.path_parameters"] = {
+    action: "new",
+    controller: "foos",
+    order_id: 3
+  }
+  render :new
+end
+```
+
 Sweet aliases
 -------------
 ### Ruby
