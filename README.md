@@ -531,10 +531,11 @@ describe("Foo", function() {
 ```
 Errors
 ------
-If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript
-error. Errors will also appear in your server log (if you're running the in-browser specs).
+If there are errors rendering any of your templates, Magic Lamp will often throw a JavaScript error. Errors will also appear in your server log (if you're running the in-browser specs).
 
 To see errors outside of the server log (which may be noisy), you can run [`rake magic_lamp:lint`](#tasks) (or `rake mll`) or visit `/magic_lamp/lint` in your browser and display any errors in your fixtures.
+
+You can debug into your fixture generation code or even the templates themselves just as you normally would in any other part of your Rails app. If you start seeing a bunch of `RenderCatcher` objects instead of the code you expected, just continue through and wait for the debugger to catch again and things go back to normal. If you want to skip continuing through, simply provide an explicit name for the fixture.
 
 If you get an `ActionView::MissingTemplate` error, try specifying the controller. This error is caused by a template that renders a partial
 without using the fully qualified path to the partial. Specifying the controller should help Rails find the template.
