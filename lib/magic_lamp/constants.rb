@@ -15,5 +15,6 @@ module MagicLamp
   ArgumentError = Class.new(StandardError)
   AttemptedRedirectError = Class.new(StandardError)
   DoubleRenderError = Class.new(StandardError)
+  EmptyFixtureError = Class.new(StandardError)
   UnregisteredFixtureError = Class.new(StandardError)
 end

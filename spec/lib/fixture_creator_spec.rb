@@ -90,6 +90,16 @@ describe MagicLamp::FixtureCreator do
         end
       end
     end
+
+    context "fixture is empty" do
+      it "raises an error" do
+        expect do
+          subject.generate_template(OrdersController, []) do
+            ""
+          end
+        end.to raise_error(MagicLamp::EmptyFixtureError, /fixture was an empty string. This is probably not what you meant to have happen./i)
+      end
+    end
   end
 
   describe "#new_controller" do
