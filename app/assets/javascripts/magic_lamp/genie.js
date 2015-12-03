@@ -25,12 +25,17 @@
     retrieveFixture: function(path) {
       var fixture = this.cache[path];
 
+      throwEmptyFixtureErrorIfEmpty(fixture, path);
+
       if (!fixture && this.cacheOnly) {
         throw new Error('The fixture "' + path + '" was not preloaded. Is the fixture registered? Call `MagicLamp.fixtureNames()` to see what is registered.');
       } else if (!fixture) {
         var xhr = this.xhrRequest(getPath() + '/' + path);
         this.cache[path] = fixture = xhr.responseText;
       }
+
+      throwEmptyFixtureErrorIfEmpty(fixture, path);
+
       return fixture;
     },
 
@@ -110,6 +115,12 @@
     for (var i = 0; i < collection.length; i++) {
       callback(collection[i]);
     };
+  }
+
+  function throwEmptyFixtureErrorIfEmpty(fixture, path) {
+    if (fixture === '') {
+      throw new Error('The fixture "' + path + '" is an empty string. Run `rake magic_lamp:lint` for more information.');
+    }
   }
 
   function newXhr() {

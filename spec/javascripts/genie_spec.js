@@ -105,6 +105,13 @@ describe('Genie', function() {
         expect(subject.retrieveFixture(path)).to.equal(fixtureContent);
       });
 
+      it('throws an error if the fixture is an empty string', function() {
+        stub(subject, 'xhrRequest', { responseText: '' });
+        expect(function() {
+          subject.retrieveFixture(path);
+        }).to.throw(/The fixture "orders\/foo" is an empty string. Run `rake magic_lamp:lint` for more information./);
+      });
+
       describe('cached', function() {
         beforeEach(function() {
           fixtureContent = subject.cache[path] = 'howdy';
@@ -118,6 +125,13 @@ describe('Genie', function() {
 
         it('returns the fixture', function() {
           expect(subject.retrieveFixture(path)).to.equal(fixtureContent);
+        });
+
+        it('throws an error if the fixture is an empty string', function() {
+          subject.cache[path] = '';
+          expect(function() {
+            subject.retrieveFixture(path);
+          }).to.throw(/The fixture "orders\/foo" is an empty string. Run `rake magic_lamp:lint` for more information./);
         });
       });
     });
@@ -143,6 +157,13 @@ describe('Genie', function() {
         expect(function() {
           subject.retrieveFixture(path);
         }).to.throw(/The fixture "orders\/foo" was not preloaded. Is the fixture registered\? Call `MagicLamp.fixtureNames\(\)` to see what is registered./);
+      });
+
+      it('throws an error if the fixture is an empty string', function() {
+        subject.cache[path] = '';
+        expect(function() {
+          subject.retrieveFixture(path);
+        }).to.throw(/The fixture "orders\/foo" is an empty string. Run `rake magic_lamp:lint` for more information./);
       });
     });
   });
