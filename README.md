@@ -299,7 +299,15 @@ Ruby API
 ### fixture
 (also aliased to `register_fixture` and `register`)
 
-It requires a block that is invoked in the context of a controller. If render is called, it renders the specified template or partial the way the controller normally would. If `render` is not called in the block then MagicLamp will render the `to_json` representation of the return value of the block unless the return value is already a string. In that case, the string is rendered as is. 
+It requires a block that is invoked in the context of a controller. If `render` is called, it renders the specified template or partial the way the controller normally would minus the layout. If you'd like a particular layout to be rendered simply specify it when you call `render`:
+
+```ruby
+render :index, layout: "admin"
+```
+
+**Note:** Rendering the layout could be useful under some circumstances, but it is important to be aware that things will get weird if you use MagicLamp to load and entire HTML document. Especially if it contains `script` tags to your JavaScript.
+
+If `render` is not called in the block then MagicLamp will render the `to_json` representation of the return value of the block unless the return value is already a string. In that case, the string is rendered as is.
 
 It also takes an optional hash of arguments. The arguments hash recognizes:
 * `:controller`
