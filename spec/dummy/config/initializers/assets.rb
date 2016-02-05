@@ -20,4 +20,5 @@ Rails.application.config.assets.precompile += %w(
   spec_helper.self.js
   genie_spec.self.js
   magic_lamp_spec.self.js
+  teaspoon.css
 )
