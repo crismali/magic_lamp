@@ -1,3 +1,6 @@
+### v1.8.0 (2/4/16)
+[PR #36](https://github.com/crismali/magic_lamp/pull/36): Added support for Rails 5.0 beta. Some Travis CI and Appraisal changes happened to ensure better support for Rails 5 in the future. Plus a bunch of deprecation warnings were removed (what remains can't be dropped until support for Rails 4.X is dropped).
+
 ### v1.7.0 (12/2/15)
 [Issue #32](https://github.com/crismali/magic_lamp/issues/32): MagicLamp now raises an error when it finds empty fixtures (in Ruby and JavaScript).
 
