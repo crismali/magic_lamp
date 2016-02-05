@@ -21,4 +21,5 @@ Rails.application.config.assets.precompile += %w(
   genie_spec.self.js
   magic_lamp_spec.self.js
   teaspoon.css
+  mocha/1.17.1.js
 )
