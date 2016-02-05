@@ -22,7 +22,8 @@ module MagicLamp
       controller = controller_class.new
       redefine_view_context(controller, extensions)
       extensions.each { |extension| controller.extend(extension) }
-      controller.request = ActionDispatch::TestRequest.new
+      test_request_class = ActionDispatch::TestRequest
+      controller.request = test_request_class.respond_to?(:create) ? test_request_class.create : test_request_class.new
       redefine_redirect_to(controller)
       redefine_render(controller)
       controller
