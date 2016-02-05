@@ -22,4 +22,5 @@ Rails.application.config.assets.precompile += %w(
   magic_lamp_spec.self.js
   teaspoon.css
   mocha/1.17.1.js
+  teaspoon-mocha.js
 )
