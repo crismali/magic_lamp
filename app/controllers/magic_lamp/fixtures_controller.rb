@@ -9,15 +9,17 @@ module MagicLamp
       MagicLamp::DoubleRenderError
     ].map(&:name)
 
+    RENDER_TYPE = Rails::VERSION::MAJOR == 5 ? :plain : :text
+
     rescue_from(*ERRORS) do |exception, message = exception.message|
       error_message_with_bactrace = parse_error(exception, message)
       logger.error(error_message_with_bactrace)
-      render text: message, status: 400
+      render RENDER_TYPE => message, status: 400
     end
 
     def show
       MagicLamp.load_lamp_files
-      render text: MagicLamp.generate_fixture(params[:name])
+      render RENDER_TYPE => MagicLamp.generate_fixture(params[:name])
     end
 
     def index
