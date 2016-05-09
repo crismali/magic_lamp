@@ -27,6 +27,7 @@ describe "All fixtures js erb" do
 
     it "throws an error" do
       expect(subject).to match(/throw new Error\(MagicLamp.genericError\)/)
+      expect(subject).to_not match(/MagicLamp.genie/)
     end
   end
 end
