@@ -14,7 +14,9 @@ appraise "rails-4.2" do
 end
 
 appraise "rails-5.0" do
-  gem "rails", "~> 5.0.0.beta2"
-  gem "teaspoon", "0.8.0"
+  gem "coffee-rails"
+  gem "rails", "~> 5.0"
+  gem "teaspoon", "~> 1.0"
+  gem "teaspoon-mocha"
   gem "rails-controller-testing"
 end
