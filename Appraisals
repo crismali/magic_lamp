@@ -13,7 +13,7 @@ appraise "rails-4.2" do
   gem "teaspoon", "0.8.0"
 end
 
-appraise "rails-5.0.0.beta2" do
+appraise "rails-5.0" do
   gem "rails", "~> 5.0.0.beta2"
   gem "teaspoon", "0.8.0"
   gem "rails-controller-testing"

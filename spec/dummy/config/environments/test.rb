@@ -23,11 +23,17 @@ application.configure do
   # Configure static asset server for tests with Cache-Control for performance.
   if Rails::VERSION::STRING.to_f == 4.0
     config.serve_static_assets = true
+  elsif Rails::VERSION::MAJOR == 5
+    config.public_file_server.enabled = true
   else
     config.serve_static_files = true
   end
 
-  config.static_cache_control = 'public, max-age=3600'
+  if Rails::VERSION::MAJOR == 5
+    config.public_file_server.headers = { 'Cache-Control' => 'public, max-age=3600' }
+  else
+    config.static_cache_control = 'public, max-age=3600'
+  end
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true

@@ -19,6 +19,18 @@ ActiveRecord::Migration.maintain_test_schema! if Rails::VERSION::STRING.to_f != 
 
 Rails.application.load_tasks
 
+module ControllerTestHelpers
+  if ::Rails::VERSION::MAJOR == 5
+    def make_request(type, action_name, params = {})
+      public_send(type, action_name, params: params)
+    end
+  else
+    def make_request(type, action_name, params = {})
+      public_send(type, action_name, params)
+    end
+  end
+end
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -43,6 +55,7 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
+  config.include ControllerTestHelpers, type: :controller
   if Rails::VERSION::MAJOR == 5
     config.include Rails::Controller::Testing::TestProcess
     config.include Rails::Controller::Testing::TemplateAssertions
