@@ -1,5 +1,5 @@
 PATH
-  remote: ../
+  remote: ..
   specs:
     magic_lamp (1.8.1)
       method_source
@@ -218,4 +218,4 @@ DEPENDENCIES
   teaspoon-mocha
 
 BUNDLED WITH
-   1.13.5
+   1.14.6

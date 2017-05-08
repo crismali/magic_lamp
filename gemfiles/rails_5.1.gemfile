@@ -8,4 +8,4 @@ gem "teaspoon", "~> 1.0"
 gem "teaspoon-mocha"
 gem "rails-controller-testing"
 
-gemspec :path => "../"
+gemspec path: "../"
