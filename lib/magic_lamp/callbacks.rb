@@ -31,7 +31,7 @@ module MagicLamp
 
     def execute_callback(type)
       callback = configuration.send("#{type}_each_proc")
-      callback&.call
+      callback.call if callback
     end
   end
 end

@@ -188,7 +188,7 @@ DEPENDENCIES
   pry-doc
   pry-nav
   rspec-rails
-  rubocop
+  rubocop (~> 0.48.1)
   selenium-webdriver
   sqlite3
   teaspoon

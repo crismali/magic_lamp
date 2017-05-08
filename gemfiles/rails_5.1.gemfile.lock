@@ -211,7 +211,7 @@ DEPENDENCIES
   rails (~> 5.1.0)
   rails-controller-testing
   rspec-rails
-  rubocop
+  rubocop (~> 0.48.1)
   selenium-webdriver
   sqlite3
   teaspoon (~> 1.0)

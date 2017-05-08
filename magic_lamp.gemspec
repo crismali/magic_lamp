@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "magic_lamp"
   s.version     = MagicLamp::VERSION
   s.authors     = ["Michael Crismali"]
-  s.email       = ["michael.crismali@gmail.com"]
+  s.email       = ["michael@crismali.com"]
   s.homepage    = "https://github.com/crismali/magic_lamp"
   s.summary     = "Makes sure your JavaScript tests break when if your templates change."
   s.description = "MagicLamp provides an easy way to get your Rails templates into your JavaScript specs."
@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry-doc"
   s.add_development_dependency "pry-nav"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "rubocop"
+  s.add_development_dependency "rubocop", "~> 0.48.1"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "teaspoon"
