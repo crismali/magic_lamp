@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "method_source"
 
 require "magic_lamp/engine"
@@ -38,7 +40,7 @@ module MagicLamp
 
     def configure(&block)
       raise_missing_block_error(block, __method__)
-      block.call(configuration)
+      yield(configuration)
     end
 
     def define(options = {}, &block)
@@ -116,7 +118,7 @@ module MagicLamp
     end
 
     def add_error_if_error(error_hash, key, &block)
-      block.call
+      yield
     rescue => e
       error_hash[key] = compose_error(e)
     end

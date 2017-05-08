@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 describe MagicLamp do
@@ -304,7 +306,7 @@ describe MagicLamp do
   describe "#generate_fixture" do
     let(:block) { proc { render :foo } }
     let(:fixture_name) { "foo_test" }
-    let(:extensions) { 3.times.map { Module.new } }
+    let(:extensions) { Array.new(3) { Module.new } }
 
     before do
       subject.registered_fixtures[fixture_name] = {
@@ -382,7 +384,7 @@ describe MagicLamp do
     context "callbacks" do
       let!(:error_proc) { proc { raise "Nope" } }
 
-      [:before, :after].each do |callback_type|
+      %i[before after].each do |callback_type|
         it "returns a hash that with the errored #{callback_type} callback information" do
           expect_any_instance_of(MagicLamp::Configuration).to receive("#{callback_type}_each_proc").and_return(error_proc)
           result = subject.lint_config
@@ -433,7 +435,7 @@ describe MagicLamp do
         foo_result = result["foo"]
         bar_result = result["orders/bar"]
 
-        [:render_block, :extend, :controller].each do |key|
+        %i[render_block extend controller].each do |key|
           expect(foo_result[key]).to eq(subject.registered_fixtures["foo"][key])
           expect(bar_result[key]).to eq(subject.registered_fixtures["orders/bar"][key])
         end

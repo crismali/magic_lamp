@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Set RAILS_ROOT and load the environment if it's not already loaded.
 unless defined?(Rails)
   ENV["RAILS_ROOT"] = File.expand_path("../dummy/", __FILE__)

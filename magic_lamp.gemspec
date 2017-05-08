@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 
 require "magic_lamp/version"
@@ -20,7 +22,7 @@ Gem::Specification.new do |s|
       /\.log\z/,
       /tmp/,
       /\.sass-cache\z/,
-      /spec\/dummy\/\./
+      %r{spec/dummy/\.}
     ].any? do |ignored_pattern|
       file_path.match(ignored_pattern)
     end

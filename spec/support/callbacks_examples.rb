@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples "it has callbacks" do
   subject { described_class.new(MagicLamp::Configuration.new) }
 
@@ -13,7 +15,7 @@ shared_examples "it has callbacks" do
     end
   end
 
-  [:after, :before].each do |type|
+  %i[after before].each do |type|
     describe "#execute_before_each_callback" do
       it "calls the type each callback" do
         dummy = double

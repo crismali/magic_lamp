@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicLamp
   module Callbacks
     attr_accessor :configuration
@@ -20,7 +22,7 @@ module MagicLamp
       end
 
       execute_before_each_callback
-      value = block.call
+      value = yield
       execute_after_each_callback
       value
     end
@@ -29,7 +31,7 @@ module MagicLamp
 
     def execute_callback(type)
       callback = configuration.send("#{type}_each_proc")
-      callback.call unless callback.nil?
+      callback&.call
     end
   end
 end

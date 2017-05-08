@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require "rails_helper"
 
 module CatchOutput
@@ -55,7 +57,7 @@ describe "magic_lamp:lint:config" do
       expect(output).to match("RuntimeError: Nope")
     end
 
-    [:before, :after].each do |callback_type|
+    %i[before after].each do |callback_type|
       it "tells us if the #{callback_type}_each callback is broken" do
         expect_any_instance_of(MagicLamp::Configuration).to receive("#{callback_type}_each_proc").and_return(error_proc)
 
@@ -153,12 +155,12 @@ describe "magic_lamp:lint:fixtures" do
     it "tells us which fixtures are broken" do
       expect(output).to match(/the following fixtures are broken/i)
       expect(output).to match(/Name: "foo"/)
-      expect(output).to match(/Name: "orders\/bar"/)
+      expect(output).to match(%r{Name: "orders\/bar"})
     end
 
     it "displays the file the fixture is in" do
-      expect(output).to match(/File: .+\/broken_fixtures.rb:7/)
-      expect(output).to match(/File: .+\/broken_fixtures.rb:13/)
+      expect(output).to match(%r{File: .+\/broken_fixtures.rb:7})
+      expect(output).to match(%r{File: .+\/broken_fixtures.rb:13})
     end
 
     it "displays the broken fixture's code" do

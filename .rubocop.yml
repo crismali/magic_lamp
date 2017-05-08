@@ -8,7 +8,7 @@ AllCops:
     - spec/dummy/**/*
     - example/**/*
 
-Lint/SpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Enabled: false
 
 Lint/UnusedBlockArgument:
@@ -48,4 +48,16 @@ Style/GuardClause:
   Enabled: false
 
 Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Style/MethodMissing:
   Enabled: false

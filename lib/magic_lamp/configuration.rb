@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicLamp
   class Configuration
     attr_accessor :after_each_proc, :before_each_proc, :infer_names, :global_defaults

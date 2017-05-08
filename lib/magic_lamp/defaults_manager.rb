@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MagicLamp
   class DefaultsManager
     attr_accessor :configuration, :defaults, :parent

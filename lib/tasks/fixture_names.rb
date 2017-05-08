@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 MagicLamp::Genie.rake_tasks do
   namespace :magic_lamp do
     desc "Displays all Magic Lamp fixture names"

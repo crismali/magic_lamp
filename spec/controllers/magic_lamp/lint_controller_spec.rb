@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 module MagicLamp
@@ -45,7 +47,7 @@ module MagicLamp
           end
 
           it "assigns config_file_load_error" do
-            expect(assigns(:config_errors).keys).to match_array([:before_each, :after_each])
+            expect(assigns(:config_errors).keys).to match_array(%i[before_each after_each])
           end
         end
       end

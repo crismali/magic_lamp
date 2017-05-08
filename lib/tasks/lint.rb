@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 MagicLamp::Genie.rake_tasks do
   namespace :magic_lamp do
     desc "Generates all Magic Lamp fixtures and displays errors for debugging"
@@ -14,7 +16,7 @@ MagicLamp::Genie.rake_tasks do
             puts "\n#{errors[:config_file_load]}"
           end
 
-          [:before_each, :after_each].each do |callback|
+          %i[before_each after_each].each do |callback|
             if errors[callback].present?
               puts "Executing #{callback} failed with:"
               puts "\n#{errors[callback]}"
@@ -61,11 +63,11 @@ MagicLamp::Genie.rake_tasks do
             puts "File: #{render_block.source_location.join(':')}"
             puts "Controller: #{fixture_info[:controller]}"
 
-            if fixture_info[:extend].present?
-              extensions = fixture_info[:extend].join(", ")
-            else
-              extensions = "None"
-            end
+            extensions = if fixture_info[:extend].present?
+                           fixture_info[:extend].join(", ")
+                         else
+                           "None"
+                         end
 
             puts "Extensions: #{extensions}"
             puts ""

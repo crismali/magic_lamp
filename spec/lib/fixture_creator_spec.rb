@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 describe MagicLamp::FixtureCreator do
@@ -109,13 +111,11 @@ describe MagicLamp::FixtureCreator do
 
     context "contoller" do
       module Foo
-        def foo_module_method
-        end
+        def foo_module_method; end
       end
 
       module Bar
-        def bar_module_method
-        end
+        def bar_module_method; end
       end
 
       let(:controller) { subject.new_controller(OrdersController, [Foo, Bar]) { params[:foo] = "bar" } }
@@ -145,7 +145,7 @@ describe MagicLamp::FixtureCreator do
       context "stubbed controller#render" do
         it "passes its arguments to the fixture creator at render arguments" do
           controller.render :foo, :bar
-          expect(subject.render_arguments).to eq([:foo, :bar])
+          expect(subject.render_arguments).to eq(%i[foo bar])
         end
 
         it "raises an error when called twice" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 module MagicLamp
@@ -10,7 +12,7 @@ module MagicLamp
 
       it "outputs the error and the message to the server log" do
         expect(controller.logger).to receive(:error) do |error_message|
-          expect(error_message).to match(/message\n\s\s\s\s.*magic_lamp\//m)
+          expect(error_message).to match(%r{message\n\s\s\s\s.*magic_lamp/}m)
         end
         make_request :get, :show, name: "orders/baz"
       end
