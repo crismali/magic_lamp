@@ -22,7 +22,7 @@ ActiveRecord::Migration.maintain_test_schema! if Rails::VERSION::STRING.to_f != 
 Rails.application.load_tasks
 
 module ControllerTestHelpers
-  if ::Rails::VERSION::MAJOR == 5
+  if ::Rails::VERSION::MAJOR >= 5
     def make_request(type, action_name, params = {})
       public_send(type, action_name, params: params)
     end
@@ -58,7 +58,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include ControllerTestHelpers, type: :controller
-  if Rails::VERSION::MAJOR == 5
+  if Rails::VERSION::MAJOR >= 5
     config.include Rails::Controller::Testing::TestProcess
     config.include Rails::Controller::Testing::TemplateAssertions
     config.include Rails::Controller::Testing::Integration

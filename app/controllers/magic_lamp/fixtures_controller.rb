@@ -11,7 +11,7 @@ module MagicLamp
       MagicLamp::DoubleRenderError
     ].map(&:name)
 
-    RENDER_TYPE = Rails::VERSION::MAJOR == 5 ? :plain : :text
+    RENDER_TYPE = Rails::VERSION::MAJOR >= 5 ? :plain : :text
 
     rescue_from(*ERRORS) do |exception, message = exception.message|
       error_message_with_bactrace = parse_error(exception, message)
