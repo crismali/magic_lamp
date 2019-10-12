@@ -343,17 +343,23 @@ describe('Genie', function() {
     it('calls handleError with the default error message if the status was 500', function() {
       stub(subject, 'handleError', true);
       stub(subject, 'xhrStatus', 500);
+      stub(console, 'error', true)
       var path = '/magic_lamp/foo/bar';
       subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledWith(MagicLamp.genericError);
+      expect(console.error).to.have.been.calledWith('Unexpected error: status=500, responseText="\'foo/bar\' is not a registered fixture"');
+      console.error.restore();
     });
 
     it('calls handleError with the default error message if the status was 404', function() {
       stub(subject, 'handleError', true);
       stub(subject, 'xhrStatus', 404);
+      stub(console, 'error', true)
       var path = '/magic_lamp/foo/bar';
       subject.xhrRequest(path);
       expect(subject.handleError).to.have.been.calledWith(MagicLamp.genericError);
+      expect(console.error).to.have.been.calledWith('Unexpected error: status=404, responseText="\'foo/bar\' is not a registered fixture"');
+      console.error.restore();
     });
   });
 

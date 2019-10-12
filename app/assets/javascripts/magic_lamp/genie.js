@@ -95,6 +95,7 @@
       if (this.xhrStatus(xhr) === 400) {
         this.handleError(xhr.responseText);
       } else if (this.xhrStatus(xhr) > 400) {
+        console.error('Unexpected error: status=' + this.xhrStatus(xhr) + ', responseText="' + xhr.responseText + '"')
         this.handleError(MagicLamp.genericError);
       }
       return xhr;
