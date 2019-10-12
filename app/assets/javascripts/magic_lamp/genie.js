@@ -41,7 +41,12 @@
 
     preload: function() {
       var xhr = this.xhrRequest(getPath());
-      this.cache = JSON.parse(xhr.responseText);
+      try {
+        this.cache = JSON.parse(xhr.responseText);
+      } catch (error) {
+        console.error('The response could not be parsed: responseText="' + xhr.responseText + '", error="' + error.message + '"')
+        throw error
+      }
       this.cacheOnly = true;
     },
 

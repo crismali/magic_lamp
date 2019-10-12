@@ -199,6 +199,22 @@ describe('Genie', function() {
       expect(subject.cacheOnly).to.equal(false);
     });
 
+    it('does not set cacheOnly to true if the response cannot be parsed', function() {
+      var path = MagicLamp.path = '/normal_lamp';
+      stub(subject, 'xhrRequest', { responseText: '<html></html>' });
+      stub(console, 'error', true);
+
+      expect(function() { subject.preload(); }).to.throw();
+      expect(subject.xhrRequest).to.have.been.calledWith(path);
+      expect(subject.cacheOnly).to.equal(false);
+      expect(console.error).to.have.been.calledWith(
+        'The response could not be parsed: responseText="<html></html>", error="JSON Parse error: Unrecognized token \'<\'"'
+      );
+
+      delete MagicLamp.path;
+      console.error.restore();
+    });
+
     it('makes a request to the specified path if defined', function() {
       var path = MagicLamp.path = '/normal_lamp';
       stub(subject, 'xhrRequest', { responseText: '{}' });
