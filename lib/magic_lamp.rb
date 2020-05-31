@@ -56,6 +56,8 @@ module MagicLamp
 
     def load_config
       FactoryGirl.reload if defined?(FactoryGirl)
+      FactoryBot.reload if defined?(FactoryBot)
+
       self.configuration = Configuration.new
       load_all(config_files)
     end
