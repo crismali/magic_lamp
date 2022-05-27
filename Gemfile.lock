@@ -90,7 +90,7 @@ GEM
       yard (~> 0.8)
     pry-nav (0.2.4)
       pry (>= 0.9.10, < 0.11.0)
-    rack (1.6.6)
+    rack (1.6.13)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.8)
